@@ -9,8 +9,10 @@ population scaled recombination rate, PSMC and DFE-alpha.
 # /proj/snic2020-16-269/private/cornwallis.2020/results/ind/analysis/gatk_best_practice_snp/f03_concat_bcftools produced by Per Unneberg
 `sbatch selectvariant_black.sh`
 # Variant Filteration
-```vcf=/proj/snic2020-16-269/private/homap/ostrich_z/data/vcf
-sbatch variantfilter.sh ${vcf}/black.all.snp.vcf.gz ${vcf}/black.all.snp.filtered.vcf.gz```
+```bash
+vcf=/proj/snic2020-16-269/private/homap/ostrich_z/data/vcf
+sbatch variantfilter.sh ${vcf}/black.all.snp.vcf.gz ${vcf}/black.all.snp.filtered.vcf.gz
+```
 #*********************************************************************************************#
 #*********************************************************************************************#
 # Load the necessary modules
