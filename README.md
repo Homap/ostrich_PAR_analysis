@@ -11,7 +11,7 @@ calculates linkage disequilibrium (LD), population scaled recombination rate (rh
 `sbatch selectvariant_black.sh`
 
 # Variant Filteration
-```shell
+```posh
 vcf=/proj/snic2020-16-269/private/homap/ostrich_z/data/vcf
 sbatch variantfilter.sh ${vcf}/black.all.snp.vcf.gz ${vcf}/black.all.snp.filtered.vcf.gz
 ```
