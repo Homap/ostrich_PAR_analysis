@@ -297,7 +297,8 @@ awk 'NR>1' ${result}/black.nonPAR.sfs.txt | cat ${result}/black.PAR.sfs.txt - > 
 python scaffold_to_chr_vcf.py ${result}/black.Z.sfs.txt > ${result}/black.Z.coordinates.sfs.txt
 ```
 
-# Superscaffold36
+### Get the genetic diversity for superscaffold36 in windows of 1Kb and 0.5 Kb
+```
 grep 'superscaffold36' ../data/allele_count/black.PAR.repeat.frq.count > ../data/allele_count/black.PAR.superscaffold36.repeat.frq.count
 grep 'superscaffold36' ../data/allele_count/black.nonPAR.repeat.frq.count > ../data/allele_count/black.nonPAR.superscaffold36.repeat.frq.count
 python SFS_measures.py ../data/allele_count/black.PAR.superscaffold36.repeat.frq.count 20 ../data/bed/black.par_scaf.10Kb.intergenic.overlap.density.sorted.txt \
@@ -309,49 +310,47 @@ python SFS_measures.py ../data/allele_count/black.PAR.superscaffold36.repeat.frq
 all > ${result}/black.PAR.scaf36.1Kb.sfs.txt
 python SFS_measures.py ../data/allele_count/black.PAR.superscaffold36.repeat.frq.count 20 ../data/bed/black.par_scaf.0.5Kb.intergenic.overlap.density.sorted.txt \
 all > ${result}/black.PAR.scaf36.0.5Kb.sfs.txt
+```
 
-
-# Annotating SNPs for intergenic and intronic regions and measure SFS measures for each functional category
-bash annotate_snps.sh
-
-# Male-Female FST
+### Male-Female FST
+```
 vcftools --gzvcf ../data/vcf/black.PAR.filtered.vcf.gz --chr 'superscaffold36' --recode --stdout | gzip -c > ../data/vcf/black.PAR.superscaffold36.filtered.vcf.gz
 vcftools --gzvcf ../data/vcf/black.PAR.superscaffold36.filtered.vcf.gz --weir-fst-pop ../data/samples/black_male.txt --weir-fst-pop ../data/samples/black_female.txt \
 --fst-window-size 1000 --out black_male_female_1Kb
+```
 
-# Male-Female FST
+### Male-Female FST
 # Exclude female positions with heterozygous SNPs
+```
 awk '{print $1"\t"$3}' ../data/bed/${species}.nonPAR.female_het.bed > ../data/bed/${species}.nonPAR.female_het.txt
 vcftools --gzvcf ../data/vcf/LD_vcf/black.Z.pos.vcf.gz --exclude-positions ../data/bed/${species}.nonPAR.female_het.txt --stdout | gzip -c > ../data/vcf/LD_vcf/black.Z.pos.nohetfemalenonPAR.vcf.gz
 
 vcftools --gzvcf ../data/vcf/LD_vcf/black.Z.pos.nohetfemalenonPAR.vcf.gz --weir-fst-pop ../data/samples/black_male.txt --weir-fst-pop ../data/samples/black_female.txt --fst-window-size 100000 --out ../data/FST/black_male_female_Z_100Kb
 python scaffold_to_chr_vcf.py ../data/FST/black_male_female_Z_100Kb.windowed.weir.fst > ../data/FST/black_male_female_Z_100Kb.windowed.weir.Z.coord.fst
+```
 
-# Get the distribution of SFS for autosomes, PAR and nonPAR
-for species in black blue red
-do 
-echo $species
+### Get the distribution of SFS for autosomes, PAR and nonPAR
+```
 echo "PAR"
 python get_sfs.py ../data/allele_count/${species}.PAR.repeat.frq.count ${species} PAR > ../result/sfs_measures/${species}_PAR.foldedSFS.txt
 echo "nonPAR"
 python get_sfs.py ../data/allele_count/${species}.nonPAR.filtered.adjusted.frq.count ${species} nonPAR > ../result/sfs_measures/${species}_nonPAR.foldedSFS.txt
 echo "Autosome"
 python get_sfs.py ../data/allele_count/${species}.A.repeat.frq.count ${species} A > ../result/sfs_measures/${species}_A.foldedSFS.txt
-done
-#*********************************************************************************************#
-#*********************************************************************************************#
-# Calculate Linkage Disequilibrium
-#*********************************************************************************************#
-#*********************************************************************************************#
-# In the following, I use PopLDdecay, following the analysis done by
-# Takeshi Kawakami to calculate LD on ostrich Z chromosome
-# Download PopLDdecay into /proj/snic2020-16-269/private/homap/ostrich_z/bin
+```
+
+## Calculate Linkage Disequilibrium
+
+In the following, I use PopLDdecay, following the analysis done by
+Takeshi Kawakami to calculate LD on ostrich Z chromosome
+Download PopLDdecay into /proj/snic2020-16-269/private/homap/ostrich_z/bin
+
+```
 git clone https://github.com/BGI-shenzhen/PopLDdecay.git
 cd PopLDdecay; chmod 755 configure; ./configure;
 make;
 mv PopLDdecay  bin/;
-
-# The download and compiling went very smoothly.
+```
 
 # I use the r-squared measure of LD.
 
@@ -843,40 +842,7 @@ python get_sfs.py zerofold_A_counts.txt black nonPAR > zerofold_nonPAR_SFS.txt
 3009164 4298    2812    2016    1529    1264    1119    969 825 883 542
 11477529 4235    2530    1709    1261    974 783 640 563 525 343
 
-# Chromosome 4 and 5
-NC_006091.5     chromosome_4
-NC_006092.5     chromosome_5
 
-
-git remote add origin https://github.com/Homap/ostrich_Z
-
-…or create a new repository on the command line
-echo "# ostrich_PAR_analysis" >> README.md
-git init
-git add README.md
-git commit -m "first commit"
-git branch -M main
-git remote add origin https://github.com/Homap/ostrich_PAR_analysis.git
-git push -u origin main
-…or push an existing repository from the command line
-git remote add origin https://github.com/Homap/ostrich_PAR_analysis.git
-git branch -M main
-git push -u origin main
-
-# Creating SSH key
-# When creating a new github directory in Uppmax, you need to add the ssh key to the directory or you cannot push to it. Find the ssh key under ~/.ssh
-git add file
-git commit -m "something has changed here"
-git push -u origin main
-
-git rm <file>
-
-git commit -m "Deleted the file from the git repository"
-git push -u origin main
-
-# male nonPAR
-vcftools --gzvcf ../data/vcf/${species}.nonPAR.filtered.vcf.gz --keep ../data/samples/black_male.txt --window-pi 100000 --out ../data/allele_count/${species}.nonPAR.male
-python male_female_het_proportions.py > male_female_het_residuals.txt
 
 
 
