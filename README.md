@@ -407,19 +407,14 @@ Rscript LD_slidingWin_v1.R ../data/LD/scaf.split/${species}.${scaffold}.pairwise
 done
 ```
 
-## Get a figure of the LD for 3 subspecies for superscaffold36. The graph is generated in the bin directory.
-Rscript LD_three_species.R \
-../data/LD/scaf.split/black.superscaffold36.pairwise.LD.05-500 \
-../data/LD/scaf.split/blue.superscaffold36.pairwise.LD.05-500 \
-../data/LD/scaf.split/red.superscaffold36.pairwise.LD.05-500 \
-../data/bed/z_scaf.bed 200000 50000
+## LD at the PAR boundary
 
 Next, we are interested to get a more clear picture of LD across the PAR boundary in each sex. 
 ```
 module load bioinfo-tools vcftools
 mkdir -p ../data/LD/sex_specific
 ```
-## Select SNPs that 100 Kb left and right of the PAR boundary
+## Select SNPs that 100 Kb or 50 Kb left and right of the PAR boundary
 ```
 cat ../data/vcf/LD_vcf/black.Z.pos | grep "^superscaffold36" | \
 awk '($2-3524263>-100000 && $2-3524263<100000)' > ../data/LD/sex_specific/commonSNP.B.boundary200kb
@@ -428,7 +423,8 @@ cat ../data/vcf/LD_vcf/black.Z.pos | grep "^superscaffold36" | \
 awk '($2-3524263>-50000 && $2-3524263<50000)' > ../data/LD/sex_specific/commonSNP.B.boundary100kb
 ```
 
-# convert vcf to plink near PAR boundary (200 kb centered at the boundary)
+## Convert vcf to plink near PAR boundary (200 kb centered at the boundary)
+```
 chr=superscaffold36
 vcftools --gzvcf ../data/vcf/LD_vcf/black.Z.superscaffold36.vcf.gz --positions ../data/LD/sex_specific/commonSNP.B.boundary100kb \
 --plink --out ../data/LD/sex_specific/black.superscaffold36.bothsexes.100kb.boundary
@@ -438,24 +434,30 @@ plink --file ../data/LD/sex_specific/black.superscaffold36.bothsexes.100kb.bound
 awk '{print $1"\t"$2-1"\t"$2}' ../data/LD/sex_specific/commonSNP.B.boundary100kb | cat ../data/bed/par_scaf.bed - > test 
 
 python scaffold_to_chr_vcf.py test > ../data/bed/boundary.z.coordinates.txt
-# Join ped files per sex
+```
+
+## Join ped files per sex
+```
 cat ../data/LD/sex_specific/*male.ped > \
 ../data/LD/sex_specific/BB.superscaffold36.boundary.male.ped.join
 cat ../data/LD/sex_specific/*female.ped > \
 ../data/LD/sex_specific/BB.superscaffold36.boundary.female.ped.join
+```
 
-# modify plink infile for Haploview. Note that Haploview takes plink format. However
-# .ped file needs a header. Instead of using plink format, I use Linkage format that
-# needs .ped file as is and .info file that requires two columns indicating SNP name
-# and position
+Modify plink infile for Haploview. Note that Haploview takes plink format. However
+.ped file needs a header. Instead of using plink format, I use Linkage format that
+needs .ped file as is and .info file that requires two columns indicating SNP name
+and position.
+
+```
 cat ../data/LD/sex_specific/black.superscaffold36.boundary.female.map | cut -f2,4 > \
 ../data/LD/sex_specific/BB.superscaffold36.boundary.map
-
-# Visualize by Haploview gui in Mac
-# Open and upload the ped and map file for male and female in the Haploview
-# and save the figure as svg and compressed png file.
-java -jar Haploview.jar # TO DO
-
+```
+## Visualize by Haploview gui in Mac
+Open and upload the ped and map file for male and female in the Haploview and save the figure as svg and compressed png file.
+```
+java -jar Haploview.jar 
+```
 
 #*********************************************************************************************#
 # Copy results to results directory from LD directory in data
