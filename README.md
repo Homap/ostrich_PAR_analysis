@@ -5,41 +5,42 @@ including criteria to filter the VCF files, calculate genetic diversity (pi and 
 folded site frequency spectrum in genomic categories: intergenic, intronic and CDS (0fold and 4fold) and DFE-alpha, 
 calculates linkage disequilibrium (LD), population scaled recombination rate (rho) and PSMC.
 
-# Select SNPs from the GVCF: GVCF called black.all.vcf.gz has been copied from 
-`/proj/snic2020-16-269/private/cornwallis.2020/results/ind/analysis/gatk_best_practice_snp/f03_concat_bcftools produced by Per Unneberg`
+## Select SNPs from the GVCF: GVCF called black.all.vcf.gz has been copied from 
+```
+/proj/snic2020-16-269/private/cornwallis.2020/results/ind/analysis/gatk_best_practice_snp/f03_concat_bcftools produced by Per Unneberg
 
-`sbatch selectvariant_black.sh`
+sbatch selectvariant_black.sh
+```
 
-# Variant Filteration
+## Variant Filteration
 ```posh
 vcf=/proj/snic2020-16-269/private/homap/ostrich_z/data/vcf
 sbatch variantfilter.sh ${vcf}/black.all.snp.vcf.gz ${vcf}/black.all.snp.filtered.vcf.gz
 ```
 
-#*********************************************************************************************#
-#*********************************************************************************************#
-# Load the necessary modules
+## Load the necessary modules
 `module load bioinfo-tools vcftools/0.1.15 bcftools/1.6 tabix plink/1.07`
-#*********************************************************************************************#
-# Export reference, vcf file and the sample information
-#*********************************************************************************************#
-```export reference=/proj/snic2020-16-269/private/homap/ostrich_z/data/reference/Struthio_camelus.20130116.OM.fa
+
+## Export reference, vcf file and the sample information
+
+```
+export reference=/proj/snic2020-16-269/private/homap/ostrich_z/data/reference/Struthio_camelus.20130116.OM.fa
 export vcf=/proj/snic2020-16-269/private/homap/ostrich_z/data/vcf
 export black=/proj/snic2020-16-269/private/homap/ostrich_z/data/samples/black.txt
 export black_male=/proj/snic2020-16-269/private/homap/ostrich_z/data/samples/black_male.txt
 export black_female=/proj/snic2020-16-269/private/homap/ostrich_z/data/samples/black_female.txt
 ```
-#*********************************************************************************************#
-#*********************************************************************************************#
-# Create a bed file with PAR and non-PAR regions and autosomes
-#*********************************************************************************************#
+
+## Create a bed file with PAR and non-PAR regions and autosomes
+```
 python scaf_length_to_bed.py $reference ../data/bed/z_scaf.bed \
 ../data/bed/par_scaf.bed ../data/bed/nonpar_scaf.bed
 grep -v -f ../data/bed/Z_scaffolds.txt ../data/reference/Struthio_camelus.20130116.OM.fa.fai \
 | awk 'BEGIN{print "chrom""\t""chromStart""\t""chromEnd"}{print $1"\t""0""\t"$2}' > ../data/bed/autosomes.bed
-#*********************************************************************************************#
-# Calculate statistics for the data
-#*********************************************************************************************#
+```
+
+## Calculate sequencing statistics for the data
+```
 species=black
 # Variant files - autosomes
 sbatch variant_statistics_autosomes.sh ../data/vcf/${species}.A.vcf.gz ../data/vcf/${species}.A.subset.vcf ../data/vcf/${species}.A.subset
@@ -47,10 +48,12 @@ sbatch variant_statistics_autosomes.sh ../data/vcf/${species}.A.vcf.gz ../data/v
 sbatch variant_statistics_Z.sh ../data/vcf/${species}.PAR.vcf.gz ../data/vcf/${species}.PAR
 # Variant files - nonPAR
 sbatch variant_statistics_Z.sh ../data/vcf/${species}.nonPAR.vcf.gz ../data/vcf/${species}.nonPAR
-#*********************************************************************************************#
-# Copy the outputs in the local computer in (/Users/homapapoli/Documents/projects/sex_chr/ostrich_z/data/vcf)
-# and check the plots in RStudio
-# Based on the outputs, decide for filtering and apply below.
+```
+
+I copy the outputs in the local computer in (/Users/homapapoli/Documents/projects/sex_chr/ostrich_z/data/vcf)
+and check the plots in RStudio. Based on the outputs, decide for filtering and apply below.
+
+```
 for part in PAR nonPAR
 do
 echo $part
@@ -70,25 +73,38 @@ scp  homap@rackham.uppmax.uu.se:/proj/snic2020-16-269/private/homap/ostrich_z/da
 scp  homap@rackham.uppmax.uu.se:/proj/snic2020-16-269/private/homap/ostrich_z/data/vcf/${species}.A.subset.ldepth.mean .
 scp  homap@rackham.uppmax.uu.se:/proj/snic2020-16-269/private/homap/ostrich_z/data/vcf/${species}.A.subset.lmiss .
 scp  homap@rackham.uppmax.uu.se:/proj/snic2020-16-269/private/homap/ostrich_z/data/vcf/${species}.A.subset.lqual .
+```
 
-# Perform filtering with vcftools
-# min coverage for all is 10X
-# Autosome mean coverage is about 32X, therefore I set the max depth to 64X
+## Perform filtering with vcftools
+
+I set the minimum coverage for all to 10 reads per site
+
+## Autosome mean coverage is about 32X, therefore I set the max depth to 64X
+```
 sbatch vcftools_filter.sh ../data/vcf/${species}.A.vcf.gz ../data/vcf/${species}.A.filtered.vcf.gz 64
-# PAR mean coverage is about 30X, max depth to 60X
+```
+## PAR mean coverage is about 30X, I set the max depth to 60X
+```
 sbatch vcftools_filter.sh ../data/vcf/${species}.PAR.vcf.gz ../data/vcf/${species}.PAR.filtered.vcf.gz 60
-# nonPAR mean coverage is 24X, max depth to 50X
+```
+## nonPAR mean coverage is about 24X, I set the max depth to 50X
+```
 sbatch vcftools_filter.sh ../data/vcf/${species}.nonPAR.vcf.gz ../data/vcf/${species}.nonPAR.filtered.vcf.gz 50
+````
 
-# Number of variants after filtering
+## Number of variants after filtering
+```
 bcftools view -H ../data/vcf/${species}.A.filtered.vcf.gz | wc -l
 bcftools view -H ../data/vcf/${species}.PAR.filtered.vcf.gz | wc -l
 bcftools view -H ../data/vcf/${species}.nonPAR.filtered.vcf.gz | wc -l
-#**********************************************
-# black
-# Autosome 6620899
-# PAR 306392
-# nonPAR 59751
+```
+
+|            | Number of SNPs |
+| :--------- | :-----: |
+| Autosome   | 6620899 |
+| PAR  | 306392 |
+| nonPAR | 59751 |
+
 #**********************************************
 # VCF stats depth and quality after filtering
 # In /proj/snic2020-16-269/private/homap/ostrich_z/data/vcf run the following
