@@ -1,18 +1,21 @@
 # Evolutionary dynamics of ancient recombining sex chromosomes in ostrich  
 
-This document contains the analyses steps to reproduce the current study and 
-includes instructions to filter the VCF files, calculate genetic diversity and 
-folded site frequency spectrum in genomic categories: intergenic, intronic and CDS (0fold and 4fold), calculates LD, 
-population scaled recombination rate, PSMC and DFE-alpha.
+This document contains the analyses steps to reproduce the analyses 
+including criteria to filter the VCF files, calculate genetic diversity (pi and theta) and 
+folded site frequency spectrum in genomic categories: intergenic, intronic and CDS (0fold and 4fold) and DFE-alpha, 
+calculates linkage disequilibrium (LD), population scaled recombination rate (rho) and PSMC.
 
 # Select SNPs from the GVCF: GVCF called black.all.vcf.gz has been copied from 
-# /proj/snic2020-16-269/private/cornwallis.2020/results/ind/analysis/gatk_best_practice_snp/f03_concat_bcftools produced by Per Unneberg
+`/proj/snic2020-16-269/private/cornwallis.2020/results/ind/analysis/gatk_best_practice_snp/f03_concat_bcftools produced by Per Unneberg`
+
 `sbatch selectvariant_black.sh`
+
 # Variant Filteration
-```bash
+```shell
 vcf=/proj/snic2020-16-269/private/homap/ostrich_z/data/vcf
 sbatch variantfilter.sh ${vcf}/black.all.snp.vcf.gz ${vcf}/black.all.snp.filtered.vcf.gz
 ```
+
 #*********************************************************************************************#
 #*********************************************************************************************#
 # Load the necessary modules
