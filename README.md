@@ -168,97 +168,110 @@ echo "nonPAR"
 vcftools --gzvcf ../data/vcf/${species}.nonPAR.filtered.vcf.gz --counts --out ../data/allele_count/${species}.nonPAR
 ```
 
-# male nonPAR
-vcftools --gzvcf ../data/vcf/${species}.nonPAR.filtered.vcf.gz --keep ../data/samples/black_male.txt --window-pi 100000 --out ../data/allele_count/${species}.nonPAR.male
-
-# Filter allele counts for repeats
+## Filter allele counts for repeats
+```
 awk '{print $1"\t"$4-1"\t"$5}' ../data/Ostrich_repeatMask/Struthio_camelus.20130116.OM.fa.out.gff | grep -v "#" > ../data/bed/ostrich_repeats.bed
+
 echo "Autosome"
+
 awk '{print $1"\t"$2-1"\t"$2"\t"$3"\t"$4"\t"$5"\t"$6}' ../data/allele_count/${species}.A.frq.count > ../data/allele_count/${species}.A.frq.count.bed
 bedtools intersect -a ../data/allele_count/${species}.A.frq.count.bed -b ../data/bed/ostrich_repeats.bed -wao | \
 awk '{if($8==".") print $1"\t"$2"\t"$3"\t"$4"\t"$5"\t"$6"\t"$7"\t""PASS"; else print $1"\t"$2"\t"$3"\t"$4"\t"$5"\t"$6"\t"$7"\t""REPEAT"}' | grep "PASS" | \
 awk 'BEGIN{print "CHROM""\t""POS""\t""N_ALLELES""\t""N_CHR""\t""{ALLELE:COUNT}"}{print $1"\t"$3"\t"$4"\t"$5"\t"$6"\t"$7}' \
 > ../data/allele_count/${species}.A.repeat.frq.count
+
 echo "PAR"
 awk '{print $1"\t"$2-1"\t"$2"\t"$3"\t"$4"\t"$5"\t"$6}' ../data/allele_count/${species}.PAR.frq.count > ../data/allele_count/${species}.PAR.frq.count.bed
 bedtools intersect -a ../data/allele_count/${species}.PAR.frq.count.bed -b ../data/bed/ostrich_repeats.bed -wao | \
 awk '{if($8==".") print $1"\t"$2"\t"$3"\t"$4"\t"$5"\t"$6"\t"$7"\t""PASS"; else print $1"\t"$2"\t"$3"\t"$4"\t"$5"\t"$6"\t"$7"\t""REPEAT"}' | grep "PASS" | \
 awk 'BEGIN{print "CHROM""\t""POS""\t""N_ALLELES""\t""N_CHR""\t""{ALLELE:COUNT}"}{print $1"\t"$3"\t"$4"\t"$5"\t"$6"\t"$7}' \
 > ../data/allele_count/${species}.PAR.repeat.frq.count
+
 echo "nonPAR"
 awk '{print $1"\t"$2-1"\t"$2"\t"$3"\t"$4"\t"$5"\t"$6}' ../data/allele_count/${species}.nonPAR.frq.count > ../data/allele_count/${species}.nonPAR.frq.count.bed
 bedtools intersect -a ../data/allele_count/${species}.nonPAR.frq.count.bed -b ../data/bed/ostrich_repeats.bed -wao | \
 awk '{if($8==".") print $1"\t"$2"\t"$3"\t"$4"\t"$5"\t"$6"\t"$7"\t""PASS"; else print $1"\t"$2"\t"$3"\t"$4"\t"$5"\t"$6"\t"$7"\t""REPEAT"}' | grep "PASS" | \
 awk 'BEGIN{print "CHROM""\t""POS""\t""N_ALLELES""\t""N_CHR""\t""{ALLELE:COUNT}"}{print $1"\t"$3"\t"$4"\t"$5"\t"$6"\t"$7}' \
 > ../data/allele_count/${species}.nonPAR.repeat.frq.count
+```
+
+| Category | Number of SNPs after repeat masking |
+| :--------- | :-----: |
+| Autosome   | 6222012 |
+| PAR  | 289400 |
+| nonPAR | 55736 |
 
 
-# SNP count after repeat masking
-# black
-# Autosome 6222012
-# PAR 289400
-# nonPAR 55736
+Check heterozygote SNPs in the nonPAR in females. In the nonPAR since we should have only 1 Z in the females, we don't
+expect any female individual with genotype 0/1. Some could be gametologous genes. It is, however, important to identify
+such SNPs.
 
-
-# Check heterozygote SNPs in the nonPAR in females. In the nonPAR since we should have only 1 Z in the females, we don't
-# expect any female individual with genotype 0/1. Some could be gametologous genes. It is, however, important to identify
-# such SNPs.
+```
 python check_nonPAR_genotype.py ../data/vcf/${species}.nonPAR.filtered.vcf.gz > ../data/bed/${species}.nonPAR.female_het.bed
 python vcf_to_genotypes.py ../data/vcf/${species}.nonPAR.filtered.vcf.gz ../data/bed/${species}.nonPAR.genotypes.bed
-python male_female_het_proportions.py > male_female_het_residuals.txt
+```
 
-# Figure of male and female heterozygosity
-
+## Two counts files for males and females in the nonPAR
+```
 vcftools --gzvcf ../data/vcf/${species}.nonPAR.filtered.vcf.gz --counts --keep ../data/samples/${species}_male.txt --out ../data/allele_count/${species}.nonPAR.filtered.male
 vcftools --gzvcf ../data/vcf/${species}.nonPAR.filtered.vcf.gz --counts --keep ../data/samples/${species}_female.txt --out ../data/allele_count/${species}.nonPAR.filtered.female
+```
+
+## Filter out heterozgous sites in females from both males and females
+```
 awk '{print $1"\t"$2-1"\t"$2"\t"$3"\t"$4"\t"$5"\t"$6}' ../data/allele_count/${species}.nonPAR.filtered.male.frq.count > ../data/allele_count/${species}.nonPAR.filtered.male.frq.count.bed
 bedtools intersect -a ../data/allele_count/${species}.nonPAR.filtered.male.frq.count.bed -b ../data/bed/ostrich_repeats.bed -wao | \
 awk '{if($8==".") print $1"\t"$2"\t"$3"\t"$4"\t"$5"\t"$6"\t"$7"\t""PASS"; else print $1"\t"$2"\t"$3"\t"$4"\t"$5"\t"$6"\t"$7"\t""REPEAT"}' | grep "PASS" | \
 awk 'BEGIN{print "CHROM""\t""POS""\t""N_ALLELES""\t""N_CHR""\t""{ALLELE:COUNT}"}{print $1"\t"$3"\t"$4"\t"$5"\t"$6"\t"$7}' \
 > ../data/allele_count/${species}.nonPAR.filtered.male.repeat.frq.count
+
 awk '{print $1"\t"$2-1"\t"$2"\t"$3"\t"$4"\t"$5"\t"$6}' ../data/allele_count/${species}.nonPAR.filtered.female.frq.count > ../data/allele_count/${species}.nonPAR.filtered.female.frq.count.bed
 bedtools intersect -a ../data/allele_count/${species}.nonPAR.filtered.female.frq.count.bed -b ../data/bed/ostrich_repeats.bed -wao | \
 awk '{if($8==".") print $1"\t"$2"\t"$3"\t"$4"\t"$5"\t"$6"\t"$7"\t""PASS"; else print $1"\t"$2"\t"$3"\t"$4"\t"$5"\t"$6"\t"$7"\t""REPEAT"}' | grep "PASS" | \
 awk 'BEGIN{print "CHROM""\t""POS""\t""N_ALLELES""\t""N_CHR""\t""{ALLELE:COUNT}"}{print $1"\t"$3"\t"$4"\t"$5"\t"$6"\t"$7}' \
 > ../data/allele_count/${species}.nonPAR.filtered.female.repeat.frq.count
+
 awk '{print $1"\t"$2-1"\t"$2"\t"$3"\t"$4"\t"$5"\t"$6}' ../data/allele_count/${species}.nonPAR.filtered.male.repeat.frq.count > ../data/allele_count/${species}.nonPAR.filtered.male.repeat.frq.count.bed
 bedtools intersect -a ../data/allele_count/${species}.nonPAR.filtered.male.repeat.frq.count.bed -b ../data/bed/${species}.nonPAR.female_het.bed -wao | \
 awk '{if($8==".") print $1"\t"$2"\t"$3"\t"$4"\t"$5"\t"$6"\t"$7"\t""PASS"; else print $1"\t"$2"\t"$3"\t"$4"\t"$5"\t"$6"\t"$7"\t""femalehet"}' | grep "PASS" | \
 awk 'BEGIN{print "CHROM""\t""POS""\t""N_ALLELES""\t""N_CHR""\t""{ALLELE:COUNT}"}{print $1"\t"$3"\t"$4"\t"$5"\t"$6"\t"$7}' \
 > ../data/allele_count/${species}.nonPAR.filtered.male.repeat.femalehet.frq.count
+
 awk '{print $1"\t"$2-1"\t"$2"\t"$3"\t"$4"\t"$5"\t"$6}' ../data/allele_count/${species}.nonPAR.filtered.female.repeat.frq.count > ../data/allele_count/${species}.nonPAR.filtered.female.repeat.frq.count.bed
 bedtools intersect -a ../data/allele_count/${species}.nonPAR.filtered.female.repeat.frq.count.bed -b ../data/bed/${species}.nonPAR.female_het.bed -wao | \
 awk '{if($8==".") print $1"\t"$2"\t"$3"\t"$4"\t"$5"\t"$6"\t"$7"\t""PASS"; else print $1"\t"$2"\t"$3"\t"$4"\t"$5"\t"$6"\t"$7"\t""femalehet"}' | grep "PASS" | \
 awk 'BEGIN{print "CHROM""\t""POS""\t""N_ALLELES""\t""N_CHR""\t""{ALLELE:COUNT}"}{print $1"\t"$3"\t"$4"\t"$5"\t"$6"\t"$7}' \
 > ../data/allele_count/${species}.nonPAR.filtered.female.repeat.femalehet.frq.count
+```
 
+## Obtain nonPAR allele count
+The nonPAR allele count should be adjusted for females having 5 chromosomes. In VCF, females are called as diploid
+in the nonPAR so 0/0 and 1/1 should be changed into 0 and 1.
 
-# nonPAR allele count
+```
 python nonPAR_allele_count.py ../data/allele_count/${species}.nonPAR.filtered.female.repeat.femalehet.frq.count \
 ../data/allele_count/${species}.nonPAR.filtered.male.repeat.femalehet.frq.count > ../data/allele_count/${species}.nonPAR.filtered.adjusted.frq.count
+```
 
-
-
-#*********************************************************************************************
-#*********************************************************************************************
-#*********************************************************************************************
-#*********************************************************************************************
-# Find overlap between windows and each of the functional categories
+## Find overlap between windows and each of the functional categories
+```
 sbatch window_overlap.sh
-# Make directory for genomic features per window
-# mkdir -p ../result/genomic_features
-# awk '{print $8}' ../result/genomic_features/black.par_scaf.100Kb.CDS.overlap.density.sorted.txt | \
-# paste ../result/genomic_features/black.par_scaf.100Kb.AllRepeat.overlap.density.sorted.txt - | \
-# awk 'BEGIN{print "Scaffold"" ""Start"" ""End"" ""Base_Count"" ""GC_Count"" ""Repeat_start"" ""Repeat_end"" ""Repeat_base"" ""Repeat_GC"" ""CDS_count"} \
-# {print $0}' | less -S
-# Calculate pi, theta, Tajima's D across Z and macrochromosomes
-export result=/proj/snic2020-16-269/private/homap/ostrich_z/result/sfs_measures
+```
 
-# Autosomes
+```
+export result=/proj/snic2020-16-269/private/homap/ostrich_z/result/sfs_measures
+```
+
+## Measure of genetic diversity (pi and theta) and folded SFS
+
+### Autosomes
+```
 python SFS_measures_autosome.py ../data/allele_count/black.A.repeat.frq.count 20 ../data/bed/black.autosome.100Kb.intergenic.overlap.density.sorted.txt \
 all > ${result}/black.autosome.sfs.txt
-# PAR and nonPAR
-# header = ["Scaffold", "Window_start", "Window_end", "Window_Base_count", "Window_GC_count", "Feat_start", "Feat_end", "Feat_Base_count", "Feat_GC_count"]
+```
+
+### PAR and nonPAR
+```
 python SFS_measures.py ../data/allele_count/black.PAR.repeat.frq.count 20 ../data/bed/black.par_scaf.100Kb.intergenic.overlap.density.sorted.txt \
 all > ${result}/black.PAR.sfs.txt
 python SFS_measures.py ../data/allele_count/black.PAR.repeat.frq.count 20 ../data/bed/black.par_scaf.500Kb.intergenic.overlap.density.sorted.txt \
@@ -272,11 +285,17 @@ python SFS_measures.py ../data/allele_count/black.nonPAR.filtered.adjusted.frq.c
 ../data/bed/black.nonpar_scaf.500Kb.intergenic.overlap.density.sorted.txt all > ${result}/black.nonPAR.500Kb.sfs.txt
 python SFS_measures.py ../data/allele_count/black.nonPAR.filtered.adjusted.frq.count 15 \
 ../data/bed/black.nonpar_scaf.1000Kb.intergenic.overlap.density.sorted.txt all > ${result}/black.nonPAR.1000Kb.sfs.txt
+```
 
+### Diversity measures for whole Z
+```
 awk 'NR>1' ${result}/black.nonPAR.sfs.txt | cat ${result}/black.PAR.sfs.txt - > ${result}/black.Z.sfs.txt
+```
 
+### Translate scafoold to chromosome Z coordinates
+```
 python scaffold_to_chr_vcf.py ${result}/black.Z.sfs.txt > ${result}/black.Z.coordinates.sfs.txt
-
+```
 
 # Superscaffold36
 grep 'superscaffold36' ../data/allele_count/black.PAR.repeat.frq.count > ../data/allele_count/black.PAR.superscaffold36.repeat.frq.count
@@ -854,5 +873,10 @@ git rm <file>
 
 git commit -m "Deleted the file from the git repository"
 git push -u origin main
+
+# male nonPAR
+vcftools --gzvcf ../data/vcf/${species}.nonPAR.filtered.vcf.gz --keep ../data/samples/black_male.txt --window-pi 100000 --out ../data/allele_count/${species}.nonPAR.male
+python male_female_het_proportions.py > male_female_het_residuals.txt
+
 
 
