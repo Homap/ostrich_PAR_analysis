@@ -99,36 +99,41 @@ bcftools view -H ../data/vcf/${species}.PAR.filtered.vcf.gz | wc -l
 bcftools view -H ../data/vcf/${species}.nonPAR.filtered.vcf.gz | wc -l
 ```
 
-|            | Number of SNPs |
+| Category | Number of SNPs |
 | :--------- | :-----: |
 | Autosome   | 6620899 |
 | PAR  | 306392 |
 | nonPAR | 59751 |
 
-#**********************************************
-# VCF stats depth and quality after filtering
-# In /proj/snic2020-16-269/private/homap/ostrich_z/data/vcf run the following
+
+## VCF stats depth and quality after filtering
+```
+cd /proj/snic2020-16-269/private/homap/ostrich_z/data/vcf run the following
 vcftools --gzvcf ${species}.A.filtered.vcf.gz --site-mean-depth --out ${species}.A.filtered
 vcftools --gzvcf ${species}.PAR.filtered.vcf.gz --site-mean-depth --out ${species}.PAR.filtered
 vcftools --gzvcf ${species}.nonPAR.filtered.vcf.gz --site-mean-depth --out ${species}.nonPAR.filtered
+```
 
-# Copy the site mean depth into local computer under /Users/homapapoli/Documents/projects/sex_chr/ostrich_z/data/vcf
+## Copy the site mean depth into local computer under /Users/homapapoli/Documents/projects/sex_chr/ostrich_z/data/vcf
+```
 for part in A PAR nonPAR
 do
 echo $part
 scp  homap@rackham.uppmax.uu.se:/proj/snic2020-16-269/private/homap/ostrich_z/data/vcf/${species}.${part}.filtered.ldepth.mean .
 done
-#*********************************************************************************************#
-# Background Filtering for Coverage
-#*********************************************************************************************#
+```
+
+## Background Filtering for Coverage
+```
 sbatch get_depth.sh ../data/vcf/${species}.all.vcf.gz ../data/vcf/${species}.all
-#*********************************************************************************************#
+```
 # Get a list of sites with coverage below or above the threshold used for SNP filtering
-#*********************************************************************************************#
+```
 sbatch get_background_coverage.sh ../data/vcf/${species}.all.ldepth.mean ../data/vcf/${species}.all.ldepth.mean.filter.bed
-#*********************************************************************************************#
-# Get a plot of boundary coverage
-#*********************************************************************************************#
+```
+
+## Obtain data for the plot of boundary coverage
+```
 mkdir -p ../result/boundary_coverage
 module load bioinfo-tools samtools
 bamaddr=../../../cornwallis.2020/data/interim/map/bwa/dedup 
@@ -140,17 +145,20 @@ samtools depth -r superscaffold36:3510000-3530000 ${bamaddr}/P1878_112.bam ${bam
 
 scp homap@rackham.uppmax.uu.se:/proj/snic2020-16-269/private/homap/ostrich_z/result/boundary_coverage/male_boundary_coverage.txt
 scp homap@rackham.uppmax.uu.se:/proj/snic2020-16-269/private/homap/ostrich_z/result/boundary_coverage/female_boundary_coverage.txt
-#*********************************************************************************************#
-# Use the repeat masked genome where repeats are already N
-# For analysis where you need the number of filtered invariant sites, you can simply count 
-# non-N sites in each window and that will be the number of bases in window.
-#*********************************************************************************************#
+```
+
+Use the repeat masked genome where repeats are already N. For analysis where you need the number 
+of filtered invariant sites, you can simply count non-N sites in each window and that will be 
+the number of bases in window.
+
+```
 module load bioinfo-tools BEDTools
 bedtools maskfasta -fi ../data/Ostrich_repeatMask/Struthio_camelus.20130116.OM.fa.masked \
 -bed ../data/vcf/${species}.all.ldepth.mean.filter.bed -fo ../data/reference/${species}.repeat.depth.masked.fa
-#*********************************************************************************************#
-# Get allele count
-#*********************************************************************************************#
+```
+
+## Get allele count
+```
 module load bioinfo-tools vcftools BEDTools
 echo "Autosome"
 vcftools --gzvcf ../data/vcf/${species}.A.filtered.vcf.gz --counts --out ../data/allele_count/${species}.A
@@ -158,6 +166,7 @@ echo "PAR"
 vcftools --gzvcf ../data/vcf/${species}.PAR.filtered.vcf.gz --counts --out ../data/allele_count/${species}.PAR
 echo "nonPAR"
 vcftools --gzvcf ../data/vcf/${species}.nonPAR.filtered.vcf.gz --counts --out ../data/allele_count/${species}.nonPAR
+```
 
 # male nonPAR
 vcftools --gzvcf ../data/vcf/${species}.nonPAR.filtered.vcf.gz --keep ../data/samples/black_male.txt --window-pi 100000 --out ../data/allele_count/${species}.nonPAR.male
