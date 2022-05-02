@@ -459,35 +459,21 @@ Open and upload the ped and map file for male and female in the Haploview and sa
 java -jar Haploview.jar 
 ```
 
-#*********************************************************************************************#
-# Copy results to results directory from LD directory in data
+## Copy results to results directory from LD directory in data
+```
 cp *.LDdecay.bin.gz ../../../result/LD
 cp *pairwise.LD.gz ../../../result/LD
-#*********************************************************************************************#
-# Many analyses such as recombination rate, genetic diversity, Fst, etc, are done in windows.
-# Here, we generate bed files with windows across Z scaffolds. We will then overlap these
-# windows with our feature of interest with bedtools.
-#*********************************************************************************************#
-# Get windows per scaffolds
-#*********************************************************************************************#
-mkdir -p window
-echo "Create windows"
-for window in 200Kb 500Kb 1000Kb
-do
-echo $window
-w_size=$(echo $window | sed 's/Kb/000/g')
-python sliding_window_ZA.py ../data/bed/z_scaf.bed ${w_size} > \
-../data/linkage_map/ostrich.Z.${window}.bed
-python sliding_window_ZA.py ../data/bed/z_scaf.bed ${w_size} > \
-../data/window/ostrich.Z.${window}.bed
-done
-#*********************************************************************************************#
-# Recombination rate from the genetic map
-# Obtain per window sex averaged, male and female recombination rates
-#*********************************************************************************************#
-# Load the necessary modules
+```
+
+## Recombination rate from the genetic map
+
+Obtain per window sex averaged, male and female recombination rates
+
+```
 module load bioinfo-tools BEDTools
-#_____________________________________________________________________________________________#
+```
+
+
 ./recombination.py ../data/linkage_map/LGZ3.sex_averaged.lifted.bed > \
 ../data/linkage_map/LGZ3.sex_averaged.lifted.rec.rate.txt
 sed 's/superscaffold54.1/superscaffold54/g' \
