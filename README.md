@@ -352,20 +352,26 @@ make;
 mv PopLDdecay  bin/;
 ```
 
-# I use the r-squared measure of LD.
+I use the r-squared measure of LD.
 
+## Filter sites for HWE
+```
 echo "PAR"
 vcftools --gzvcf ../data/vcf/${species}.PAR.filtered.vcf.gz --hwe 0.005 --recode --recode-INFO-all --stdout | gzip -c > ../data/vcf/${species}.PAR.hwe.filtered.vcf.gz
 echo "nonPAR"
 vcftools --gzvcf ../data/vcf/${species}.nonPAR.filtered.vcf.gz --hwe 0.005 --recode --recode-INFO-all --stdout | gzip -c > ../data/vcf/${species}.nonPAR.hwe.filtered.vcf.gz
 echo "Autosome"
 vcftools --gzvcf ../data/vcf/${species}.A.filtered.vcf.gz --hwe 0.005 --recode --recode-INFO-all --stdout | gzip -c > ../data/vcf/${species}.A.hwe.filtered.vcf.gz 
+```
 
-# Move the final autosomal vcf into the directory called LD_vcf
+## Move the final autosomal vcf into the directory called LD_vcf
+```
 mkdir -p ../data/vcf/LD_vcf
 mv ../data/vcf/${species}.*.hwe.filtered.vcf.gz ../data/vcf/LD_vcf
+```
 
-# Concatenate PAR and non-PAR positions
+## Concatenate PAR and non-PAR positions
+```
 zgrep -v "#" ../data/vcf/LD_vcf/${species}.A.hwe.filtered.vcf.gz | \
 awk '{print $1"\t"$2}' > ../data/vcf/LD_vcf/${species}.A.pos
 
@@ -380,12 +386,15 @@ sort -k1,1 -k2n > ../data/vcf/LD_vcf/${species}.Z.pos
 
 awk '{print $1"\t"$2-1"\t"$2}' ../data/vcf/LD_vcf/${species}.Z.pos > ../data/vcf/LD_vcf/${species}.Z.pos.bed 
 python scaffold_to_chr_vcf.py ../data/vcf/LD_vcf/${species}.Z.pos.bed > ../data/vcf/LD_vcf/${species}.Z.pos.coordinates.txt
+```
 
-# Analysis of LD
-# If required to do LD analysis in autosomes, use this bed file: grep -v '^C' ../data/bed/autosomes.bed > ../data/bed/autosomes.minusC.bed
+## Analysis of LD
+```
 sbatch ld_run.sh
+````
 
-# Calculate mean LD in xx kb windows by sliding window analysis
+## Calculate mean LD in xx kb windows by sliding window analysis
+```
 for scaffold in $(cat ../data/bed/par_scaf.bed ../data/bed/nonpar_scaf.bed \
 | grep -v "^chrom" | cut -f1 | sort | uniq)
 do
@@ -396,6 +405,7 @@ grep -v "^#" | awk '($9>=500 && $9<=50000)' > \
 Rscript LD_slidingWin_v1.R ../data/LD/scaf.split/${species}.${scaffold}.pairwise.LD.05-500 \
 ../data/bed/z_scaf.bed 200000 50000
 done
+```
 
 # Get a figure of the LD for 3 subspecies for superscaffold36. The graph is
 # generated in the bin directory.
