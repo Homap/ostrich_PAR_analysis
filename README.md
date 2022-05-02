@@ -469,10 +469,8 @@ cp *pairwise.LD.gz ../../../result/LD
 
 Obtain per window sex averaged, male and female recombination rates
 
-```
-module load bioinfo-tools BEDTools
-```
 
+module load bioinfo-tools BEDTools
 
 ./recombination.py ../data/linkage_map/LGZ3.sex_averaged.lifted.bed > \
 ../data/linkage_map/LGZ3.sex_averaged.lifted.rec.rate.txt
@@ -532,9 +530,203 @@ python recombination_window_forR.py ../data/linkage_map/ostrich_Z_rec_${sex}_per
 done
 done
 
+
 # Get the R plot for sex-specific recombination rate for superscaffold36
 cd /proj/snic2020-16-269/private/homap/ostrich_z/data/linkage_map
 Rscript ../../bin/plot_recombination_rate.R ostrich_Z_rec_male_per_200Kb.forR.txt ostrich_Z_rec_female_per_200Kb.forR.txt
+
+
+## Estimating population scaled recombination rate (rho)
+
+# Run LDhat with genotype data
+# Producing input for ldhat run from bin
+# In /Users/homapapoli/Documents/projects/ostrich_Z/ldhat_dir
+# conda activate 
+# conda activate ldhat
+./vcf_to_ldhat_out.py black.PAR.hwe.filtered.vcf.gz par_scaf.bed 20 19 superscaffold36 100
+export vcf=/proj/snic2020-16-269/private/homap/ostrich_z/data/vcf/black.PAR.PASS.biallelic.nomissing.hwe.allhet.fixedalt.fixedref.vcf.gz
+./vcf_to_LDhat_genotype.py $vcf par_scaf.bed 20 19 superscaffold36 100
+#*********************************************************************************************#
+# In personal computer /Users/homapapoli/Documents/projects/ostrich_Z/4_Ostrich_polymorphism/manuscript_tables
+# Create Z coordinates 
+for species in black blue red
+do 
+echo $species
+python scaffold_to_chr_vcf.py sfs_measures/${species}.PAR.sfs.txt sfs_measures/${species}.nonPAR.sfs.txt > sfs_measures/${species}.sfs.Z.txt
+done
+
+# Prepare LD output for plotting in R
+# In /proj/snic2020-16-269/private/homap/ostrich_z/data/LD/scaf.split 
+mkdir -p LD_chromosome_plot
+# Run LD_plot_scaffold.sh in the /proj/snic2020-16-269/private/homap/ostrich_z/bin
+
+# Z coordinates for GFF
+
+#*********************************************************************************************#
+# Get the PAR fasta sequence
+reference/black.repeat.depth.masked.fa
+# Convert fasta sequence into consesuns for each individual with SNPs
+../data/vcf/${species}.PAR.filtered.vcf.gz
+
+
+for segment in superscaffold36:3524263-9394175 superscaffold35:1-4625539 superscaffold54:1-16379243 superscaffold26:1-25310599
+do 
+echo $segment
+samtools faidx reference/Struthio_camelus.20130116.OM.fa $segment | bcftools consensus consensus_fasta/black.PAR.filtered.vcf.gz -H 2 -s P1878_107 -o consensus_fasta/P1878_107.${segment}.fa
+samtools faidx reference/Struthio_camelus.20130116.OM.fa $segment | bcftools consensus consensus_fasta/black.PAR.filtered.vcf.gz -H 2 -s P1878_108 -o consensus_fasta/P1878_108.${segment}.fa
+samtools faidx reference/Struthio_camelus.20130116.OM.fa $segment | bcftools consensus consensus_fasta/black.PAR.filtered.vcf.gz -H 2 -s P1878_109 -o consensus_fasta/P1878_109.${segment}.fa
+samtools faidx reference/Struthio_camelus.20130116.OM.fa $segment | bcftools consensus consensus_fasta/black.PAR.filtered.vcf.gz -H 2 -s P1878_110 -o consensus_fasta/P1878_110.${segment}.fa
+samtools faidx reference/Struthio_camelus.20130116.OM.fa $segment | bcftools consensus consensus_fasta/black.PAR.filtered.vcf.gz -H 2 -s P1878_111 -o consensus_fasta/P1878_111.${segment}.fa
+samtools faidx reference/Struthio_camelus.20130116.OM.fa $segment | bcftools consensus consensus_fasta/black.PAR.filtered.vcf.gz -H 2 -s P1878_112 -o consensus_fasta/P1878_112.${segment}.fa
+samtools faidx reference/Struthio_camelus.20130116.OM.fa $segment | bcftools consensus consensus_fasta/black.PAR.filtered.vcf.gz -H 2 -s P1878_113 -o consensus_fasta/P1878_113.${segment}.fa
+samtools faidx reference/Struthio_camelus.20130116.OM.fa $segment | bcftools consensus consensus_fasta/black.PAR.filtered.vcf.gz -H 2 -s P1878_114 -o consensus_fasta/P1878_114.${segment}.fa
+samtools faidx reference/Struthio_camelus.20130116.OM.fa $segment | bcftools consensus consensus_fasta/black.PAR.filtered.vcf.gz -H 2 -s P1878_115 -o consensus_fasta/P1878_115.${segment}.fa
+samtools faidx reference/Struthio_camelus.20130116.OM.fa $segment | bcftools consensus consensus_fasta/black.PAR.filtered.vcf.gz -H 2 -s P1878_116 -o consensus_fasta/P1878_116.${segment}.fa
+done
+
+# Produce 2000 SNP intervals for each scaffold
+# Running in /proj/snic2020-16-269/private/homap/ostrich_z/result/ldhat/ldhat_dir/
+python vcf_to_ldhat_out_black.py vcf_rho/black.PAR.hwe.filtered.vcf.gz vcf_rho/par_scaf.bed 2000 500 superscaffold36 1000
+python vcf_to_ldhat_out_black.py vcf_rho/black.PAR.hwe.filtered.vcf.gz vcf_rho/par_scaf.bed 2000 500 superscaffold35 1000
+python vcf_to_ldhat_out_black.py vcf_rho/black.PAR.hwe.filtered.vcf.gz vcf_rho/par_scaf.bed 2000 500 superscaffold54 1000
+python vcf_to_ldhat_out_black.py vcf_rho/black.PAR.hwe.filtered.vcf.gz vcf_rho/par_scaf.bed 2000 500 superscaffold26 1000
+
+# Create the exact likelihood table
+./interval -seq superscaffold36.2000.500.1.sites.txt -loc superscaffold36.2000.500.1.locs.txt -lk ostrich_genotypenew_lk.txt -prefix superscaffold36.first.run -its 10000000 -bpen 5 -samp 2000
+./interval -seq superscaffold35.2000.500.1.sites.txt -loc superscaffold35.2000.500.1.locs.txt -lk ostrich_genotypenew_lk.txt -prefix superscaffold35.first.run -its 10000000 -bpen 5 -samp 2000
+./interval -seq superscaffold54.2000.500.1.sites.txt -loc superscaffold54.2000.500.1.locs.txt -lk ostrich_genotypenew_lk.txt -prefix superscaffold54.first.run -its 10000000 -bpen 5 -samp 2000
+./interval -seq superscaffold26.2000.500.1.sites.txt -loc superscaffold26.2000.500.1.locs.txt -lk ostrich_genotypenew_lk.txt -prefix superscaffold26.first.run -its 10000000 -bpen 5 -samp 2000
+
+for i in {1..24} 
+do
+echo $i
+sbatch ldhat_slurm.sh superscaffold36.2000.500.${i}.sites.txt superscaffold36.2000.500.${i}.locs.txt superscaffold36.first.runnew_lk.txt superscaffold36.2000.500.${i}.
+done
+./interval -seq test/superscaffold36.2000.500.25.sites.txt -loc test/superscaffold36.2000.500.25.locs.txt -lk ostrich_genotypenew_lk.txt -prefix test/superscaffold36.2000.500.25. -its 10000000 -bpen 5 -samp 2000
+
+for i in {1..18} 
+do
+echo $i
+sbatch ldhat_slurm.sh superscaffold35.2000.500.${i}.sites.txt superscaffold35.2000.500.${i}.locs.txt ostrich_genotypenew_lk.txt superscaffold35.2000.500.${i}.
+done
+./interval -seq test/superscaffold35.2000.500.19.sites.txt -loc test/superscaffold35.2000.500.19.locs.txt -lk ostrich_genotypenew_lk.txt -prefix test/superscaffold35.2000.500.19. -its 10000000 -bpen 5 -samp 2000
+
+for i in {7..58} 
+do
+echo $i
+sbatch ldhat_slurm.sh superscaffold54.2000.500.${i}.sites.txt superscaffold54.2000.500.${i}.locs.txt ostrich_genotypenew_lk.txt superscaffold54.2000.500.${i}.
+done
+./interval -seq test/superscaffold54.2000.500.59.sites.txt -loc test/superscaffold54.2000.500.59.locs.txt -lk ostrich_genotypenew_lk.txt -prefix test/superscaffold54.2000.500.59. -its 10000000 -bpen 5 -samp 2000
+
+for i in {1..100} 
+do
+echo $i
+sbatch ldhat_slurm.sh superscaffold26.2000.500.${i}.sites.txt superscaffold26.2000.500.${i}.locs.txt ostrich_genotypenew_lk.txt superscaffold26.2000.500.${i}.
+done
+./interval -seq test/superscaffold26.2000.500.101.sites.txt -loc test/superscaffold26.2000.500.101.locs.txt -lk ostrich_genotypenew_lk.txt -prefix test/superscaffold26.2000.500.101. -its 10000000 -bpen 5 -samp 2000
+
+for i in {1..24} 
+do
+echo $i
+./interval -seq superscaffold36.2000.500.${i}.sites.txt -loc superscaffold36.2000.500.${i}.locs.txt -lk ostrich_genotypenew_lk.txt -prefix superscaffold36.2000.500.${i}. -its 10000000 -bpen 5 -samp 2000
+done
+
+for i in {1..18} 
+do
+echo $i
+./interval -seq superscaffold35.2000.500.${i}.sites.txt -loc superscaffold35.2000.500.${i}.locs.txt -lk ostrich_genotypenew_lk.txt -prefix superscaffold35.2000.500.${i}. -its 10000000 -bpen 5 -samp 2000
+done
+
+for i in {7..58} 
+do
+echo $i
+./interval -seq superscaffold54.2000.500.${i}.sites.txt -loc superscaffold54.2000.500.${i}.locs.txt -lk ostrich_genotypenew_lk.txt -prefix superscaffold54.2000.500.${i}. -its 10000000 -bpen 5 -samp 2000
+done
+
+for i in {1..100} 
+do
+echo $i
+./interval -seq superscaffold26.2000.500.${i}.sites.txt -loc superscaffold26.2000.500.${i}.locs.txt -lk ostrich_genotypenew_lk.txt -prefix superscaffold26.2000.500.${i}. -its 10000000 -bpen 5 -samp 2000
+done
+
+python vcf_to_ldhat_out_black.py vcf_rho/black.PAR.hwe.filtered.vcf.gz vcf_rho/par_scaf.bed 20 5 superscaffold36 10
+
+
+for i in {1..10} 
+do
+echo $i
+./interval -seq superscaffold36.20.5.${i}.sites.txt -loc superscaffold36.20.5.${i}.locs.txt -lk ostrich_genotypenew_lk.txt -prefix superscaffold36.20.5.${i}. -its 10000000 -bpen 5 -samp 2000
+done
+
+
+# Obtain SFS of synonymous and nonsynonymous sites
+"""
+I want to calculate the site frequency spectrum of the zerofold and fourfold sites of the PAR, nonPAR and chromosome 4 and 5 of autosomes.
+This analyses will give me three figures each containing the SFS of 4fold, 0fold and neutral equilibrium for autosome, PAR and nonPAR.
+I will use the 4fold sites to infer effects of population size changes and 0fold sites to infer selection using DFE-alpha. The first step is 
+to find out which sites are zero fold and which sites are 4 fold. I use a program in Python that I have written for this purpose.
+"""
+"""
+In the first step, I annotate all coding sites in the genome to see whether they are synonymous, nonsynonymous, and among those 4fold or 0fold or nonsense
+which means the change in the nucleotide has led to stop codon.
+"""
+# In the folder, annotate_old_2, we do the following:
+cd annotate_old_2
+# Annotate all genomic sites for whether they are zero fold and fourfold sites
+# I added a line to print out the transcripts that have stop codons
+python annotate_sites.py ../../data/reference/Struthio_camelus.20130116.OM.fa ../../data/gff/Struthio_camelus.OM.gene.20130116.gff > ../../data/gff/Struthio_camelus.OM.gene.20130116.annotated.txt
+
+
+# Diversity in 4-fold and 0-fold sites
+python count_total_num_syn_nonsyn.py ../data/gff/Struthio_camelus.OM.gene.20130116.annotated.txt \
+../data/allele_count/black.A.repeat.frq.count 20 > ../data/allele_count/black.A.Struthio_camelus.OM.gene.20130116.annotated.pi.txt
+
+python fourfold_zerofold_diversity.py ../data/allele_count/black.A.Struthio_camelus.OM.gene.20130116.annotated.pi.txt > ../result/sfs_measures/black.A.Struthio_camelus.OM.gene.20130116.pnps.txt
+
+python count_total_num_syn_nonsyn.py ../data/gff/genome.annotated.txt \
+../data/allele_count/black.PAR.repeat.frq.count 20 > ../data/allele_count/black.PAR.annotated.pi.txt
+python fourfold_zerofold_diversity.py ../data/allele_count/black.PAR.annotated.pi.txt > ../result/sfs_measures/black.PAR.pnps.txt
+
+python count_total_num_syn_nonsyn.py ../data/gff/genome.annotated.txt \
+../data/allele_count/black.nonPAR.filtered.adjusted.frq.count 15 > ../data/allele_count/black.nonPAR.annotated.pi.txt
+python fourfold_zerofold_diversity.py ../data/allele_count/black.nonPAR.annotated.pi.txt > ../result/sfs_measures/black.nonPAR.pnps.txt
+
+# Add number of sites
+python fourfold_zerofold_diversity.py ../data/allele_count/black.PAR.annotated.pi.txt > ../result/sfs_measures/black.PAR.pnps.number_syn_numer_nonsyn.txt
+
+for species in black blue red
+do 
+echo $species
+echo "PAR"
+python get_sfs.py ../data/allele_count/${species}.PAR.repeat.frq.count ${species} PAR > ../result/sfs_measures/${species}_PAR.foldedSFS.txt
+echo "nonPAR"
+python get_sfs.py ../data/allele_count/${species}.nonPAR.filtered.adjusted.frq.count ${species} nonPAR > ../result/sfs_measures/${species}_nonPAR.foldedSFS.txt
+echo "Autosome"
+python get_sfs.py ../data/allele_count/${species}.A.repeat.frq.count ${species} A > ../result/sfs_measures/${species}_A.foldedSFS.txt
+done
+#*******
+
+# To calculate SFS for 4fold and 0fold, all I need is to know which SNP is 0fold and 4fold and overlap it with the allele count data
+python count_0fold_4fold_overlap.py ../data/gff/Struthio_camelus.OM.gene.20130116.annotated.txt ../data/allele_count/black.A.repeat.frq.count 20
+
+python count_0fold_4fold_overlap.py ../data/gff/Struthio_camelus.OM.gene.20130116.annotated.txt ../data/allele_count/black.PAR.repeat.frq.count 20
+
+python count_0fold_4fold_overlap.py ../data/gff/Struthio_camelus.OM.gene.20130116.annotated.txt ../data/allele_count/black.nonPAR.repeat.frq.count 15
+
+python get_sfs.py fourfold_counts.txt black PAR > fourfold_PAR_SFS.txt
+python get_sfs.py zerofold_counts.txt black PAR > zerofold_PAR_SFS.txt
+
+python get_sfs.py fourfold_A_counts.txt black PAR > fourfold_A_SFS.txt
+python get_sfs.py zerofold_A_counts.txt black PAR > zerofold_A_SFS.txt
+
+python get_sfs.py fourfold_A_counts.txt black nonPAR > fourfold_nonPAR_SFS.txt
+python get_sfs.py zerofold_A_counts.txt black nonPAR > zerofold_nonPAR_SFS.txt
+
+# 4fold and 0fold
+1
+11
+3009164 4298    2812    2016    1529    1264    1119    969 825 883 542
+11477529 4235    2530    1709    1261    974 783 640 563 525 343
 
 #*********************************************************************************************#
 # PSMC
@@ -639,204 +831,6 @@ cat ${i}/round_repeat-1.psmc >> red.CI.resampling.txt
 done
 
 cat P1878_128.autosome.psmc.out red.CI.resampling.txt > temp && mv temp red.CI.resampling.txt
-
-#*********************************************************************************************#
-# Estimating population scaled recombination rate (rho)
-#*********************************************************************************************#
-# Run LDhat with genotype data
-# Producing input for ldhat run from bin
-# In /Users/homapapoli/Documents/projects/ostrich_Z/ldhat_dir
-# conda activate 
-# conda activate ldhat
-./vcf_to_ldhat_out.py black.PAR.hwe.filtered.vcf.gz par_scaf.bed 20 19 superscaffold36 100
-export vcf=/proj/snic2020-16-269/private/homap/ostrich_z/data/vcf/black.PAR.PASS.biallelic.nomissing.hwe.allhet.fixedalt.fixedref.vcf.gz
-./vcf_to_LDhat_genotype.py $vcf par_scaf.bed 20 19 superscaffold36 100
-#*********************************************************************************************#
-# In personal computer /Users/homapapoli/Documents/projects/ostrich_Z/4_Ostrich_polymorphism/manuscript_tables
-# Create Z coordinates 
-for species in black blue red
-do 
-echo $species
-python scaffold_to_chr_vcf.py sfs_measures/${species}.PAR.sfs.txt sfs_measures/${species}.nonPAR.sfs.txt > sfs_measures/${species}.sfs.Z.txt
-done
-
-# Prepare LD output for plotting in R
-# In /proj/snic2020-16-269/private/homap/ostrich_z/data/LD/scaf.split 
-mkdir -p LD_chromosome_plot
-# Run LD_plot_scaffold.sh in the /proj/snic2020-16-269/private/homap/ostrich_z/bin
-
-# Z coordinates for GFF
-
-#*********************************************************************************************#
-# Get the PAR fasta sequence
-reference/black.repeat.depth.masked.fa
-# Convert fasta sequence into consesuns for each individual with SNPs
-../data/vcf/${species}.PAR.filtered.vcf.gz
-
-
-for segment in superscaffold36:3524263-9394175 superscaffold35:1-4625539 superscaffold54:1-16379243 superscaffold26:1-25310599
-do 
-echo $segment
-samtools faidx reference/Struthio_camelus.20130116.OM.fa $segment | bcftools consensus consensus_fasta/black.PAR.filtered.vcf.gz -H 2 -s P1878_107 -o consensus_fasta/P1878_107.${segment}.fa
-samtools faidx reference/Struthio_camelus.20130116.OM.fa $segment | bcftools consensus consensus_fasta/black.PAR.filtered.vcf.gz -H 2 -s P1878_108 -o consensus_fasta/P1878_108.${segment}.fa
-samtools faidx reference/Struthio_camelus.20130116.OM.fa $segment | bcftools consensus consensus_fasta/black.PAR.filtered.vcf.gz -H 2 -s P1878_109 -o consensus_fasta/P1878_109.${segment}.fa
-samtools faidx reference/Struthio_camelus.20130116.OM.fa $segment | bcftools consensus consensus_fasta/black.PAR.filtered.vcf.gz -H 2 -s P1878_110 -o consensus_fasta/P1878_110.${segment}.fa
-samtools faidx reference/Struthio_camelus.20130116.OM.fa $segment | bcftools consensus consensus_fasta/black.PAR.filtered.vcf.gz -H 2 -s P1878_111 -o consensus_fasta/P1878_111.${segment}.fa
-samtools faidx reference/Struthio_camelus.20130116.OM.fa $segment | bcftools consensus consensus_fasta/black.PAR.filtered.vcf.gz -H 2 -s P1878_112 -o consensus_fasta/P1878_112.${segment}.fa
-samtools faidx reference/Struthio_camelus.20130116.OM.fa $segment | bcftools consensus consensus_fasta/black.PAR.filtered.vcf.gz -H 2 -s P1878_113 -o consensus_fasta/P1878_113.${segment}.fa
-samtools faidx reference/Struthio_camelus.20130116.OM.fa $segment | bcftools consensus consensus_fasta/black.PAR.filtered.vcf.gz -H 2 -s P1878_114 -o consensus_fasta/P1878_114.${segment}.fa
-samtools faidx reference/Struthio_camelus.20130116.OM.fa $segment | bcftools consensus consensus_fasta/black.PAR.filtered.vcf.gz -H 2 -s P1878_115 -o consensus_fasta/P1878_115.${segment}.fa
-samtools faidx reference/Struthio_camelus.20130116.OM.fa $segment | bcftools consensus consensus_fasta/black.PAR.filtered.vcf.gz -H 2 -s P1878_116 -o consensus_fasta/P1878_116.${segment}.fa
-done
-
-# Produce 2000 SNP intervals for each scaffold
-# Running in /proj/snic2020-16-269/private/homap/ostrich_z/result/ldhat/ldhat_dir/
-python vcf_to_ldhat_out_black.py vcf_rho/black.PAR.hwe.filtered.vcf.gz vcf_rho/par_scaf.bed 2000 500 superscaffold36 1000
-python vcf_to_ldhat_out_black.py vcf_rho/black.PAR.hwe.filtered.vcf.gz vcf_rho/par_scaf.bed 2000 500 superscaffold35 1000
-python vcf_to_ldhat_out_black.py vcf_rho/black.PAR.hwe.filtered.vcf.gz vcf_rho/par_scaf.bed 2000 500 superscaffold54 1000
-python vcf_to_ldhat_out_black.py vcf_rho/black.PAR.hwe.filtered.vcf.gz vcf_rho/par_scaf.bed 2000 500 superscaffold26 1000
-
-# Create the exact likelihood table
-./interval -seq superscaffold36.2000.500.1.sites.txt -loc superscaffold36.2000.500.1.locs.txt -lk ostrich_genotypenew_lk.txt -prefix superscaffold36.first.run -its 10000000 -bpen 5 -samp 2000
-./interval -seq superscaffold35.2000.500.1.sites.txt -loc superscaffold35.2000.500.1.locs.txt -lk ostrich_genotypenew_lk.txt -prefix superscaffold35.first.run -its 10000000 -bpen 5 -samp 2000
-./interval -seq superscaffold54.2000.500.1.sites.txt -loc superscaffold54.2000.500.1.locs.txt -lk ostrich_genotypenew_lk.txt -prefix superscaffold54.first.run -its 10000000 -bpen 5 -samp 2000
-./interval -seq superscaffold26.2000.500.1.sites.txt -loc superscaffold26.2000.500.1.locs.txt -lk ostrich_genotypenew_lk.txt -prefix superscaffold26.first.run -its 10000000 -bpen 5 -samp 2000
-
-for i in {1..24} 
-do
-echo $i
-sbatch ldhat_slurm.sh superscaffold36.2000.500.${i}.sites.txt superscaffold36.2000.500.${i}.locs.txt superscaffold36.first.runnew_lk.txt superscaffold36.2000.500.${i}.
-done
-./interval -seq test/superscaffold36.2000.500.25.sites.txt -loc test/superscaffold36.2000.500.25.locs.txt -lk ostrich_genotypenew_lk.txt -prefix test/superscaffold36.2000.500.25. -its 10000000 -bpen 5 -samp 2000
-
-for i in {1..18} 
-do
-echo $i
-sbatch ldhat_slurm.sh superscaffold35.2000.500.${i}.sites.txt superscaffold35.2000.500.${i}.locs.txt ostrich_genotypenew_lk.txt superscaffold35.2000.500.${i}.
-done
-./interval -seq test/superscaffold35.2000.500.19.sites.txt -loc test/superscaffold35.2000.500.19.locs.txt -lk ostrich_genotypenew_lk.txt -prefix test/superscaffold35.2000.500.19. -its 10000000 -bpen 5 -samp 2000
-
-for i in {7..58} 
-do
-echo $i
-sbatch ldhat_slurm.sh superscaffold54.2000.500.${i}.sites.txt superscaffold54.2000.500.${i}.locs.txt ostrich_genotypenew_lk.txt superscaffold54.2000.500.${i}.
-done
-./interval -seq test/superscaffold54.2000.500.59.sites.txt -loc test/superscaffold54.2000.500.59.locs.txt -lk ostrich_genotypenew_lk.txt -prefix test/superscaffold54.2000.500.59. -its 10000000 -bpen 5 -samp 2000
-
-
-for i in {1..100} 
-do
-echo $i
-sbatch ldhat_slurm.sh superscaffold26.2000.500.${i}.sites.txt superscaffold26.2000.500.${i}.locs.txt ostrich_genotypenew_lk.txt superscaffold26.2000.500.${i}.
-done
-./interval -seq test/superscaffold26.2000.500.101.sites.txt -loc test/superscaffold26.2000.500.101.locs.txt -lk ostrich_genotypenew_lk.txt -prefix test/superscaffold26.2000.500.101. -its 10000000 -bpen 5 -samp 2000
-
-
-for i in {1..24} 
-do
-echo $i
-./interval -seq superscaffold36.2000.500.${i}.sites.txt -loc superscaffold36.2000.500.${i}.locs.txt -lk ostrich_genotypenew_lk.txt -prefix superscaffold36.2000.500.${i}. -its 10000000 -bpen 5 -samp 2000
-done
-
-for i in {1..18} 
-do
-echo $i
-./interval -seq superscaffold35.2000.500.${i}.sites.txt -loc superscaffold35.2000.500.${i}.locs.txt -lk ostrich_genotypenew_lk.txt -prefix superscaffold35.2000.500.${i}. -its 10000000 -bpen 5 -samp 2000
-done
-
-for i in {7..58} 
-do
-echo $i
-./interval -seq superscaffold54.2000.500.${i}.sites.txt -loc superscaffold54.2000.500.${i}.locs.txt -lk ostrich_genotypenew_lk.txt -prefix superscaffold54.2000.500.${i}. -its 10000000 -bpen 5 -samp 2000
-done
-
-for i in {1..100} 
-do
-echo $i
-./interval -seq superscaffold26.2000.500.${i}.sites.txt -loc superscaffold26.2000.500.${i}.locs.txt -lk ostrich_genotypenew_lk.txt -prefix superscaffold26.2000.500.${i}. -its 10000000 -bpen 5 -samp 2000
-done
-
-python vcf_to_ldhat_out_black.py vcf_rho/black.PAR.hwe.filtered.vcf.gz vcf_rho/par_scaf.bed 20 5 superscaffold36 10
-
-
-for i in {1..10} 
-do
-echo $i
-./interval -seq superscaffold36.20.5.${i}.sites.txt -loc superscaffold36.20.5.${i}.locs.txt -lk ostrich_genotypenew_lk.txt -prefix superscaffold36.20.5.${i}. -its 10000000 -bpen 5 -samp 2000
-done
-
-# Plot the gene models along the Z chromosome
-
-# Obtain SFS of synonymous and nonsynonymous sites
-"""
-I want to calculate the site frequency spectrum of the zerofold and fourfold sites of the PAR, nonPAR and chromosome 4 and 5 of autosomes.
-This analyses will give me three figures each containing the SFS of 4fold, 0fold and neutral equilibrium for autosome, PAR and nonPAR.
-I will use the 4fold sites to infer effects of population size changes and 0fold sites to infer selection using DFE-alpha. The first step is 
-to find out which sites are zero fold and which sites are 4 fold. I use a program in Python that I have written for this purpose.
-"""
-"""
-In the first step, I annotate all coding sites in the genome to see whether they are synonymous, nonsynonymous, and among those 4fold or 0fold or nonsense
-which means the change in the nucleotide has led to stop codon.
-"""
-# In the folder, annotate_old_2, we do the following:
-cd annotate_old_2
-# Annotate all genomic sites for whether they are zero fold and fourfold sites
-# I added a line to print out the transcripts that have stop codons
-python annotate_sites.py ../../data/reference/Struthio_camelus.20130116.OM.fa ../../data/gff/Struthio_camelus.OM.gene.20130116.gff > ../../data/gff/Struthio_camelus.OM.gene.20130116.annotated.txt
-
-
-# Diversity in 4-fold and 0-fold sites
-python count_total_num_syn_nonsyn.py ../data/gff/Struthio_camelus.OM.gene.20130116.annotated.txt \
-../data/allele_count/black.A.repeat.frq.count 20 > ../data/allele_count/black.A.Struthio_camelus.OM.gene.20130116.annotated.pi.txt
-
-python fourfold_zerofold_diversity.py ../data/allele_count/black.A.Struthio_camelus.OM.gene.20130116.annotated.pi.txt > ../result/sfs_measures/black.A.Struthio_camelus.OM.gene.20130116.pnps.txt
-
-python count_total_num_syn_nonsyn.py ../data/gff/genome.annotated.txt \
-../data/allele_count/black.PAR.repeat.frq.count 20 > ../data/allele_count/black.PAR.annotated.pi.txt
-python fourfold_zerofold_diversity.py ../data/allele_count/black.PAR.annotated.pi.txt > ../result/sfs_measures/black.PAR.pnps.txt
-
-python count_total_num_syn_nonsyn.py ../data/gff/genome.annotated.txt \
-../data/allele_count/black.nonPAR.filtered.adjusted.frq.count 15 > ../data/allele_count/black.nonPAR.annotated.pi.txt
-python fourfold_zerofold_diversity.py ../data/allele_count/black.nonPAR.annotated.pi.txt > ../result/sfs_measures/black.nonPAR.pnps.txt
-
-# Add number of sites
-python fourfold_zerofold_diversity.py ../data/allele_count/black.PAR.annotated.pi.txt > ../result/sfs_measures/black.PAR.pnps.number_syn_numer_nonsyn.txt
-
-for species in black blue red
-do 
-echo $species
-echo "PAR"
-python get_sfs.py ../data/allele_count/${species}.PAR.repeat.frq.count ${species} PAR > ../result/sfs_measures/${species}_PAR.foldedSFS.txt
-echo "nonPAR"
-python get_sfs.py ../data/allele_count/${species}.nonPAR.filtered.adjusted.frq.count ${species} nonPAR > ../result/sfs_measures/${species}_nonPAR.foldedSFS.txt
-echo "Autosome"
-python get_sfs.py ../data/allele_count/${species}.A.repeat.frq.count ${species} A > ../result/sfs_measures/${species}_A.foldedSFS.txt
-done
-#*******
-
-# To calculate SFS for 4fold and 0fold, all I need is to know which SNP is 0fold and 4fold and overlap it with the allele count data
-python count_0fold_4fold_overlap.py ../data/gff/Struthio_camelus.OM.gene.20130116.annotated.txt ../data/allele_count/black.A.repeat.frq.count 20
-
-python count_0fold_4fold_overlap.py ../data/gff/Struthio_camelus.OM.gene.20130116.annotated.txt ../data/allele_count/black.PAR.repeat.frq.count 20
-
-python count_0fold_4fold_overlap.py ../data/gff/Struthio_camelus.OM.gene.20130116.annotated.txt ../data/allele_count/black.nonPAR.repeat.frq.count 15
-
-python get_sfs.py fourfold_counts.txt black PAR > fourfold_PAR_SFS.txt
-python get_sfs.py zerofold_counts.txt black PAR > zerofold_PAR_SFS.txt
-
-python get_sfs.py fourfold_A_counts.txt black PAR > fourfold_A_SFS.txt
-python get_sfs.py zerofold_A_counts.txt black PAR > zerofold_A_SFS.txt
-
-python get_sfs.py fourfold_A_counts.txt black nonPAR > fourfold_nonPAR_SFS.txt
-python get_sfs.py zerofold_A_counts.txt black nonPAR > zerofold_nonPAR_SFS.txt
-
-# 4fold and 0fold
-1
-11
-3009164 4298    2812    2016    1529    1264    1119    969 825 883 542
-11477529 4235    2530    1709    1261    974 783 640 563 525 343
-
-
 
 
 
