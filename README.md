@@ -393,7 +393,7 @@ python scaffold_to_chr_vcf.py ../data/vcf/LD_vcf/${species}.Z.pos.bed > ../data/
 sbatch ld_run.sh
 ````
 
-## Calculate mean LD in xx kb windows by sliding window analysis
+## Calculate mean LD in 200 kb windows by sliding window analysis
 ```
 for scaffold in $(cat ../data/bed/par_scaf.bed ../data/bed/nonpar_scaf.bed \
 | grep -v "^chrom" | cut -f1 | sort | uniq)
@@ -407,30 +407,26 @@ Rscript LD_slidingWin_v1.R ../data/LD/scaf.split/${species}.${scaffold}.pairwise
 done
 ```
 
-# Get a figure of the LD for 3 subspecies for superscaffold36. The graph is
-# generated in the bin directory.
+## Get a figure of the LD for 3 subspecies for superscaffold36. The graph is generated in the bin directory.
 Rscript LD_three_species.R \
 ../data/LD/scaf.split/black.superscaffold36.pairwise.LD.05-500 \
 ../data/LD/scaf.split/blue.superscaffold36.pairwise.LD.05-500 \
 ../data/LD/scaf.split/red.superscaffold36.pairwise.LD.05-500 \
 ../data/bed/z_scaf.bed 200000 50000
 
-grep -v "^#" | awk '($9>=1000 && $9<=200000)' >
-# Next, we are interested to get a more clear picture of LD across the
-# PAR boundary in each sex. However, if we do this analysis per
-# subspecies, we will have very few samples. Since Black and Blue
-# subspecies are closely related and have a similar population history
-# see (PSMC graphs), we pool black and blue together for each species
-# and for the shared SNPs between the two subspecies.
+Next, we are interested to get a more clear picture of LD across the PAR boundary in each sex. 
+```
 module load bioinfo-tools vcftools
 mkdir -p ../data/LD/sex_specific
-# Select SNPs that are shared among black and blue
+```
+## Select SNPs that 100 Kb left and right of the PAR boundary
+```
 cat ../data/vcf/LD_vcf/black.Z.pos | grep "^superscaffold36" | \
 awk '($2-3524263>-100000 && $2-3524263<100000)' > ../data/LD/sex_specific/commonSNP.B.boundary200kb
 
 cat ../data/vcf/LD_vcf/black.Z.pos | grep "^superscaffold36" | \
 awk '($2-3524263>-50000 && $2-3524263<50000)' > ../data/LD/sex_specific/commonSNP.B.boundary100kb
-
+```
 
 # convert vcf to plink near PAR boundary (200 kb centered at the boundary)
 chr=superscaffold36
