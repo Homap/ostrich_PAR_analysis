@@ -2,9 +2,11 @@
 
 Four data files are necessary to reproduce the results of this study:
 
-| Data | Analysis | Analysis |
+| Data | Format | Analysis |
 | :--------- | :-----: | :-----: |
-| Single Nucleotide Polymorphisms (SNPs) | VCF | Genetic variation (pi, theta, Tajima's D), LD (r^2), rho , F~ST |
+| Genetic map | Tab-delimited text file| Recombination rate (cM/Mb) |
 | Genome assembly  | FASTA | GC% |
 | Annotation | GFF | Gene density |
-| Genetic map | Tab delimited | Recombination rate (cM/Mb) |
+| Single Nucleotide Polymorphisms (SNPs) | VCF | Genetic variation (pi, theta, Tajima's D), LD (r^2), rho , F~ST |
+
+
