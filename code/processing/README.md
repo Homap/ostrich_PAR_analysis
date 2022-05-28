@@ -1,3 +1,31 @@
+# Processing of data
+
+This document describes the steps for reproducing the filtered data used for analyses in this project.
+
+## Steps for filtering the VCF
+To filter the VCF file, the following scrips need to be run in the order numbered.
+
+1_VCF_into_A_PAR_nonPAR.sh
+2_keepSNPs_initialFilter.sh
+3_VCF_stats_pre_filter.sh
+4_VCF_stats_summary.R
+5_VCF_quality_filter.sh
+6_VCF_stats_postFilter.sh
+
+
+
+# Match chicken 1 to 5 with ostrich scaffolds
+python code/processing/chicken_to_ostrich_autosomes.py data/lastz/chicken_NC_chr.txt data/lastz/chicken_ostrich.lastz data/genome/Struthio_camelus.20130116.OM.fa.fai > data/lastz/gg_ostrich_macrochr.txt
+
+# Create bed files with ostrich scaffolds matching chromosomes 1 to 5 of chicken
+for chrom in {1..5}
+do
+echo chromosome_${chrom}
+grep  chromosome_${chrom} data/lastz/gg_ostrich_macrochr.txt | awk 'BEGIN{print "chrom""\t""chromStart""\t""chromEnd"}{print $4"\t""0""\t"$5}' | uniq > data/bed/gg_chr${chrom}_ostrich.bed
+awk '{if(NR > 1) sum+=$3} END{print sum}' data/bed/gg_chr${chrom}_ostrich.bed
+done
+
+
 # Steps for filtering the VCF files and obtaining the input for genetic diversity, LD and rho analyses
 
 ## Select SNPs from the GVCF: GVCF called black.all.vcf.gz has been copied from 
