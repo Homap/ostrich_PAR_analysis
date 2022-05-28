@@ -16,7 +16,7 @@ sbatch 6_VCF_stats_postFilter.sh
 ```
 
 Table 1. Number of SNPs after filtering
-| Chr | SNP numbers |
+|   | SNP numbers |
 | ----------- | ----------- |
 | Autosomes | 6524315 |
 | PAR | 301807 |
@@ -28,8 +28,8 @@ Filtering SNPs overlapping with repetitive elements
 
 `sbatch 7_VCF_mask_repeats.sh`
 
-Table 1. Number of SNPs after removing variant overlapping repeats
-| Chr | SNP numbers |
+Table 2. Number of SNPs after removing variant overlapping repeats
+|   | SNP numbers |
 | ----------- | ----------- |
 | Autosomes | 6143527 |
 | PAR | 285271 |
