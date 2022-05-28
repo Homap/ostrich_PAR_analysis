@@ -3,7 +3,7 @@
 This document describes the steps for reproducing the filtered data used for analyses in this project.
 
 ## Steps for filtering the VCF
-To filter the VCF file, the following scrips need to be run in the order numbered.
+To filter the VCF file for autosome, PAR and nonPAR, the following scrips need to be run in the order numbered.
 
 ```
 sbatch 1_VCF_into_A_PAR_nonPAR.sh
@@ -14,8 +14,13 @@ sbatch 5_VCF_quality_filter.sh
 sbatch 6_VCF_stats_postFilter.sh
 ```
 
+The resulting files 
 
-The resulting VCF file 
+| Chr | SNP numbers |
+| ----------- | ----------- |
+| Autosomes | 6524315 |
+| PAR | 301807 |
+| nonPAR | 117207 |
 
 # Match chicken 1 to 5 with ostrich scaffolds
 python code/processing/chicken_to_ostrich_autosomes.py data/lastz/chicken_NC_chr.txt data/lastz/chicken_ostrich.lastz data/genome/Struthio_camelus.20130116.OM.fa.fai > data/lastz/gg_ostrich_macrochr.txt
