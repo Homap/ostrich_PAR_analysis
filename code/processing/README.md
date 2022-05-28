@@ -5,12 +5,15 @@ This document describes the steps for reproducing the filtered data used for ana
 ## Steps for filtering the VCF
 To filter the VCF file, the following scrips need to be run in the order numbered.
 
-`sbatch 1_VCF_into_A_PAR_nonPAR.sh`
-`sbatch 2_keepSNPs_initialFilter.sh`
-`sbatch 3_VCF_stats_pre_filter.sh`
-`sbatch 4_VCF_stats_summary.R`
-`sbatch 5_VCF_quality_filter.sh`
-`sbatch 6_VCF_stats_postFilter.sh`
+```
+sbatch 1_VCF_into_A_PAR_nonPAR.sh
+sbatch 2_keepSNPs_initialFilter.sh
+sbatch 3_VCF_stats_pre_filter.sh
+sbatch 4_VCF_stats_summary.R
+sbatch 5_VCF_quality_filter.sh
+sbatch 6_VCF_stats_postFilter.sh
+```
+
 
 The resulting VCF file 
 
