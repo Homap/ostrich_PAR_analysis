@@ -28,47 +28,18 @@ Filtering SNPs overlapping with repetitive elements
 
 `sbatch 7_VCF_mask_repeats.sh`
 
-
-## Filter allele counts for repeats
-```
-awk '{print $1"\t"$4-1"\t"$5}' ../data/Ostrich_repeatMask/Struthio_camelus.20130116.OM.fa.out.gff | grep -v "#" > ../data/bed/ostrich_repeats.bed
-
-echo "Autosome"
-
-awk '{print $1"\t"$2-1"\t"$2"\t"$3"\t"$4"\t"$5"\t"$6}' ../data/allele_count/${species}.A.frq.count > ../data/allele_count/${species}.A.frq.count.bed
-bedtools intersect -a ../data/allele_count/${species}.A.frq.count.bed -b ../data/bed/ostrich_repeats.bed -wao | \
-awk '{if($8==".") print $1"\t"$2"\t"$3"\t"$4"\t"$5"\t"$6"\t"$7"\t""PASS"; else print $1"\t"$2"\t"$3"\t"$4"\t"$5"\t"$6"\t"$7"\t""REPEAT"}' | grep "PASS" | \
-awk 'BEGIN{print "CHROM""\t""POS""\t""N_ALLELES""\t""N_CHR""\t""{ALLELE:COUNT}"}{print $1"\t"$3"\t"$4"\t"$5"\t"$6"\t"$7}' \
-> ../data/allele_count/${species}.A.repeat.frq.count
-
-echo "PAR"
-awk '{print $1"\t"$2-1"\t"$2"\t"$3"\t"$4"\t"$5"\t"$6}' ../data/allele_count/${species}.PAR.frq.count > ../data/allele_count/${species}.PAR.frq.count.bed
-bedtools intersect -a ../data/allele_count/${species}.PAR.frq.count.bed -b ../data/bed/ostrich_repeats.bed -wao | \
-awk '{if($8==".") print $1"\t"$2"\t"$3"\t"$4"\t"$5"\t"$6"\t"$7"\t""PASS"; else print $1"\t"$2"\t"$3"\t"$4"\t"$5"\t"$6"\t"$7"\t""REPEAT"}' | grep "PASS" | \
-awk 'BEGIN{print "CHROM""\t""POS""\t""N_ALLELES""\t""N_CHR""\t""{ALLELE:COUNT}"}{print $1"\t"$3"\t"$4"\t"$5"\t"$6"\t"$7}' \
-> ../data/allele_count/${species}.PAR.repeat.frq.count
-
-echo "nonPAR"
-awk '{print $1"\t"$2-1"\t"$2"\t"$3"\t"$4"\t"$5"\t"$6}' ../data/allele_count/${species}.nonPAR.frq.count > ../data/allele_count/${species}.nonPAR.frq.count.bed
-bedtools intersect -a ../data/allele_count/${species}.nonPAR.frq.count.bed -b ../data/bed/ostrich_repeats.bed -wao | \
-awk '{if($8==".") print $1"\t"$2"\t"$3"\t"$4"\t"$5"\t"$6"\t"$7"\t""PASS"; else print $1"\t"$2"\t"$3"\t"$4"\t"$5"\t"$6"\t"$7"\t""REPEAT"}' | grep "PASS" | \
-awk 'BEGIN{print "CHROM""\t""POS""\t""N_ALLELES""\t""N_CHR""\t""{ALLELE:COUNT}"}{print $1"\t"$3"\t"$4"\t"$5"\t"$6"\t"$7}' \
-> ../data/allele_count/${species}.nonPAR.repeat.frq.count
-```
-
-| Category | Number of SNPs after repeat masking |
-| :--------- | :-----: |
-| Autosome   | 6222012 |
-| PAR  | 289400 |
-| nonPAR | 55736 |
-
+Table 1. Number of SNPs after removing variant overlapping repeats
+| Chr | SNP numbers |
+| ----------- | ----------- |
+| Autosomes | 6143527 |
+| PAR | 285271 |
+| nonPAR | 107894 |
 
 Filtering of SNPs with heterozygous genotypes in females in nonPAR as they are likely in the gametolog region
 
-
-Check heterozygote SNPs in the nonPAR in females. In the nonPAR since we should have only 1 Z in the females, we don't
-expect any female individual with genotype 0/1. Some could be gametologous genes. It is, however, important to identify
-such SNPs.
+In the nonPAR, females have only 1 Z, we therefore do not expect any female individual with genotype 0/1. Some of these SNPs could be 
+located in gametologous genes. If so, they do not reflect the polymorphisms segregating in the population and are substitutions between the
+Z and W chromosomes.
 
 ```
 python check_nonPAR_genotype.py ../data/vcf/${species}.nonPAR.filtered.vcf.gz > ../data/bed/${species}.nonPAR.female_het.bed
