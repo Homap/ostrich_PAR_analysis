@@ -1,4 +1,4 @@
-# Processing of data
+# Processing data
 
 This document describes the steps for reproducing the filtered data used for analyses in this project.
 /proj/snic2020-16-269/private/cornwallis.2020/results/ind/analysis/gatk_best_practice_snp/f03_concat_bcftools produced by Per Unneberg
@@ -35,16 +35,38 @@ Table 2. Number of SNPs after removing variant overlapping repeats
 | PAR | 285271 |
 | nonPAR | 107894 |
 
-Filtering of SNPs with heterozygous genotypes in females in nonPAR as they are likely in the gametolog region
+Identifying SNPs with heterozygous genotypes in females in nonPAR as they are likely in the gametolog region
 
 In the nonPAR, females have only 1 Z, we therefore do not expect any female individual with genotype 0/1. Some of these SNPs could be 
 located in gametologous genes. If so, they do not reflect the polymorphisms segregating in the population and are substitutions between the
 Z and W chromosomes.
 
-```
-python check_nonPAR_genotype.py ../data/vcf/${species}.nonPAR.filtered.vcf.gz > ../data/bed/${species}.nonPAR.female_het.bed
-python vcf_to_genotypes.py ../data/vcf/${species}.nonPAR.filtered.vcf.gz ../data/bed/${species}.nonPAR.genotypes.bed
-```
+`bash 8_VCF_remove_nonPAR_het_females.sh`
+
+Table 2. Number of SNPs after removing variant overlapping repeats and heterzygous sites in female nonPAR
+|   | SNP numbers |
+| ----------- | ----------- |
+| Autosomes | 6143527 |
+| PAR | 285271 |
+| nonPAR | 104540 |
+
+Finally, we need to have a look at the HWE. Most sites are expected to be HWE. Interesting biological features
+such as population structure can cause a deviation from HWE. However, genotyping errors can also cause 
+deviations from HWE. We remove SNPs with a HWE p-value below 0.005. For nonpar, since the homozygosity in females
+can cause deviations from the HWE, we detected deviations from the male samples only and removed sites from the nonpar
+VCF subsequently.
+
+sbatch 9_VCF_remove_HWE_0.005.sh
+
+Table 2. Number of SNPs after removing variant overlapping repeats and heterzygous sites in female nonPAR
+|   | SNP numbers |
+| ----------- | ----------- |
+| Autosomes | 6143527 |
+| PAR | 285271 |
+| nonPAR | 104540 |
+
+
+
 
 ## Two counts files for males and females in the nonPAR
 ```
