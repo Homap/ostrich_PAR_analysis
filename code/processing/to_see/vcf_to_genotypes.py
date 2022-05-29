@@ -2,6 +2,10 @@
 import sys
 import gzip
 
+# Homa Papoli
+
+# Extract genotypes from VCF file and if heterozygous (0/1 or 0|1) found in females, the SNP is recorded in the output.
+
 vcf_f = gzip.open(sys.argv[1], "rt")
 
 for line in vcf_f:
