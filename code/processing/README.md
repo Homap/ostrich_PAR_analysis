@@ -1,7 +1,7 @@
 # Processing data
 
 This document describes the steps for reproducing the filtered data used for analyses in this project.
-/proj/snic2020-16-269/private/cornwallis.2020/results/ind/analysis/gatk_best_practice_snp/f03_concat_bcftools produced by Per Unneberg
+`/proj/snic2020-16-269/private/cornwallis.2020/results/ind/analysis/gatk_best_practice_snp/f03_concat_bcftools` produced by Per Unneberg
 
 ## Steps for filtering the VCF
 To filter the VCF file for autosome, PAR and nonPAR, the following scrips need to be run in the order numbered.
