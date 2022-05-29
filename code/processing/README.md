@@ -66,6 +66,16 @@ Table 3. Number of SNPs after removing variant overlapping repeats and heterzygo
 | PAR | 285186 |
 | nonPAR | 104540 |
 
+The PAR and nonPAR VCF files are concatenated into Z VCF:
+
+```
+module load bioinfo-tools tabix/0.2.6 vcftools/0.1.16
+export par_vcf=../../data/vcf/par_vcf/par_vcf.filtered.repeatmasked.hwe.vcf.gz
+export nonpar_vcf=../../data/vcf/nonpar_vcf/nonpar_vcf.filtered.repeatmasked.nofemalehet.hwe.vcf.gz
+mkdir -p ../../data/vcf/z_vcf
+vcf-concat ${par_vcf} ${nonpar_vcf} | bgzip -c > ../../data/vcf/z_vcf/z_vcf.gz
+```
+
 The filtered VCF files for autosomes, PAR and nonPAR are used for the analysis in this project:
 - Linkage Disequilibrium (LD)
 - Population scaled recombination rate (rho)
