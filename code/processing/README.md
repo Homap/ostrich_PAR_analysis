@@ -61,8 +61,8 @@ VCF subsequently.
 Table 3. Number of SNPs after removing variant overlapping repeats and heterzygous sites in female nonPAR and HWE deviation
 |   | SNP numbers |
 | ----------- | ----------- |
-| Autosomes | 6143527 |
-| PAR | 285271 |
+| Autosomes | 6141350 |
+| PAR | 285186 |
 | nonPAR | 104540 |
 
 The filtered VCF files for autosomes, PAR and nonPAR are used for the analysis in this project:
