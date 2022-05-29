@@ -58,12 +58,22 @@ VCF subsequently.
 
 sbatch 9_VCF_remove_HWE_0.005.sh
 
-Table 2. Number of SNPs after removing variant overlapping repeats and heterzygous sites in female nonPAR
+Table 3. Number of SNPs after removing variant overlapping repeats and heterzygous sites in female nonPAR and HWE deviation
 |   | SNP numbers |
 | ----------- | ----------- |
 | Autosomes | 6143527 |
 | PAR | 285271 |
 | nonPAR | 104540 |
+
+The filtered VCF files for autosomes, PAR and nonPAR are used for the analysis in this project:
+- Linkage Disequilibrium (LD)
+- Population scaled recombination rate (rho)
+- Genetic diversity measures:
+    - Pairwise nucleotide diversity (Pi)
+    - Watterson's theta (theta)
+    - Tajima's D (Td)
+    - Site Frequency Spectrum (SFS)
+
 
 
 
