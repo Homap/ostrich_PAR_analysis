@@ -1,4 +1,14 @@
-# Steps to calculate linkage disequilibrium (LD)
+# Linkage Disequilibrium (LD)
+
+We would like to compute LD on the autosome and Z chromosmoe. In ostrich genome assembly, only chromosome Z has been
+developed into a chromosome-level assembly by use of linkage map. We lack a chromosome level assembly for the autosomes. 
+In ostrich and most other birds with studied karyotype, chromosome Z has similar physical and genetic length to chromosomes
+4 and 5. Using LASTZ, we obtain the match between ostrich scaffolds and chicken chromosomes 4 and 5. Chimeric scaffolds, scaffolds
+containing sequences from more than one chromosome, might exist in assemblies. We therefore filter out chimeric scaffolds and keep scaffolds
+with only one hit to either chromosome 4 or 5 of chicken.
+
+The sequence in the PAR is complex 
+
 
 In the following, I use PopLDdecay, following the analysis done by
 Takeshi Kawakami to calculate LD on ostrich Z chromosome
@@ -13,21 +23,7 @@ mv PopLDdecay  bin/;
 
 I use the r-squared measure of LD.
 
-## Filter sites for HWE
-```
-echo "PAR"
-vcftools --gzvcf ../data/vcf/${species}.PAR.filtered.vcf.gz --hwe 0.005 --recode --recode-INFO-all --stdout | gzip -c > ../data/vcf/${species}.PAR.hwe.filtered.vcf.gz
-echo "nonPAR"
-vcftools --gzvcf ../data/vcf/${species}.nonPAR.filtered.vcf.gz --hwe 0.005 --recode --recode-INFO-all --stdout | gzip -c > ../data/vcf/${species}.nonPAR.hwe.filtered.vcf.gz
-echo "Autosome"
-vcftools --gzvcf ../data/vcf/${species}.A.filtered.vcf.gz --hwe 0.005 --recode --recode-INFO-all --stdout | gzip -c > ../data/vcf/${species}.A.hwe.filtered.vcf.gz 
-```
-
-## Move the final autosomal vcf into the directory called LD_vcf
-```
-mkdir -p ../data/vcf/LD_vcf
-mv ../data/vcf/${species}.*.hwe.filtered.vcf.gz ../data/vcf/LD_vcf
-```
+export z_vcf=../../data/vcf/z_vcf/z_vcf.gz
 
 ## Concatenate PAR and non-PAR positions
 ```
