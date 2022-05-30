@@ -47,7 +47,7 @@ Table 2. Matches between ostrich scaffolds and chromosome 4 of chicken
 |scaffold1404   |   184221|
 |scaffold1321    |  133612|
 
-Table 2. Matches between ostrich scaffolds and chromosome 5 of chicken
+Table 3. Matches between ostrich scaffolds and chromosome 5 of chicken
 |chrom  | chromEnd
 | ----- | -------- |
 |scaffold928    | 280674|
