@@ -1,14 +1,22 @@
 # Linkage Disequilibrium (LD)
 
-We would like to compute LD on the autosome and Z chromosmoe. In ostrich genome assembly, only chromosome Z has been
+We use r^2^ as the measure of LD. We are interested in two quantities. Pairwise LD and LD decay. 
+Pairwise LD computes LD in pairs of sites in a given window size. LD decay gives us the average distance in which
+LD reaches a value where non-random association among alleles is small (for example r^2^= 0.1).
+
+We compute LD on autosome and Z chromosmoe. In ostrich genome assembly, only chromosome Z has been
 developed into a chromosome-level assembly by use of linkage map. We lack a chromosome level assembly for the autosomes. 
 In ostrich and most other birds with studied karyotype, chromosome Z has similar physical and genetic length to chromosomes
 4 and 5. Using LASTZ, we obtain the match between ostrich scaffolds and chicken chromosomes 4 and 5. Chimeric scaffolds, scaffolds
 containing sequences from more than one chromosome, might exist in assemblies. We therefore filter out chimeric scaffolds and keep scaffolds
 with only one hit to either chromosome 4 or 5 of chicken.
 
-The sequence in the PAR is complex 
-
+The sequence in Z is composed of the PAR and nonPAR. We obtain separate measures of LD decay for:
+- Whole PAR
+    - End of PAR
+    - Mid PAR
+    - PAR boundary
+- nonPAR
 
 In the following, I use PopLDdecay, following the analysis done by
 Takeshi Kawakami to calculate LD on ostrich Z chromosome
