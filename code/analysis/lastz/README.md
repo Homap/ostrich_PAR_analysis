@@ -32,30 +32,30 @@ awk '{if(NR > 1) sum+=$3} END{print sum}' ../../../data/lastz/gg_chr${chrom}_ost
 ```
 
 Table 2. Matches between ostrich scaffolds and chromosome 4 of chicken
-|chrom  | chromStart    |  chromEnd|
+| chrom  | chromlength |
 | ----- | ------------- | -------- |
-|scaffold198   |  0     |  3123540|
-|scaffold554   |  0    |   1015449|
-|scaffold25    |  0    |   2288681|
-|superscaffold11 |0     |  41821358|
-|superscaffold31 |0     |  4751311|
-|superscaffold28 |0     |  9720582|
-|scaffold120     |0     |  1010486|
-|superscaffold57 |0     |  17714005|
-|superscaffold44 |0     |  9842373|
-|superscaffold66 |0    |   6810023|
-|scaffold1404   | 0    |   184221|
-|scaffold1321    |0   |    133612|
+|scaffold198   |  3123540|
+|scaffold554   |    1015449|
+|scaffold25    |   2288681|
+|superscaffold11 |  41821358|
+|superscaffold31 | 4751311|
+|superscaffold28 | 9720582|
+|scaffold120     |  1010486|
+|superscaffold57 | 17714005|
+|superscaffold44 |  9842373|
+|superscaffold66 |  6810023|
+|scaffold1404   |   184221|
+|scaffold1321    |  133612|
 
 Table 2. Matches between ostrich scaffolds and chromosome 5 of chicken
-|chrom   chromStart      chromEnd
-| ----- | ------------- | -------- |
-|scaffold928    | 0     |  280674|
-|superscaffold8 | 0     |  36774883|
-|superscaffold41| 0     |  5004022|
-|superscaffold86| 0     |  776085|
-|scaffold760    | 0     |  412945|
-|scaffold1008   | 0     |  44810|
-|scaffold1128   | 0     |  102074|
-|scaffold967    | 0     |  155924|
+|chrom  | chromEnd
+| ----- | -------- |
+|scaffold928    | 280674|
+|superscaffold8 | 36774883|
+|superscaffold41| 5004022|
+|superscaffold86| 776085|
+|scaffold760    | 412945|
+|scaffold1008   | 44810|
+|scaffold1128   | 102074|
+|scaffold967    | 155924|
 
