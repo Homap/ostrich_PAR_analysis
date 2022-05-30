@@ -33,7 +33,7 @@ awk '{if(NR > 1) sum+=$3} END{print sum}' ../../../data/lastz/gg_chr${chrom}_ost
 
 Table 2. Matches between ostrich scaffolds and chromosome 4 of chicken
 | chrom  | chromlength |
-| ----- | ------------- | -------- |
+| ----- | -------- |
 |scaffold198   |  3123540|
 |scaffold554   |    1015449|
 |scaffold25    |   2288681|
