@@ -64,6 +64,7 @@ on superscaffold36.
 
 Table 3. Output of pairwise LD calculation.
 |#chr  |  Site1  | Site2 |  D'    |  LOD    | r^2    | CIlow  | CIhi    |Dist|
+| ---- | ------- | ----- | ------ | ------- | ------ | ------ | ------- | --- |
 |superscaffold26 |1306  |  1622   | 0.2308 | 0.0458 | 0.0110 | 0.02  |  0.83   | 316|
 |superscaffold26 |1306  |  1641   | 0.2857 | 0.0850 | 0.0212 | 0.03  |  0.83   | 335|
 |superscaffold26 |1306  |  1766   | 1.0000 | 1.0049 | 0.2063 | 0.16   | 0.99   | 460|
