@@ -33,17 +33,34 @@ the PAR and nonPAR with superscaffold36 spanning the boundary.
 
 `sbatch 1_LD_vcf_split.sh`
 
+Decay of LD is affected by recombination rate and the number of generations of recombination. Therefore, 
+investigating LD decay may reveal the population recombination history. 
+
 LD decay is computed by running the following script. LD decay is calculated for scaffolds residing on chromosome
 4 and 5, PAR and nonPAR scaffolds. Additionally, LD decay is calculated for a 500 Kb region at the end, 500 Kb in 
 the middle and 500 Kb closest to the PAR boundary.  
 
-`sbatch 2_ld_decay_run.sh`
+`bash 2_ld_decay_run.sh`
+
+Table 1. Output of LD decay
+|#Dist  | Mean_r^2|  Mean_D'| Sum_r^2|Sum_D' | NumberPairs |
+| ----- | ------- | ------- | ------ | ----- | ----------- |
+|1      | 0.4240  |NA    |  17.8087 |NA  |    42 |
+|2      | 0.4062 | NA    |  6.9055 | NA    |  17 |
+|3      | 0.4209 | NA     | 4.2091 | NA    |  10 |
+
+Table 2. Output of binned LD decay
+|#Dist  | Mean_r^2       | Mean_D' |Sum_r^2| Sum_D' |  NumberPairs|
+| ----- | -------------- | ------- | ----- | ------ | ----------- |
+|10     | 0.397282681564246  |     NA  |    71.1136 |NA    |  179|
+|20     | 0.31554364640884   |     NA  |    57.1134| NA     | 181|
+|30     | 0.262394318181818  |     NA  |   46.1814 |NA    |  176|
+
 
 Pairwise LD is calculated for all categories as above in addition for a 100 Kb region spanning the PAR-nonPAR boundary
 on superscaffold36.
 
-`sbatch 3_ld_pairwise_run.sh`
-
+`bash 3_ld_pairwise_run.sh`
 
 ## Calculate mean LD in 200 kb windows by sliding window analysis
 ```
