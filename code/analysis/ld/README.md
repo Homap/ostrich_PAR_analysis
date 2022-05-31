@@ -42,14 +42,14 @@ the middle and 500 Kb closest to the PAR boundary.
 
 `bash 2_ld_decay_run.sh`
 
-Table 1. Output of LD decay
+Table 1. Output of LD decay - We output only r<sup>2</sup>, therefore, D' is NA.
 |#Dist  | Mean_r^2|  Mean_D'| Sum_r^2|Sum_D' | NumberPairs |
 | ----- | ------- | ------- | ------ | ----- | ----------- |
 |1      | 0.4240  |NA    |  17.8087 |NA  |    42 |
 |2      | 0.4062 | NA    |  6.9055 | NA    |  17 |
 |3      | 0.4209 | NA     | 4.2091 | NA    |  10 |
 
-Table 2. Output of binned LD decay
+Table 2. Output of binned LD decay used for plotting.
 |#Dist  | Mean_r^2       | Mean_D' |Sum_r^2| Sum_D' |  NumberPairs|
 | ----- | -------------- | ------- | ----- | ------ | ----------- |
 |10     | 0.397282681564246  |     NA  |    71.1136 |NA    |  179|
@@ -61,6 +61,12 @@ Pairwise LD is calculated for all categories as above in addition for a 100 Kb r
 on superscaffold36.
 
 `bash 3_ld_pairwise_run.sh`
+
+Table 3. Output of pairwise LD calculation.
+|#chr  |  Site1  | Site2 |  D'    |  LOD    | r^2    | CIlow  | CIhi    |Dist|
+|superscaffold26 |1306  |  1622   | 0.2308 | 0.0458 | 0.0110 | 0.02  |  0.83   | 316|
+|superscaffold26 |1306  |  1641   | 0.2857 | 0.0850 | 0.0212 | 0.03  |  0.83   | 335|
+|superscaffold26 |1306  |  1766   | 1.0000 | 1.0049 | 0.2063 | 0.16   | 0.99   | 460|
 
 ## Calculate mean LD in 200 kb windows by sliding window analysis
 ```
