@@ -56,7 +56,20 @@ Table 2. Output of binned LD decay used for plotting.
 |20     | 0.31554364640884   |     NA  |    57.1134| NA     | 181|
 |30     | 0.262394318181818  |     NA  |   46.1814 |NA    |  176|
 
+Pairwise LD is calculated for all categories as above in addition for a 100 Kb region spanning the PAR-nonPAR boundary on superscaffold36.
+
+`bash 3_ld_pairwise_run.sh`
+
+Table 3. Output of pairwise LD calculation.
+|#chr  |  Site1  | Site2 |  D'    |  LOD    | r^2    | CIlow  | CIhi    |Dist|
+| ---- | ------- | ----- | ------ | ------- | ------ | ------ | ------- | --- |
+|superscaffold26 |1306  |  1622   | 0.2308 | 0.0458 | 0.0110 | 0.02  |  0.83   | 316|
+|superscaffold26 |1306  |  1641   | 0.2857 | 0.0850 | 0.0212 | 0.03  |  0.83   | 335|
+|superscaffold26 |1306  |  1766   | 1.0000 | 1.0049 | 0.2063 | 0.16   | 0.99   | 460|
+
 ## Final LD output for statistical analysis
+
+### LD decay
 
 - Autosomes 4 and 5
     ```
@@ -120,18 +133,7 @@ Table 2. Output of binned LD decay used for plotting.
         perl PopLDdecay/bin/Plot_OnePop.pl -inFile ${ld_dir}/z/nonPAR_Lddecay_stat \
         -output ${ld_dir}/z/nonpar/nonPAR
         rm -f ${ld_dir}/z/nonpar/*p*
-        ````
-
-Pairwise LD is calculated for all categories as above in addition for a 100 Kb region spanning the PAR-nonPAR boundary on superscaffold36.
-
-`bash 3_ld_pairwise_run.sh`
-
-Table 3. Output of pairwise LD calculation.
-|#chr  |  Site1  | Site2 |  D'    |  LOD    | r^2    | CIlow  | CIhi    |Dist|
-| ---- | ------- | ----- | ------ | ------- | ------ | ------ | ------- | --- |
-|superscaffold26 |1306  |  1622   | 0.2308 | 0.0458 | 0.0110 | 0.02  |  0.83   | 316|
-|superscaffold26 |1306  |  1641   | 0.2857 | 0.0850 | 0.0212 | 0.03  |  0.83   | 335|
-|superscaffold26 |1306  |  1766   | 1.0000 | 1.0049 | 0.2063 | 0.16   | 0.99   | 460|
+        ```
 
 ## Calculate mean LD in 200 kb windows by sliding window analysis
 
