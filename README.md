@@ -1,4 +1,4 @@
-# Evolutionary dynamics of ancient recombining sex chromosomes in ostrich  
+# The evolutionary dynamics of ancient recombining sex chromosomes in ostrich  
 
 ### Overview
 
