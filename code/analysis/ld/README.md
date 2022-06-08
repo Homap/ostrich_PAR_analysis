@@ -59,7 +59,8 @@ Table 2. Output of binned LD decay used for plotting.
 ## Final LD output for statistical analysis
 
 - Autosomes 4 and 5
-export ld_dir=../../../data/ld/ld_decay
+```
+export ld_dir=../../../data/ld/ld_decay 
 gunzip ${ld_dir}/autosome/chr4/*.stat.gz
 gunzip ${ld_dir}/autosome/chr5/*.stat.gz
 
@@ -73,9 +74,8 @@ cat ${ld_dir}/autosome/chr4_pairwise_stat ${ld_dir}/autosome/chr5_pairwise_stat 
 perl PopLDdecay/bin/Plot_OnePop.pl -inFile ${ld_dir}/autosome/chr4_chr5_pairwise_stat -output ${ld_dir}/autosome/chr4_5
 
 rm ${ld_dir}/autosome/*png ${ld_dir}/autosome/*pdf ${ld_dir}/autosome/*stat
+```
 
-mkdir -p ${ld_dir}/ld_decay_output
-mv ${ld_dir}/autosome/*bin.gz ${ld_dir}/ld_decay_output
 
 - Z
 
