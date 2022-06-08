@@ -1,11 +1,3 @@
-.Rproj.user
-.Rhistory
-.RData
-.Ruserdata
-./code/analysis/ld/PopLDdecay
-./code/analysis/rho/ldhat_dir/LDhat
-./data/genome/Struthio_camelus.20130116.OM.fa
-./data/genome/repeatmask/Struthio_camelus.20130116.OM.fa.cat.gz
-./data/genome/repeatmask/Struthio_camelus.20130116.OM.fa.masked
-./data/genome/repeatmask/Struthio_camelus.20130116.OM.fa.out
-./data/*
+code/analysis/ld/PopLDdecay/
+code/analysis/rho/ldhat_dir/LDhat/
+data/
