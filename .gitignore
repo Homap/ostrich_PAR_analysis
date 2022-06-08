@@ -1,5 +1,4 @@
 code/analysis/ld/PopLDdecay/
 code/analysis/rho/ldhat_dir/LDhat/
-data/
-data/ld/ld_decay/
-data/ld/ld_window/
+data/ld/ld_decay/autosome/chr4/
+data/ld/ld_decay/autosome/chr5/
