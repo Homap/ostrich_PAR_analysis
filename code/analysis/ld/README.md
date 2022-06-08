@@ -59,26 +59,28 @@ Table 2. Output of binned LD decay used for plotting.
 ## Final LD output for statistical analysis
 
 - Autosomes 4 and 5
-```
-export ld_dir=../../../data/ld/ld_decay 
-gunzip ${ld_dir}/autosome/chr4/*.stat.gz
-gunzip ${ld_dir}/autosome/chr5/*.stat.gz
+    ```
+    export ld_dir=../../../data/ld/ld_decay 
+    gunzip ${ld_dir}/autosome/chr4/*.stat.gz
+    gunzip ${ld_dir}/autosome/chr5/*.stat.gz
 
-cat ${ld_dir}/autosome/chr4/*.stat > ${ld_dir}/autosome/chr4_pairwise_stat
-cat ${ld_dir}/autosome/chr5/*.stat > ${ld_dir}/autosome/chr5_pairwise_stat
+    cat ${ld_dir}/autosome/chr4/*.stat > ${ld_dir}/autosome/chr4_pairwise_stat
+    cat ${ld_dir}/autosome/chr5/*.stat > ${ld_dir}/autosome/chr5_pairwise_stat
 
-perl PopLDdecay/bin/Plot_OnePop.pl -inFile ${ld_dir}/autosome/chr4_pairwise_stat -output ${ld_dir}/autosome/chr4
-perl PopLDdecay/bin/Plot_OnePop.pl -inFile ${ld_dir}/autosome/chr5_pairwise_stat -output ${ld_dir}/autosome/chr5
+    perl PopLDdecay/bin/Plot_OnePop.pl -inFile ${ld_dir}/autosome/chr4_pairwise_stat -output ${ld_dir}/autosome/chr4
+    perl PopLDdecay/bin/Plot_OnePop.pl -inFile ${ld_dir}/autosome/chr5_pairwise_stat -output ${ld_dir}/autosome/chr5
 
-cat ${ld_dir}/autosome/chr4_pairwise_stat ${ld_dir}/autosome/chr5_pairwise_stat > ${ld_dir}/autosome/chr4_chr5_pairwise_stat
-perl PopLDdecay/bin/Plot_OnePop.pl -inFile ${ld_dir}/autosome/chr4_chr5_pairwise_stat -output ${ld_dir}/autosome/chr4_5
+    cat ${ld_dir}/autosome/chr4_pairwise_stat ${ld_dir}/autosome/chr5_pairwise_stat > ${ld_dir}/autosome/chr4_chr5_pairwise_stat
+    perl PopLDdecay/bin/Plot_OnePop.pl -inFile ${ld_dir}/autosome/chr4_chr5_pairwise_stat -output ${ld_dir}/autosome/chr4_5
 
-rm ${ld_dir}/autosome/*png ${ld_dir}/autosome/*pdf ${ld_dir}/autosome/*stat
-```
+    rm ${ld_dir}/autosome/*png ${ld_dir}/autosome/*pdf ${ld_dir}/autosome/*stat
+    ```
 
 - Z
+
     `export ld_dir=../../../data/ld/ld_decay`
     `gunzip ${ld_dir}/z/*.stat.gz`
+
     - whole PAR
         ```
         cat ${ld_dir}/z/superscaffold26.LDdecay.stat \
@@ -89,31 +91,38 @@ rm ${ld_dir}/autosome/*png ${ld_dir}/autosome/*pdf ${ld_dir}/autosome/*stat
         -output ${ld_dir}/z/par/PAR
         rm -f ${ld_dir}/z/par/*p*
         ```
-    - start PAR: Farthest from the SDR
-    - mid PAR
-    - end PAR: Closest to the SDR
-    
+    - start PAR: 500Kb farthest from the SDR
+        ```
+        cp ${ld_dir}/z/supersaffold26.500Kb.LDdecay.bin.gz ${ld_dir}/z/par
+        mv ${ld_dir}/z/par/supersaffold26.500Kb.LDdecay.bin.gz ${ld_dir}/z/par/start.par.500Kb.bin.gz
+        ```
+    - mid PAR: 500Kb in the middle of the PAR
+        ```
+        cp ${ld_dir}/z/supersaffold54.500Kb.LDdecay.bin.gz ${ld_dir}/z/par
+        mv ${ld_dir}/z/par/supersaffold54.500Kb.LDdecay.bin.gz ${ld_dir}/z/par/mid.par.500Kb.bin.gz
+        ```
+    - end PAR: 500 Kb closest to the SDR
+        ```
+        cp ${ld_dir}/z/supersaffold36.500Kb.LDdecay.bin.gz ${ld_dir}/z/par
+        mv ${ld_dir}/z/par/supersaffold36.500Kb.LDdecay.bin.gz ${ld_dir}/z/par/end.par.500Kb.bin.gz
+        ```
     - nonPAR
+        ```
+        cat ${ld_dir}/z/superscaffold62.LDdecay.stat \
+        ${ld_dir}/z/superscaffold63.LDdecay.stat \
+        ${ld_dir}/z/superscaffold67.LDdecay.stat \
+        ${ld_dir}/z/superscaffold69-1.LDdecay.stat \
+        ${ld_dir}/z/superscaffold83.LDdecay.stat \
+        ${ld_dir}/z/superscaffold88.LDdecay.stat \
+        ${ld_dir}/z/superscaffold92.LDdecay.stat \
+        ${ld_dir}/z/superscaffold93.LDdecay.stat \
+        ${ld_dir}/z/superscaffold36.nonpar.LDdecay.stat > ${ld_dir}/z/nonPAR_Lddecay_stat
+        perl PopLDdecay/bin/Plot_OnePop.pl -inFile ${ld_dir}/z/nonPAR_Lddecay_stat \
+        -output ${ld_dir}/z/nonpar/nonPAR
+        rm -f ${ld_dir}/z/nonpar/*p*
+        ````
 
-
-
-
-cat black.superscaffold62.LDdecay.stat black.superscaffold63.LDdecay.stat black.superscaffold67.LDdecay.stat black.superscaffold69-1.LDdecay.stat \
-black.superscaffold83.LDdecay.stat black.superscaffold88.LDdecay.stat black.superscaffold92.LDdecay.stat black.superscaffold93.LDdecay.stat > nonPAR_Lddecay_stat
-perl ../../PopLDdecay/bin/Plot_OnePop.pl -inFile nonPAR_Lddecay_stat -output nonPAR
-
-
-For LD decay, put together all scaffolds, autosomes, PAR , mid PAR, end PAR, near nonPAR and nonPAR and calculate for each category
-the bin and then plot it. This will be the plot Charlie asked for. 
-
-
-
-
-
-
-
-Pairwise LD is calculated for all categories as above in addition for a 100 Kb region spanning the PAR-nonPAR boundary
-on superscaffold36.
+Pairwise LD is calculated for all categories as above in addition for a 100 Kb region spanning the PAR-nonPAR boundary on superscaffold36.
 
 `bash 3_ld_pairwise_run.sh`
 
