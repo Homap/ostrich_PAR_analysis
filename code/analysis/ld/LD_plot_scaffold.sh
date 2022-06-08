@@ -4,16 +4,6 @@ for scaffold in 26 54 35 36 62 63 67 69-1 83 88 92 93
 do
 cat black.superscaffold${scaffold}.pairwise.LD.05-500.200kbBin.50.kbStep.out >> LD_chromosome_plot/black.all.scaffolds.LD.05-500.200kbBin.50.kbStep.out
 done 
-
-for scaffold in 26 54 35 36 62 63 67 69-1 83 88 92 93
-do
-cat blue.superscaffold${scaffold}.pairwise.LD.05-500.200kbBin.50.kbStep.out >> LD_chromosome_plot/blue.all.scaffolds.LD.05-500.200kbBin.50.kbStep.out
-done 
-
-for scaffold in 26 54 35 36 62 63 67 69-1 83 88 92 93
-do
-cat red.superscaffold${scaffold}.pairwise.LD.05-500.200kbBin.50.kbStep.out >> LD_chromosome_plot/red.all.scaffolds.LD.05-500.200kbBin.50.kbStep.out
-done 
 #*************************************************************************************************************************************************************
 # Correct the number format from scientific to decimal in LD output files
 for subspecies in black blue red

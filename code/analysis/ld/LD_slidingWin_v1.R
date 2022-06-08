@@ -3,7 +3,8 @@
 # Calculate mean LD (r-squared) by sliding window. 
 # LD is calculated by PopLDdecay.
 # Sliding window setting is similar to this paper: http://www.g3journal.org/content/4/1/121
-# "Sliding window analysis (bin 100 kb, step 50 kb) of linkage (r2) for SNPs separated by 1−10 kb in the 20 Tanzanian samples. Windows with less than 100 values were excluded, which resulted in reduced representation in the centromeric regions, where SNP density was lower."
+# "Sliding window analysis (bin 100 kb, step 50 kb) of linkage (r2) for SNPs separated by 1−10 kb. 
+# Windows with less than 100 values were excluded, which resulted in reduced representation in the centromeric regions, where SNP density was lower."
 # SNP pairs separated by 1-10kb are used. This is done by awk: cat black.superscaffold88.LDdecay.LD | grep -v "^#" | awk '($9>=1000 && $9<=10000)' > black.superscaffold88.LDdecay.LD.1-10 
 #
 # Author: takikawakami
@@ -20,9 +21,6 @@ in.file <- comarg[6]              # in.file <- "black.superscaffold88.LDdecay.LD
 scaf.file <- comarg[7]  			# scaf.file <- "scaf.size.txt"
 bin.size <- as.numeric(comarg[8])  			# scaf.file <- "scaf.size.txt"
 step.size <- as.numeric(comarg[9])  			# scaf.file <- "scaf.size.txt"
-
-		
-# setwd("/Users/takikawakami/Documents/ostrich_Z/LD_decay")
 
 df <- read.table(in.file, header=FALSE)
 colnames(df) <- c("chr", "Site1", "Site2","Dprime", "LOD","r2","CIlow","CIhi", "Dist")
@@ -79,9 +77,9 @@ write.table(df.out, file=paste(in.file, ".", bin.size/1000, "kbBin.", step.size/
 #### plot option
 
 # plot relative rho
-pdf(paste(in.file, ".", bin.size/1000, "kbBin.", step.size/1000, ".kbStep.pdf", sep=""), width=6, height=6)
-par(mfrow=c(2,1), mar=c(2,4,1,0.5), oma=c(3,2,2,1))
-plot((df.out$pos1+df.out$pos2)/2000000, df.out$r2, xlab="Physical position (Mb)", ylab="LD (r^2)")
-plot((df.out$pos1+df.out$pos2)/2000000, df.out$Dprime, xlab="Physical position (Mb)", ylab="LD (Dprime)")
-dev.off()
+# pdf(paste(in.file, ".", bin.size/1000, "kbBin.", step.size/1000, ".kbStep.pdf", sep=""), width=6, height=6)
+# par(mfrow=c(2,1), mar=c(2,4,1,0.5), oma=c(3,2,2,1))
+# plot((df.out$pos1+df.out$pos2)/2000000, df.out$r2, xlab="Physical position (Mb)", ylab="LD (r^2)")
+# plot((df.out$pos1+df.out$pos2)/2000000, df.out$Dprime, xlab="Physical position (Mb)", ylab="LD (Dprime)")
+# dev.off()
 

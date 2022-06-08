@@ -174,3 +174,20 @@ write.table(outputCI, "black_out.csv", col.names = colnames(outputCI),
 
 # Check here to get 95% confidence interval
 # http://www.stat.ucla.edu/~rgould/110as02/bsci
+
+
+#*************************************************************************************************
+#*************************************************************************************************
+# PSMC Ne
+f <- read.table("../../../Figures_2_4_5/Figure_5/PSMC/Black_P1878_110_Ne_year.txt", header = T)
+head(f)
+library(psych)
+harmonic.mean(f$Ne, na.rm = T)
+f <- read.table("../../../Figures_2_4_5/Figure_5/PSMC/Blue_P1878_121_Ne_year.txt", header = T)
+head(f)
+library(psych)
+harmonic.mean(f$Ne, na.rm = T)
+f <- read.table("../../../Figures_2_4_5/Figure_5/PSMC/Red_P1878_128_Ne_year.txt", header = T)
+head(f)
+library(psych)
+harmonic.mean(f$Ne, na.rm = T)

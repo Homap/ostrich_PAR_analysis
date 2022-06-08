@@ -56,6 +56,46 @@ Table 2. Output of binned LD decay used for plotting.
 |20     | 0.31554364640884   |     NA  |    57.1134| NA     | 181|
 |30     | 0.262394318181818  |     NA  |   46.1814 |NA    |  176|
 
+## Final LD output for statistical analysis
+
+- Autosomes 4 and 5
+export ld_dir=../../../data/ld/ld_decay
+gunzip ${ld_dir}/autosome/chr4/*.stat.gz
+gunzip ${ld_dir}/autosome/chr5/*.stat.gz
+
+cat ${ld_dir}/autosome/chr4/*.stat > ${ld_dir}/autosome/chr4_pairwise_stat
+cat ${ld_dir}/autosome/chr5/*.stat > ${ld_dir}/autosome/chr5_pairwise_stat
+
+perl PopLDdecay/bin/Plot_OnePop.pl -inFile ${ld_dir}/autosome/chr4_pairwise_stat -output ${ld_dir}/autosome/chr4
+perl PopLDdecay/bin/Plot_OnePop.pl -inFile ${ld_dir}/autosome/chr5_pairwise_stat -output ${ld_dir}/autosome/chr5
+
+cat ${ld_dir}/autosome/chr4_pairwise_stat ${ld_dir}/autosome/chr5_pairwise_stat > ${ld_dir}/autosome/chr4_chr5_pairwise_stat
+perl PopLDdecay/bin/Plot_OnePop.pl -inFile ${ld_dir}/autosome/chr4_chr5_pairwise_stat -output ${ld_dir}/autosome/chr4_5
+
+rm ${ld_dir}/autosome/*png ${ld_dir}/autosome/*pdf ${ld_dir}/autosome/*stat
+
+mkdir -p ${ld_dir}/ld_decay_output
+mv ${ld_dir}/autosome/*bin.gz ${ld_dir}/ld_decay_output
+
+- Z
+
+    - whole PAR
+    - start PAR: Farthest from the SDR
+    - mid PAR
+    - end PAR: Closest to the SDR
+    
+    - nonPAR
+
+
+
+For LD decay, put together all scaffolds, autosomes, PAR , mid PAR, end PAR, near nonPAR and nonPAR and calculate for each category
+the bin and then plot it. This will be the plot Charlie asked for. 
+
+
+
+
+
+
 
 Pairwise LD is calculated for all categories as above in addition for a 100 Kb region spanning the PAR-nonPAR boundary
 on superscaffold36.
@@ -70,6 +110,8 @@ Table 3. Output of pairwise LD calculation.
 |superscaffold26 |1306  |  1766   | 1.0000 | 1.0049 | 0.2063 | 0.16   | 0.99   | 460|
 
 ## Calculate mean LD in 200 kb windows by sliding window analysis
+
+For this, we are looking at each scaffold separately and we are missing the connection between the scaffolds. 
 ```
 for scaffold in $(cat ../data/bed/par_scaf.bed ../data/bed/nonpar_scaf.bed \
 | grep -v "^chrom" | cut -f1 | sort | uniq)
@@ -83,6 +125,18 @@ Rscript LD_slidingWin_v1.R ../data/LD/scaf.split/${species}.${scaffold}.pairwise
 done
 ```
 
+
+# Chromosome 4 and chromosome 5
+cat chr4_pairwise_stat chr5_pairwise_stat > chr4_chr5_pairwise_stat
+perl ../../../PopLDdecay/bin/Plot_OnePop.pl -inFile chr4_chr5_pairwise_stat -output chr4_5
+
+cat black.superscaffold26.LDdecay.stat black.superscaffold54.LDdecay.stat black.superscaffold35.LDdecay.stat > PAR_Lddecay_stat
+perl ../../PopLDdecay/bin/Plot_OnePop.pl -inFile PAR_Lddecay_stat -output PAR
+
+
+cat black.superscaffold62.LDdecay.stat black.superscaffold63.LDdecay.stat black.superscaffold67.LDdecay.stat black.superscaffold69-1.LDdecay.stat \
+black.superscaffold83.LDdecay.stat black.superscaffold88.LDdecay.stat black.superscaffold92.LDdecay.stat black.superscaffold93.LDdecay.stat > nonPAR_Lddecay_stat
+perl ../../PopLDdecay/bin/Plot_OnePop.pl -inFile nonPAR_Lddecay_stat -output nonPAR
 
 
 
