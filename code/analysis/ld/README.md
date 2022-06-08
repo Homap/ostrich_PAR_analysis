@@ -76,16 +76,31 @@ perl PopLDdecay/bin/Plot_OnePop.pl -inFile ${ld_dir}/autosome/chr4_chr5_pairwise
 rm ${ld_dir}/autosome/*png ${ld_dir}/autosome/*pdf ${ld_dir}/autosome/*stat
 ```
 
-
 - Z
-
+    `export ld_dir=../../../data/ld/ld_decay`
+    `gunzip ${ld_dir}/z/*.stat.gz`
     - whole PAR
+        ```
+        cat ${ld_dir}/z/superscaffold26.LDdecay.stat \
+        ${ld_dir}/z/superscaffold54.LDdecay.stat \
+        ${ld_dir}/z/superscaffold35.LDdecay.stat \
+        ${ld_dir}/z/superscaffold36.par.LDdecay.stat > ${ld_dir}/z/PAR_Lddecay_stat
+        perl PopLDdecay/bin/Plot_OnePop.pl -inFile ${ld_dir}/z/PAR_Lddecay_stat \
+        -output ${ld_dir}/z/par/PAR
+        rm -f ${ld_dir}/z/par/*p*
+        ```
     - start PAR: Farthest from the SDR
     - mid PAR
     - end PAR: Closest to the SDR
     
     - nonPAR
 
+
+
+
+cat black.superscaffold62.LDdecay.stat black.superscaffold63.LDdecay.stat black.superscaffold67.LDdecay.stat black.superscaffold69-1.LDdecay.stat \
+black.superscaffold83.LDdecay.stat black.superscaffold88.LDdecay.stat black.superscaffold92.LDdecay.stat black.superscaffold93.LDdecay.stat > nonPAR_Lddecay_stat
+perl ../../PopLDdecay/bin/Plot_OnePop.pl -inFile nonPAR_Lddecay_stat -output nonPAR
 
 
 For LD decay, put together all scaffolds, autosomes, PAR , mid PAR, end PAR, near nonPAR and nonPAR and calculate for each category
@@ -126,17 +141,8 @@ done
 ```
 
 
-# Chromosome 4 and chromosome 5
-cat chr4_pairwise_stat chr5_pairwise_stat > chr4_chr5_pairwise_stat
-perl ../../../PopLDdecay/bin/Plot_OnePop.pl -inFile chr4_chr5_pairwise_stat -output chr4_5
-
-cat black.superscaffold26.LDdecay.stat black.superscaffold54.LDdecay.stat black.superscaffold35.LDdecay.stat > PAR_Lddecay_stat
-perl ../../PopLDdecay/bin/Plot_OnePop.pl -inFile PAR_Lddecay_stat -output PAR
 
 
-cat black.superscaffold62.LDdecay.stat black.superscaffold63.LDdecay.stat black.superscaffold67.LDdecay.stat black.superscaffold69-1.LDdecay.stat \
-black.superscaffold83.LDdecay.stat black.superscaffold88.LDdecay.stat black.superscaffold92.LDdecay.stat black.superscaffold93.LDdecay.stat > nonPAR_Lddecay_stat
-perl ../../PopLDdecay/bin/Plot_OnePop.pl -inFile nonPAR_Lddecay_stat -output nonPAR
 
 
 
