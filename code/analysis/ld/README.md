@@ -135,21 +135,14 @@ Table 3. Output of pairwise LD calculation.
         rm -f ${ld_dir}/z/nonpar/*p*
         ```
 
-## Calculate mean LD in 200 kb windows by sliding window analysis
+### Pairwise LD 
 
-For this, we are looking at each scaffold separately and we are missing the connection between the scaffolds. 
-```
-for scaffold in $(cat ../data/bed/par_scaf.bed ../data/bed/nonpar_scaf.bed \
-| grep -v "^chrom" | cut -f1 | sort | uniq)
-do
-echo $scaffold
-zcat ../data/LD/scaf.split/${species}.${scaffold}.pairwise.LD.gz | \
-grep -v "^#" | awk '($9>=500 && $9<=50000)' > \
-../data/LD/scaf.split/${species}.${scaffold}.pairwise.LD.05-500
-Rscript LD_slidingWin_v1.R ../data/LD/scaf.split/${species}.${scaffold}.pairwise.LD.05-500 \
-../data/bed/z_scaf.bed 200000 50000
-done
-```
+#### Calculate mean LD in 200 kb windows by sliding window analysis
+
+Limitation: For this, we are looking at each scaffold separately and we are missing the connection between the scaffolds.
+
+`sbatch 4_ld_mean_window.sh`
+
 
 
 
