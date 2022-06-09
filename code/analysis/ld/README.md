@@ -137,9 +137,9 @@ Table 3. Output of pairwise LD calculation.
 
 ### Pairwise LD 
 
-#### Calculate mean LD in 200 kb windows by sliding window analysis
+#### Calculate mean LD in 200 kb windows by sliding window analysis and output pairwise LD with chromosome coordinates
 
-Limitation: For this, we are looking at each scaffold separately and we are missing the connection between the scaffolds.
+Limitation: We calculate each scaffold separately. We are therefore missing the connection between the scaffolds.
 
 `sbatch 4_ld_mean_window.sh`
 
