@@ -31,16 +31,6 @@ for line in infile:
 		else:
 			vcf_dict[key] = [value]
 			
-# Print header, adding ChrZ
-#for l in header:
-	#if not l.startswith("##reference"):
-	#	if not l.startswith("##source"):
-	#		if not l.startswith("#CHROM"):
-	#print l
-#print "##contig=<ID=ChrZ,length=80871604>"		
-#for l in header:
-#	if l.startswith("##reference") or l.startswith("##source") or l.startswith("#CHROM"):
-#		print l
 		
 print("\t".join(header))
 # Change the coordinates
@@ -112,4 +102,4 @@ for scaffold in scaffold_order:
 			print ("ChrZ" + "\t" + "\t".join(l))
 # ******************************************************************************				
 	
-				        
+
