@@ -1,6 +1,6 @@
-# Estimating population scaled recombination rate (rho)
+# Estimating population scaled recombination rate (ρ)
 
-&psi
+
 # Run LDhat with genotype data
 # Producing input for ldhat run from bin
 # In /Users/homapapoli/Documents/projects/ostrich_Z/ldhat_dir
