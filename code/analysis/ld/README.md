@@ -143,7 +143,7 @@ Limitation: We calculate each scaffold separately. We are therefore missing the 
 
 `sbatch 4_ld_mean_window.sh`
 
-The data located under data/ld are used for statistical analyses of LD reported in the manuscript.
+The data located under `data/ld` are used for statistical analyses of LD reported in the manuscript.
 
 
 
