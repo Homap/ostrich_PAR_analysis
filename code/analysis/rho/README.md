@@ -2,14 +2,24 @@
 
 We estimate the population scaled recombination rate using the method LDhat (Auton and McVean Genome Research, 2007). We specifically use the *interval* program in the LDhat package which
 "uses a Bayesian reversible-jump Markov chain Monte Carlo (rjMCMC) scheme to fit a piecewise-constant model of recombination rate variation. However,
-rather than calculating the full coalescent likelihood, a composite-likelihood is employed (Hudson 2001)."
-
+rather than calculating the full coalescent likelihood, a composite-likelihood is employed (Hudson 2001)." We lacked phased data, we therefore run *interval* on genotypes. We keep each 
+file to 2000 SNPs since it is recommended by the manual of LDhat.
 
 ## Input file for LDhat
+- autosome
+
+- PAR
+    ```
+    for scaffold in superscaffold36 superscaffold35 superscaffold54 superscaffold26
+    do
+        echo $scaffold
+        python vcf_to_ldhat_out_black.py vcf_rho/black.PAR.hwe.filtered.vcf.gz ../../../data/bed/par_scaf.bed 2000 500 $scaffold 1000
+    done
+    ```
+- nonPAR
 
 
-# Run LDhat with genotype data
-# Producing input for ldhat run from bin
+
 # In /Users/homapapoli/Documents/projects/ostrich_Z/ldhat_dir
 # conda activate 
 # conda activate ldhat
