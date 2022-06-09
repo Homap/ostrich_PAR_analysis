@@ -1,11 +1,12 @@
 # Population scaled recombination rate (ρ)
 
-We estimate the population scaled recombination rate using the method LDhat (Auton and McVean Genome Research, 2007). We specifically use the **interval** program in the LDhat package which
+We estimate the population scaled recombination rate using the method LDhat (Auton and McVean Genome Research, 2007). We specifically use the *interval* program in the LDhat package which
 "uses a Bayesian reversible-jump Markov chain Monte Carlo (rjMCMC) scheme to fit a piecewise-constant model of recombination rate variation. However,
 rather than calculating the full coalescent likelihood, a composite-likelihood is employed (Hudson 2001)."
 
 
 ## Input file for LDhat
+
 
 # Run LDhat with genotype data
 # Producing input for ldhat run from bin
