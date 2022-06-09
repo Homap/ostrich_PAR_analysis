@@ -22,7 +22,8 @@ df <- read.table(in.file, header=FALSE)
 colnames(df) <- c("chr", "Site1", "Site2","Dprime", "LOD","r2","CIlow","CIhi", "Dist")
 
 # scaf name
-scaf_file <- strsplit(in.file[1], "\\/")[[1]][8]
+len <- length(strsplit(in.file[1], "\\/")[[1]])
+scaf_file <- strsplit(in.file[1], "\\/")[[1]][len]
 scaf <- strsplit(scaf_file, "\\.")[[1]][1]
 
 # scaf list

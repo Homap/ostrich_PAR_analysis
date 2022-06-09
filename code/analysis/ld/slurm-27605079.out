@@ -1,0 +1,42 @@
+generating windowed pairwise LD
+superscaffold26
+superscaffold35
+superscaffold36
+superscaffold54
+superscaffold62
+superscaffold63
+superscaffold67
+superscaffold69-1
+superscaffold83
+superscaffold88
+superscaffold92
+superscaffold93
+Concatenate all scaffolds for each subspecies LD
+converting scaffold coordinates into chromosome coordinates
+windowed pairwise for chromosome 4
+scaffold120
+scaffold1321
+scaffold1404
+scaffold198
+scaffold25
+scaffold554
+superscaffold11
+superscaffold28
+superscaffold31
+superscaffold44
+superscaffold57
+superscaffold66
+windowed pairwise for chromosome 5
+scaffold1008
+Error in seq.default(0, scaf.size - step.size, by = step.size) : 
+  wrong sign in 'by' argument
+Calls: seq -> seq.default
+Execution halted
+scaffold1128
+scaffold760
+scaffold928
+scaffold967
+superscaffold41
+superscaffold8
+superscaffold86
+concatenating pairwise LD for chromosome 4 and 5
