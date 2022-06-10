@@ -7,7 +7,7 @@ file to 2000 SNPs since it is recommended by the manual of LDhat.
 
 ## Generate input files for *interval* of LDhat
 The *interval* program in LDhat requires three types of input. 
-- Sites: 
+- Sites
 
       ```     
       10 2000 2
