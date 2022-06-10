@@ -5,18 +5,46 @@ We estimate the population scaled recombination rate using the method LDhat (Aut
 rather than calculating the full coalescent likelihood, a composite-likelihood is employed (Hudson 2001)." We lacked phased data, we therefore run *interval* on genotypes. We keep each 
 file to 2000 SNPs since it is recommended by the manual of LDhat.
 
-## Input file for LDhat
-- autosome
+## Generate input files for *interval* of LDhat
+The *interval* program in LDhat requires three types of input. 
+    - Sites: 
+      ```     
+      10 2000 2
+      >P1878_107
+      00022000022022
+      >P1878_108
+      00020200220022
+      ```
+    - Locus
+    ```
+    2000 574366 L
+    1
+    70
+    102
+    798
+    ```
+    - Likelihood Lookup Table
+    ```
+    20 3194
+    1 0.00100
+    100 101.000000
+    276 #   0   0   0   0   0   0   0   0   0   2   2   0   0   2   0   4  :   -37.60  -37.50
+    277 #   0   0   0   0   0   0   0   0   0   2   2   0   0   2   0   4  :   -37.60  -37.50
+    ```
+./interval -seq $sites -loc $locs -lk $lk -prefix $out_prefix -its 10000000 -bpen 5 -samp 2000
 
-- PAR
-    ```
-    for scaffold in superscaffold36 superscaffold35 superscaffold54 superscaffold26
-    do
-        echo $scaffold
-        python vcf_to_ldhat_out_black.py vcf_rho/black.PAR.hwe.filtered.vcf.gz ../../../data/bed/par_scaf.bed 2000 500 $scaffold 1000
-    done
-    ```
-- nonPAR
+`bash run_vcf_to_ldhat_input.sh`
+
+The python script, `vcf_to_ldhat_out.py` produces a file ending with `scaffold.pos.txt`that stores
+the original positions of sites on the scaffold, later used for plotting:
+```
+2000 574366 L
+161
+230
+262
+958
+```
+
 
 
 
