@@ -10,13 +10,11 @@ The *interval* program in LDhat requires three types of input.
 
 - Sites
 
-      ```
       10 2000 2
       >P1878_107
       00022000022022
       >P1878_108
       00020200220022
-      ```
 
 - Locus
 
