@@ -39,7 +39,11 @@ The *interval* program in LDhat requires three types of input.
 A likelihood lookup table is also required to run *interval*. Computing this table is very computationally
 intensive so instead of computing them, we use the program *lkgen* to generate lookup tables from the precomputed
 likelihood table available by the LDhat program since minor differences in theta do not appear to strongly influence 
-the results. 
+the results. The average pairwise nucleotide diversity for the PAR and autosome in ostrich is 0.002 and for SDR is 0.0007.
+We therefore use the likelihood table for 50 sequences and theta = 0.001 to obtain a likelihood table for 20 sequences
+and use that in the *interval* program.
+
+./LDhat/lkgen -lk LDhat/lk_files/lk_n50_t0.001 -nseq 20
 
 ./interval -seq $sites -loc $locs -lk $lk -prefix $out_prefix -its 10000000 -bpen 5 -samp 2000
 
@@ -55,6 +59,9 @@ the original positions of sites on the scaffold, later used for plotting:
 262
 958
 ```
+
+When running interval, check the likelihood curve to see if the maximum is reached. Remember if the region is too large, there might be
+no LD and therefore, rho computation is wrong.
 
 # In /Users/homapapoli/Documents/projects/ostrich_Z/ldhat_dir
 # conda activate 
