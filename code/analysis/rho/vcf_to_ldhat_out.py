@@ -101,7 +101,7 @@ def slidingWindow(sequence_l, winSize, step):
 	if step > winSize:
 		raise Exception("**ERROR** step cannot be larger than winSize.")
 	if winSize > sequence_l:
-		yield 1, sequence_l
+		yield 0, sequence_l
 	else:
 		# Pre-compute number of chunks to emit
 		numOfChunks = ((int(sequence_l-winSize)/step))+1

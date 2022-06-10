@@ -36,6 +36,11 @@ The *interval* program in LDhat requires three types of input.
     277 #   0   0   0   0   0   0   0   0   0   2   2   0   0   2   0   4  :   -37.60  -37.50
     ```
 
+A likelihood lookup table is also required to run *interval*. Computing this table is very computationally
+intensive so instead of computing them, we use the program *lkgen* to generate lookup tables from the precomputed
+likelihood table available by the LDhat program since minor differences in theta do not appear to strongly influence 
+the results. 
+
 ./interval -seq $sites -loc $locs -lk $lk -prefix $out_prefix -its 10000000 -bpen 5 -samp 2000
 
 `bash run_vcf_to_ldhat_input.sh`
@@ -50,10 +55,6 @@ the original positions of sites on the scaffold, later used for plotting:
 262
 958
 ```
-
-
-
-
 
 # In /Users/homapapoli/Documents/projects/ostrich_Z/ldhat_dir
 # conda activate 
