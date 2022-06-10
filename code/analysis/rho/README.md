@@ -8,6 +8,7 @@ file to 2000 SNPs since it is recommended by the manual of LDhat.
 ## Generate input files for *interval* of LDhat
 The *interval* program in LDhat requires three types of input. 
     - Sites: 
+
       ```     
       10 2000 2
       >P1878_107
@@ -15,7 +16,9 @@ The *interval* program in LDhat requires three types of input.
       >P1878_108
       00020200220022
       ```
+
     - Locus
+
     ```
     2000 574366 L
     1
@@ -23,7 +26,9 @@ The *interval* program in LDhat requires three types of input.
     102
     798
     ```
+
     - Likelihood Lookup Table
+
     ```
     20 3194
     1 0.00100
@@ -31,12 +36,14 @@ The *interval* program in LDhat requires three types of input.
     276 #   0   0   0   0   0   0   0   0   0   2   2   0   0   2   0   4  :   -37.60  -37.50
     277 #   0   0   0   0   0   0   0   0   0   2   2   0   0   2   0   4  :   -37.60  -37.50
     ```
+
 ./interval -seq $sites -loc $locs -lk $lk -prefix $out_prefix -its 10000000 -bpen 5 -samp 2000
 
 `bash run_vcf_to_ldhat_input.sh`
 
 The python script, `vcf_to_ldhat_out.py` produces a file ending with `scaffold.pos.txt`that stores
 the original positions of sites on the scaffold, later used for plotting:
+
 ```
 2000 574366 L
 161
@@ -44,6 +51,7 @@ the original positions of sites on the scaffold, later used for plotting:
 262
 958
 ```
+
 
 
 
