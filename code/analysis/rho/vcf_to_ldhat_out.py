@@ -1,4 +1,5 @@
 #!/usr/bin/env python
+
 import gzip
 import sys
 import io
@@ -83,12 +84,12 @@ parser.add_argument('Nsnps', help='number of SNPs', type=int)
 parser.add_argument('Noverlap', help='number of overlapping SNPs, Nsnps=50 and Noverlap=49, then there are 49 overlapping SNPs', type=int)
 parser.add_argument('chr', help='chromosome or scaffold', type=str)
 parser.add_argument('Nwin', help='number of windows', type=int)
+parser.add_argument('outputdir', help='path to output directory', type=str)
 
 args = parser.parse_args()
 
 #**********************************************************************************
 # Define the sliding window function
-
 def slidingWindow(sequence_l, winSize, step):
 	""" Returns a generator that will iterate through
 	the defined chunks of input sequence. Input
@@ -100,15 +101,16 @@ def slidingWindow(sequence_l, winSize, step):
 	if step > winSize:
 		raise Exception("**ERROR** step cannot be larger than winSize.")
 	if winSize > sequence_l:
-		pass
-	# Pre-compute number of chunks to emit
-	numOfChunks = ((int(sequence_l-winSize)/step))+1
-	numOfChunks = int(numOfChunks) 
+		yield 1, sequence_l
+	else:
+		# Pre-compute number of chunks to emit
+		numOfChunks = ((int(sequence_l-winSize)/step))+1
+		numOfChunks = int(numOfChunks) 
 
-	for i in range(0, numOfChunks*step, step):
-		yield i,i+winSize
-	if sequence_l > numOfChunks*step:
-		yield i+winSize, sequence_l
+		for i in range(0, numOfChunks*step, step):
+			yield i,i+winSize
+		if sequence_l > numOfChunks*step:
+			yield i+winSize, sequence_l
 
 # Function to control output character length per line. Ldhat does not accept
 # more than 2000 characters per line.
@@ -144,13 +146,6 @@ def main():
 	# Create list of windows
 	windows = slidingWindow(len(genotype_matrix), args.Nsnps, args.Nsnps-args.Noverlap)
 	#**********************************************************************************
-	# # rho_out_name: outputs the SNP position and rho for each window
-	# rho_out_name = args.chr + "." + str(args.Nsnps) + "." + str(args.Noverlap) + "." + str(args.Nwin) + ".rho.out"
-	# rho_out = open(rho_out_name, "w")
-	# print("chr"+"\t"+"SNP1_pos"+"\t"+"SNP2_pos"+"\t"+"length"+"\t"+"rho"+"\t"+"rho_per_site"+"\t"+"Lk")
-	# rho_out.write("chr"+"\t"+"SNP1_pos"+"\t"+"SNP2_pos"+"\t"+"length"+"\t"+"rho"+"\t"+"rho_per_site"+"\t"+"Lk"+"\n")
-
-	# # print("Running pairwise program of LDhat")
 	interval_counter = 0
 	for interval_index, interval in enumerate(windows):
 		#print(interval) # 0, 2000
@@ -192,7 +187,7 @@ def main():
 			# print("3", gen_array_seq)
 
 			interval_counter += 1
-			sites = args.chr + "." + str(args.Nsnps) + "." + str(args.Noverlap) + "." + str(interval_counter) + ".sites.txt"
+			sites = args.outputdir + "/" + args.chr + "." + str(args.Nsnps) + "." + str(args.Noverlap) + "." + str(interval_counter) + ".sites.txt"
 			# print(outname)
 			with open(sites, 'w') as sites_out:
 				sites_out.write(str(gen_array.shape[0])+" "+str(gen_array.shape[1])+" "+"2"+"\n")
@@ -203,12 +198,12 @@ def main():
 
 			L = int(geno_position[end-1]) - int(geno_position[start]) + 1
 			# print(L)
-			locs = args.chr + "." + str(args.Nsnps) + "." + str(args.Noverlap) + "." + str(interval_counter) + ".locs.txt"
+			locs = args.outputdir + "/" + args.chr + "." + str(args.Nsnps) + "." + str(args.Noverlap) + "." + str(interval_counter) + ".locs.txt"
 			with open(locs, 'w') as locs_out:
 				new_coord = [str(int(coord) - int(geno_position[start]) + 1) for coord in geno_position[start:end]]
 				locs_out.write(str(gen_array.shape[1])+" "+str(L)+" "+ "L"+"\n"+"\n".join(new_coord)+"\n")
 
-			original_pos = args.chr + "." + str(args.Nsnps) + "." + str(args.Noverlap) + "." + str(interval_counter) + ".pos.txt"
+			original_pos = args.outputdir + "/" + args.chr + "." + str(args.Nsnps) + "." + str(args.Noverlap) + "." + str(interval_counter) + ".pos.txt"
 			with open(original_pos, 'w') as pos_out:
 				pos_out.write(str(gen_array.shape[1])+" "+str(L)+" "+ "L"+"\n"+"\n".join(geno_position[start:end])+"\n")
 	return 0
