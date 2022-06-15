@@ -5,8 +5,18 @@ We estimate the population scaled recombination rate using the method LDhat (Aut
 rather than calculating the full coalescent likelihood, a composite-likelihood is employed (Hudson 2001)." We lacked phased data, we therefore run *interval* on genotypes. We keep each 
 file to 2000 SNPs since it is recommended by the manual of LDhat.
 
-## Generate input files for *interval* of LDhat
+## Generate input files for *interval* program of LDhat
 The *interval* program in LDhat requires three types of input. 
+
+- Likelihood Lookup Table
+
+    ```
+    20 3194
+    1 0.00100
+    100 101.000000
+    276 #   0   0   0   0   0   0   0   0   0   2   2   0   0   2   0   4  :   -37.60  -37.50
+    277 #   0   0   0   0   0   0   0   0   0   2   2   0   0   2   0   4  :   -37.60  -37.50
+    ```
 
 - Sites
 
@@ -26,15 +36,6 @@ The *interval* program in LDhat requires three types of input.
     798
     ```
 
-- Likelihood Lookup Table
-
-    ```
-    20 3194
-    1 0.00100
-    100 101.000000
-    276 #   0   0   0   0   0   0   0   0   0   2   2   0   0   2   0   4  :   -37.60  -37.50
-    277 #   0   0   0   0   0   0   0   0   0   2   2   0   0   2   0   4  :   -37.60  -37.50
-    ```
 
 A likelihood lookup table is also required to run *interval*. We use the program *lkgen* to generate lookup tables from the precomputed
 likelihood table available by the LDhat program since minor differences in theta do not appear to strongly influence 
@@ -59,16 +60,18 @@ export lk_LUT_path=../../../data/rho/ldhat_input/lk_LUT
 
     - `./LDhat/lkgen -lk LDhat/lk_files/lk_n50_t0.001 -nseq 10 -prefix ${lk_LUT_path}/nonPAR`
 
+## Sites and locus files 
 
-./interval -seq $sites -loc $locs -lk $lk -prefix $out_prefix -its 10000000 -bpen 5 -samp 2000
+We would like to calculate the rho for the whole Z chromosome however, if running LDhat on long 
+scaffolds or chromosomes, the algorithm may not coverge. Instead, we split the data into chunks 
+of 2000 SNPs with 200 SNPs overlap between windows. 
 
-For the SDR, calculate Rho only in males and then for the sex-averaged recombination rate, do 2/3*(male recombination
-rate).
+`bash 1_run_vcf_to_ldhat_input.sh`
 
-`bash run_vcf_to_ldhat_input.sh`
-
-The python script, `vcf_to_ldhat_out.py` produces a file ending with `scaffold.pos.txt`that stores
+The python script in the script above called `vcf_to_ldhat_out.py` produces an additional file ending with `pos.txt`that stores
 the original positions of sites on the scaffold, later used for plotting:
+
+- Pos
 
 ```
 2000 574366 L
@@ -77,6 +80,78 @@ the original positions of sites on the scaffold, later used for plotting:
 262
 958
 ```
+
+## Running *interval*
+
+Create output directories:
+```
+mkdir -p ../../../data/rho/ldhat_output/chr4 \
+         ../../../data/rho/ldhat_output/chr5 \
+         ../../../data/rho/ldhat_output/z/par \
+         ../../../data/rho/ldhat_output/z/nonpar
+```
+
+Set path to likelihood look up tables:
+
+```
+export LUT_20=../../../data/rho/ldhat_input/lk_LUT/auto_PARnew_lk.txt
+export LUT_10=../../../data/rho/ldhat_input/lk_LUT/nonPARnew_lk.txt
+```
+
+Set path to ldhat input directories:
+
+
+
+./LDhat/interval -seq ../../../data/rho/ldhat_input/z/par/superscaffold26.2000.200.1.sites.txt -loc ../../../data/rho/ldhat_input/z/par/superscaffold26.2000.200.1.locs.txt \
+-lk ../../../data/rho/ldhat_input/lk_LUT/auto_PARnew_lk.txt -prefix test -its 25000000 -bpen 5 -samp 5000 > test.output
+
+./LDhat/interval -seq ../../../data/rho/ldhat_input/z/par/superscaffold26.2000.200.1.sites.txt -loc ../../../data/rho/ldhat_input/z/par/superscaffold26.2000.200.1.locs.txt \
+-lk testnew_lk.txt -exact -prefix test.exact -its 25000000 -bpen 5 -samp 5000 > test.exact.output
+
+- Autosome
+
+
+- PAR
+export par_dir=../../../data/rho/ldhat_input/z/par
+
+export ldhat_output=../../../data/rho/ldhat_output
+for scaffold in $(cat ../../../data/bed/par_scaf.bed | grep -v "^chrom" | cut -f1 | sort | uniq) 
+do
+    echo $scaffold
+    for window in ${par_dir}/${scaffold}.*
+    do
+    win_num=$(echo $window | cut -f9 -d "/" | cut -f4 -d ".")
+    echo $win_num
+    sbatch --job-name ${scaffold}.${win_num} --output ../../../data/rho/ldhat_output/${scaffold}.${win_num} \
+    ldhat_interval.sh ${scaffold}.2000.200.${win_num}.sites.txt ${scaffold}.2000.200.${win_num}.locs.txt $LUT ${ldhat_output}/${scaffold}.${win_num}.
+    done
+done
+
+- nonPAR
+
+
+grep 'LK' test.output | awk 'BEGIN{print "iterations""\t""likelihood""\t""blocks""\t""map_length"} {print NR"\t"$5"\t"$10"\t"$15}' > test_output
+grep 'LK' test.exact.output | awk 'BEGIN{print "iterations""\t""likelihood""\t""blocks""\t""map_length"} {print NR"\t"$5"\t"$10"\t"$15}' > test_output_exact
+
+
+
+grep 'blocks' slurm-27681299.out | awk '{print $10}' > block2000.newlk.25kb
+grep 'Map' slurm-27681299.out | awk '{print $15}' > map2000.newlk.25kb
+
+paste 
+
+for i in {1..18} 
+
+sbatch --job-name name --output outputname --error ldhat_interval.sh 
+
+
+./interval -seq $sites -loc $locs -lk $lk -prefix $out_prefix -its 10000000 -bpen 5 -samp 2000
+
+For the SDR, calculate Rho only in males and then for the sex-averaged recombination rate, do 2/3*(male recombination
+rate).
+
+
+
 
 When running interval, check the likelihood curve to see if the maximum is reached. Remember if the region is too large, there might be
 no LD and therefore, rho computation is wrong.
