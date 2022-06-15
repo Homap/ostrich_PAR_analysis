@@ -53,11 +53,11 @@ export lk_LUT_path=../../../data/rho/ldhat_input/lk_LUT
 
 - For autosomes and PAR: 10 individuals (20 chromosomes)
 
-`./LDhat/lkgen -lk LDhat/lk_files/lk_n50_t0.001 -nseq 20 -prefix ${lk_LUT_path}/auto_PAR`
+    - `./LDhat/lkgen -lk LDhat/lk_files/lk_n50_t0.001 -nseq 20 -prefix ${lk_LUT_path}/auto_PAR`
 
 - For the nonPAR: 5 males (10 chromosomes)
 
-`./LDhat/lkgen -lk LDhat/lk_files/lk_n50_t0.001 -nseq 10 -prefix ${lk_LUT_path}/nonPAR`
+    - `./LDhat/lkgen -lk LDhat/lk_files/lk_n50_t0.001 -nseq 10 -prefix ${lk_LUT_path}/nonPAR`
 
 
 ./interval -seq $sites -loc $locs -lk $lk -prefix $out_prefix -its 10000000 -bpen 5 -samp 2000
