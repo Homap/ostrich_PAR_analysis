@@ -36,16 +36,32 @@ The *interval* program in LDhat requires three types of input.
     277 #   0   0   0   0   0   0   0   0   0   2   2   0   0   2   0   4  :   -37.60  -37.50
     ```
 
-A likelihood lookup table is also required to run *interval*. Computing this table is very computationally
-intensive so instead of computing them, we use the program *lkgen* to generate lookup tables from the precomputed
+A likelihood lookup table is also required to run *interval*. We use the program *lkgen* to generate lookup tables from the precomputed
 likelihood table available by the LDhat program since minor differences in theta do not appear to strongly influence 
 the results. The average pairwise nucleotide diversity for the PAR and autosome in ostrich is 0.002 and for SDR is 0.0007.
 We therefore use the likelihood table for 50 sequences and theta = 0.001 to obtain a likelihood table for 20 sequences
 and use that in the *interval* program.
 
-./LDhat/lkgen -lk LDhat/lk_files/lk_n50_t0.001 -nseq 20
+## Likelihood look up table
+There are a number of pre-computed likelihood tables provided with the LDhat package. The one we use is lk_n50_t0.001.gz which 
+is the likelihood for 50 chromosomes and a theta of 0.001. We use the *lkgen* to generate the lookup table. 
+
+```
+mkdir -p ../../../data/rho/ldhat_input/lk_LUT
+export lk_LUT_path=../../../data/rho/ldhat_input/lk_LUT
+```
+
+- For autosomes and PAR: 10 individuals (20 chromosomes)
+`./LDhat/lkgen -lk LDhat/lk_files/lk_n50_t0.001 -nseq 20 -prefix ${lk_LUT_path}/auto_PAR`
+
+- For the nonPAR: 5 males (10 chromosomes)
+`./LDhat/lkgen -lk LDhat/lk_files/lk_n50_t0.001 -nseq 10 -prefix ${lk_LUT_path}/nonPAR`
+
 
 ./interval -seq $sites -loc $locs -lk $lk -prefix $out_prefix -its 10000000 -bpen 5 -samp 2000
+
+For the SDR, calculate Rho only in males and then for the sex-averaged recombination rate, do 2/3*(male recombination
+rate).
 
 `bash run_vcf_to_ldhat_input.sh`
 
@@ -62,6 +78,67 @@ the original positions of sites on the scaffold, later used for plotting:
 
 When running interval, check the likelihood curve to see if the maximum is reached. Remember if the region is too large, there might be
 no LD and therefore, rho computation is wrong.
+
+
+python vcf_to_ldhat_out.py ../../../data/vcf/z_vcf/z_vcf.gz ../../../data/bed/z_scaf.bed 2000 500 superscaffold26 2 ./
+python vcf_to_ldhat_out.py ../../../data/vcf/z_vcf/z_vcf.gz ../../../data/bed/z_scaf.bed 1000 250 superscaffold26 2 ./
+python vcf_to_ldhat_out.py ../../../data/vcf/z_vcf/z_vcf.gz ../../../data/bed/z_scaf.bed 500 100 superscaffold26 2 ./
+
+./LDhat/interval -seq superscaffold26.2000.500.1.sites.txt -loc superscaffold26.2000.500.1.locs.txt -lk ostrich_complete_theta0.002.txt -prefix superscaffold26.2000.500.1.complete0.002 -its 10000000 -bpen 5 -samp 2000
+
+for i in {1..2}
+do
+sbatch ldhat_interval.sh superscaffold26.2000.500.${i}.sites.txt superscaffold26.2000.500.${i}.locs.txt ostrich_genotypenew_lk.txt superscaffold26.2000.${i}.
+sbatch ldhat_interval.sh superscaffold26.1000.250.${i}.sites.txtsuperscaffold26.1000.250.${i}.locs.txt ostrich_genotypenew_lk.txt superscaffold26.1000.250.${i}.
+sbatch ldhat_interval.sh superscaffold26.500.100.${i}.sites.txt superscaffold26.500.100.${i}.locs.txt ostrich_genotypenew_lk.txt superscaffold26.500.100.${i}.
+done
+
+python vcf_to_ldhat_out.py ../../../data/vcf/z_vcf/z_vcf.gz ../../../data/bed/z_scaf.bed 100 10 superscaffold26 2 ./
+sbatch ldhat_interval.sh superscaffold26.100.10.${i}.sites.txt superscaffold26.2000.500.${i}.locs.txt ostrich_genotypenew_lk.txt superscaffold26.2000.${i}.
+
+grep 'LK' slurm-27664288.out | awk '{print $5}' > lk2000
+grep 'LK' slurm-27664290.out | awk '{print $5}' > lk500
+grep 'LK' lk100.10.bpen5 | awk '{print $5}' > lk100
+grep 'LK' lk100.10.bpen20 | awk '{print $5}' > lk100.20
+
+grep 'blocks' slurm-27664288.out | awk '{print $10}' > blocks2000
+grep 'blocks' slurm-27664290.out | awk '{print $10}' > blocks500
+grep 'blocks' lk100.10.bpen5 | awk '{print $10}' > blocks100
+grep 'blocks' lk100.10.bpen20 | awk '{print $10}' > blocks100.20
+
+grep 'Map' slurm-27664288.out | awk '{print $15}' > Map2000
+grep 'Map' slurm-27664290.out | awk '{print $15}' > Map500
+grep 'Map' lk100.10.bpen5 | awk '{print $15}' > map100
+grep 'Map' lk100.10.bpen20 | awk '{print $15}' > map100.20
+
+grep 'LK' example_lk | awk '{print $5}' > examplelk
+grep 'blocks' example_lk | awk '{print $10}' > exampleblock
+grep 'Map' example_lk | awk '{print $15}' > examplemap
+
+After changing the distances to kb
+grep 'LK' slurm-27675485.out | awk '{print $5}' > lk2000.kb
+grep 'blocks' slurm-27675485.out | awk '{print $10}' > blocks2000.kb
+grep 'Map' slurm-27675485.out | awk '{print $15}' > map2000.kb
+
+With new likelihood table
+grep 'LK' slurm-27681299.out | awk '{print $5}' > lk2000.newlk.25kb
+grep 'blocks' slurm-27681299.out | awk '{print $10}' > block2000.newlk.25kb
+grep 'Map' slurm-27681299.out | awk '{print $15}' > map2000.newlk.25kb
+
+grep 'LK' slurm-27681300.out | awk '{print $5}' > lk2000.25kb
+grep 'blocks' slurm-27681300.out | awk '{print $10}' > block2000.25kb
+grep 'Map' slurm-27681300.out | awk '{print $15}' > map2000.25kb
+
+Double check rho_Ne_reveresed.txt
+
+# Run it for more chains
+
+for i in {0..50}
+do
+echo $i
+sbatch -J bpen.${i} ldhat_interval.sh superscaffold26.2000.500.1.sites.txt superscaffold26.2000.500.1.locs.txt ostrich_genotypenew_lk.txt superscaffold26.2000.500.1.complete.bp.${i}.25mil $i >> slurm.submission
+done
+
 
 # In /Users/homapapoli/Documents/projects/ostrich_Z/ldhat_dir
 # conda activate 
@@ -145,3 +222,4 @@ echo $i
 done
 
 # Just add the non-PAR segments
+The nonPAR needs to be calculated only using the male SNPs
