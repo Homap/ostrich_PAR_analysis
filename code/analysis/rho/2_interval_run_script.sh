@@ -102,7 +102,8 @@ do
         win_num=$(echo $window | cut -f9 -d "/" | cut -f4 -d ".")
         echo $win_num
         sbatch --job-name ${scaffold}.${win_num}.${mcmc} --output ${ldhat_output_nonpar}/${scaffold}.${win_num}.${mcmc} \
-        ldhat_interval.sh ${nonpar_dir}/${scaffold}.1000.200.${win_num}.sites.txt ${par_dir}/${scaffold}.1000.200.${win_num}.locs.txt $LUT ${ldhat_output_nonpar}/${scaffold}.${win_num}.${mcmc}.
+        ldhat_interval.sh ${nonpar_dir}/${scaffold}.1000.200.${win_num}.sites.txt \
+        ${nonpar_dir}/${scaffold}.1000.200.${win_num}.locs.txt $LUT_10 ${ldhat_output_nonpar}/${scaffold}.${win_num}.${mcmc}.
         done
     done
 done
