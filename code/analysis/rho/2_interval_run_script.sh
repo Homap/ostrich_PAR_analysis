@@ -108,7 +108,3 @@ do
     done
 done
 
-# Rerunning failed jobs
-
-sbatch --job-name superscaffold11.175.3 --output ${ldhat_output_chr4}/superscaffold11.175.3 \
-    ldhat_interval.sh ${chr4_dir}/superscaffold11.1000.200.175.sites.txt ${chr4_dir}/superscaffold11.1000.200.175.locs.txt $LUT_20 ${ldhat_output_chr4}/superscaffold11.175.3.
