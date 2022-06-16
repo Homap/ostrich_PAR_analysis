@@ -84,9 +84,8 @@ the original positions of sites on the scaffold, later used for plotting:
 
 `bash 2_interval_run_script.sh`
 
-## Create the Tracer input to check for the distribution of likelihood, block number and map length
-grep 'LK' test.1000.output | awk 'BEGIN{print "iterations""\t""likelihood""\t""blocks""\t""map_length"} {print NR"\t"$5"\t"$10"\t"$15}' > test_1000.output
-grep 'LK' test.exact.output | awk 'BEGIN{print "iterations""\t""likelihood""\t""blocks""\t""map_length"} {print NR"\t"$5"\t"$10"\t"$15}' > test_output_exact
+## Output likelihood, block number and map length of MCMC chain
+`bash 3_summarize_MCMC_chain.sh`
 
 
 For the SDR, calculate Rho only in males and then for the sex-averaged recombination rate, do 2/3*(male recombination
