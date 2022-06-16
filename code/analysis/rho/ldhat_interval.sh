@@ -1,9 +1,9 @@
 #!/bin/bash -l
-#SBATCH -A snic2021-22-447
+
+#SBATCH -A snic2022-22-149 
 #SBATCH -p core
 #SBATCH -n 2
-#SBATCH -t 01:00:00
-#SBATCH -J ldhat
+#SBATCH -t 03:00:00
 #SBATCH --mail-user=homa.papoli_yazdi@biol.lu.se
 #SBATCH --mail-type=FAIL
 
@@ -12,5 +12,4 @@ locs=$2
 lk=$3
 out_prefix=$4
 
-
-./interval -seq $sites -loc $locs -lk $lk -prefix $out_prefix -its 10000000 -bpen 5 -samp 2000
+./LDhat/interval -seq $sites -loc $locs -lk $lk -prefix $out_prefix -its 30000000 -bpen 5 -samp 6000

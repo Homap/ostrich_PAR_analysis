@@ -61,18 +61,8 @@ program_descripton = f'''
 	Name examples below are for superscaffold36, ran for 20 SNPs, 10 overlaps and 1 window:
 	1. sites input of LDhat pairwise called : superscaffold36.20.19.1.sites.txt
 	2. locs input of LDhat pairwise called : superscaffold36.20.19.1.locs.txt
-	3. pairwise rho called : superscaffold36.20.19.1.pairwise.rmin.txt
-	4. rho ouput for all windows called : superscaffold36.20.19.1.rho.out"
-	2. Original SNP positions called : superscaffold36.20.19.1.pos.txt
+	3. Original SNP positions called : superscaffold36.20.19.1.pos.txt
 
-	List of outputs of the LDhat pairwise script:
-	# Their descript can be found in LDhat manual.
-	superscaffold36.20.19.1.ldhat.fit.txt
-	superscaffold36.20.19.1.ldhat.freqs.txt
-	superscaffold36.20.19.1.ldhat.new_lk.txt
-	superscaffold36.20.19.1.ldhat.outfile.txt
-	superscaffold36.20.19.1.ldhat.rmin.txt
-	superscaffold36.20.19.1.ldhat.type_table.txt
 	'''
 
 # Set script's arguments
@@ -196,12 +186,13 @@ def main():
 					for seq in chunks(gen_array_seq[index], args.Nsnps):
 						sites_out.write(seq+"\n")
 
+			kb = 1000
 			L = int(geno_position[end-1]) - int(geno_position[start]) + 1
 			# print(L)
 			locs = args.outputdir + "/" + args.chr + "." + str(args.Nsnps) + "." + str(args.Noverlap) + "." + str(interval_counter) + ".locs.txt"
 			with open(locs, 'w') as locs_out:
-				new_coord = [str(int(coord) - int(geno_position[start]) + 1) for coord in geno_position[start:end]]
-				locs_out.write(str(gen_array.shape[1])+" "+str(L)+" "+ "L"+"\n"+"\n".join(new_coord)+"\n")
+				new_coord = [str((int(coord) - int(geno_position[start]) + 1)/kb) for coord in geno_position[start:end]]
+				locs_out.write(str(gen_array.shape[1])+" "+str(L/kb)+" "+ "L"+"\n"+"\n".join(new_coord)+"\n")
 
 			original_pos = args.outputdir + "/" + args.chr + "." + str(args.Nsnps) + "." + str(args.Noverlap) + "." + str(interval_counter) + ".pos.txt"
 			with open(original_pos, 'w') as pos_out:

@@ -36,7 +36,6 @@ The *interval* program in LDhat requires three types of input.
     798
     ```
 
-
 A likelihood lookup table is also required to run *interval*. We use the program *lkgen* to generate lookup tables from the precomputed
 likelihood table available by the LDhat program since minor differences in theta do not appear to strongly influence 
 the results. The average pairwise nucleotide diversity for the PAR and autosome in ostrich is 0.002 and for SDR is 0.0007.
@@ -83,69 +82,12 @@ the original positions of sites on the scaffold, later used for plotting:
 
 ## Running *interval*
 
-Create output directories:
-```
-mkdir -p ../../../data/rho/ldhat_output/chr4 \
-         ../../../data/rho/ldhat_output/chr5 \
-         ../../../data/rho/ldhat_output/z/par \
-         ../../../data/rho/ldhat_output/z/nonpar
-```
+`bash 2_interval_run_script.sh`
 
-Set path to likelihood look up tables:
-
-```
-export LUT_20=../../../data/rho/ldhat_input/lk_LUT/auto_PARnew_lk.txt
-export LUT_10=../../../data/rho/ldhat_input/lk_LUT/nonPARnew_lk.txt
-```
-
-Set path to ldhat input directories:
-
-
-
-./LDhat/interval -seq ../../../data/rho/ldhat_input/z/par/superscaffold26.2000.200.1.sites.txt -loc ../../../data/rho/ldhat_input/z/par/superscaffold26.2000.200.1.locs.txt \
--lk ../../../data/rho/ldhat_input/lk_LUT/auto_PARnew_lk.txt -prefix test -its 25000000 -bpen 5 -samp 5000 > test.output
-
-./LDhat/interval -seq ../../../data/rho/ldhat_input/z/par/superscaffold26.2000.200.1.sites.txt -loc ../../../data/rho/ldhat_input/z/par/superscaffold26.2000.200.1.locs.txt \
--lk testnew_lk.txt -exact -prefix test.exact -its 25000000 -bpen 5 -samp 5000 > test.exact.output
-
-- Autosome
-
-
-- PAR
-export par_dir=../../../data/rho/ldhat_input/z/par
-
-export ldhat_output=../../../data/rho/ldhat_output
-for scaffold in $(cat ../../../data/bed/par_scaf.bed | grep -v "^chrom" | cut -f1 | sort | uniq) 
-do
-    echo $scaffold
-    for window in ${par_dir}/${scaffold}.*
-    do
-    win_num=$(echo $window | cut -f9 -d "/" | cut -f4 -d ".")
-    echo $win_num
-    sbatch --job-name ${scaffold}.${win_num} --output ../../../data/rho/ldhat_output/${scaffold}.${win_num} \
-    ldhat_interval.sh ${scaffold}.2000.200.${win_num}.sites.txt ${scaffold}.2000.200.${win_num}.locs.txt $LUT ${ldhat_output}/${scaffold}.${win_num}.
-    done
-done
-
-- nonPAR
-
-
-grep 'LK' test.output | awk 'BEGIN{print "iterations""\t""likelihood""\t""blocks""\t""map_length"} {print NR"\t"$5"\t"$10"\t"$15}' > test_output
+## Create the Tracer input to check for the distribution of likelihood, block number and map length
+grep 'LK' test.1000.output | awk 'BEGIN{print "iterations""\t""likelihood""\t""blocks""\t""map_length"} {print NR"\t"$5"\t"$10"\t"$15}' > test_1000.output
 grep 'LK' test.exact.output | awk 'BEGIN{print "iterations""\t""likelihood""\t""blocks""\t""map_length"} {print NR"\t"$5"\t"$10"\t"$15}' > test_output_exact
 
-
-
-grep 'blocks' slurm-27681299.out | awk '{print $10}' > block2000.newlk.25kb
-grep 'Map' slurm-27681299.out | awk '{print $15}' > map2000.newlk.25kb
-
-paste 
-
-for i in {1..18} 
-
-sbatch --job-name name --output outputname --error ldhat_interval.sh 
-
-
-./interval -seq $sites -loc $locs -lk $lk -prefix $out_prefix -its 10000000 -bpen 5 -samp 2000
 
 For the SDR, calculate Rho only in males and then for the sex-averaged recombination rate, do 2/3*(male recombination
 rate).
@@ -153,150 +95,8 @@ rate).
 
 
 
-When running interval, check the likelihood curve to see if the maximum is reached. Remember if the region is too large, there might be
-no LD and therefore, rho computation is wrong.
 
 
-python vcf_to_ldhat_out.py ../../../data/vcf/z_vcf/z_vcf.gz ../../../data/bed/z_scaf.bed 2000 500 superscaffold26 2 ./
-python vcf_to_ldhat_out.py ../../../data/vcf/z_vcf/z_vcf.gz ../../../data/bed/z_scaf.bed 1000 250 superscaffold26 2 ./
-python vcf_to_ldhat_out.py ../../../data/vcf/z_vcf/z_vcf.gz ../../../data/bed/z_scaf.bed 500 100 superscaffold26 2 ./
-
-./LDhat/interval -seq superscaffold26.2000.500.1.sites.txt -loc superscaffold26.2000.500.1.locs.txt -lk ostrich_complete_theta0.002.txt -prefix superscaffold26.2000.500.1.complete0.002 -its 10000000 -bpen 5 -samp 2000
-
-for i in {1..2}
-do
-sbatch ldhat_interval.sh superscaffold26.2000.500.${i}.sites.txt superscaffold26.2000.500.${i}.locs.txt ostrich_genotypenew_lk.txt superscaffold26.2000.${i}.
-sbatch ldhat_interval.sh superscaffold26.1000.250.${i}.sites.txtsuperscaffold26.1000.250.${i}.locs.txt ostrich_genotypenew_lk.txt superscaffold26.1000.250.${i}.
-sbatch ldhat_interval.sh superscaffold26.500.100.${i}.sites.txt superscaffold26.500.100.${i}.locs.txt ostrich_genotypenew_lk.txt superscaffold26.500.100.${i}.
-done
-
-python vcf_to_ldhat_out.py ../../../data/vcf/z_vcf/z_vcf.gz ../../../data/bed/z_scaf.bed 100 10 superscaffold26 2 ./
-sbatch ldhat_interval.sh superscaffold26.100.10.${i}.sites.txt superscaffold26.2000.500.${i}.locs.txt ostrich_genotypenew_lk.txt superscaffold26.2000.${i}.
-
-grep 'LK' slurm-27664288.out | awk '{print $5}' > lk2000
-grep 'LK' slurm-27664290.out | awk '{print $5}' > lk500
-grep 'LK' lk100.10.bpen5 | awk '{print $5}' > lk100
-grep 'LK' lk100.10.bpen20 | awk '{print $5}' > lk100.20
-
-grep 'blocks' slurm-27664288.out | awk '{print $10}' > blocks2000
-grep 'blocks' slurm-27664290.out | awk '{print $10}' > blocks500
-grep 'blocks' lk100.10.bpen5 | awk '{print $10}' > blocks100
-grep 'blocks' lk100.10.bpen20 | awk '{print $10}' > blocks100.20
-
-grep 'Map' slurm-27664288.out | awk '{print $15}' > Map2000
-grep 'Map' slurm-27664290.out | awk '{print $15}' > Map500
-grep 'Map' lk100.10.bpen5 | awk '{print $15}' > map100
-grep 'Map' lk100.10.bpen20 | awk '{print $15}' > map100.20
-
-grep 'LK' example_lk | awk '{print $5}' > examplelk
-grep 'blocks' example_lk | awk '{print $10}' > exampleblock
-grep 'Map' example_lk | awk '{print $15}' > examplemap
-
-After changing the distances to kb
-grep 'LK' slurm-27675485.out | awk '{print $5}' > lk2000.kb
-grep 'blocks' slurm-27675485.out | awk '{print $10}' > blocks2000.kb
-grep 'Map' slurm-27675485.out | awk '{print $15}' > map2000.kb
-
-With new likelihood table
-grep 'LK' slurm-27681299.out | awk '{print $5}' > lk2000.newlk.25kb
-grep 'blocks' slurm-27681299.out | awk '{print $10}' > block2000.newlk.25kb
-grep 'Map' slurm-27681299.out | awk '{print $15}' > map2000.newlk.25kb
-
-grep 'LK' slurm-27681300.out | awk '{print $5}' > lk2000.25kb
-grep 'blocks' slurm-27681300.out | awk '{print $10}' > block2000.25kb
-grep 'Map' slurm-27681300.out | awk '{print $15}' > map2000.25kb
-
-Double check rho_Ne_reveresed.txt
-
-# Run it for more chains
-
-for i in {0..50}
-do
-echo $i
-sbatch -J bpen.${i} ldhat_interval.sh superscaffold26.2000.500.1.sites.txt superscaffold26.2000.500.1.locs.txt ostrich_genotypenew_lk.txt superscaffold26.2000.500.1.complete.bp.${i}.25mil $i >> slurm.submission
-done
 
 
-# In /Users/homapapoli/Documents/projects/ostrich_Z/ldhat_dir
-# conda activate 
-# conda activate ldhat
-./vcf_to_ldhat_out.py black.PAR.hwe.filtered.vcf.gz par_scaf.bed 20 19 superscaffold36 100
-export vcf=/proj/snic2020-16-269/private/homap/ostrich_z/data/vcf/black.PAR.PASS.biallelic.nomissing.hwe.allhet.fixedalt.fixedref.vcf.gz
-./vcf_to_LDhat_genotype.py $vcf par_scaf.bed 20 19 superscaffold36 100
-#*********************************************************************************************#
-# Produce 2000 SNP intervals for each scaffold
-# Running in /proj/snic2020-16-269/private/homap/ostrich_z/result/ldhat/ldhat_dir/
-python vcf_to_ldhat_out_black.py vcf_rho/black.PAR.hwe.filtered.vcf.gz vcf_rho/par_scaf.bed 2000 500 superscaffold36 1000
-python vcf_to_ldhat_out_black.py vcf_rho/black.PAR.hwe.filtered.vcf.gz vcf_rho/par_scaf.bed 2000 500 superscaffold35 1000
-python vcf_to_ldhat_out_black.py vcf_rho/black.PAR.hwe.filtered.vcf.gz vcf_rho/par_scaf.bed 2000 500 superscaffold54 1000
-python vcf_to_ldhat_out_black.py vcf_rho/black.PAR.hwe.filtered.vcf.gz vcf_rho/par_scaf.bed 2000 500 superscaffold26 1000
 
-# Create the exact likelihood table
-./interval -seq superscaffold36.2000.500.1.sites.txt -loc superscaffold36.2000.500.1.locs.txt -lk ostrich_genotypenew_lk.txt -prefix superscaffold36.first.run -its 10000000 -bpen 5 -samp 2000
-./interval -seq superscaffold35.2000.500.1.sites.txt -loc superscaffold35.2000.500.1.locs.txt -lk ostrich_genotypenew_lk.txt -prefix superscaffold35.first.run -its 10000000 -bpen 5 -samp 2000
-./interval -seq superscaffold54.2000.500.1.sites.txt -loc superscaffold54.2000.500.1.locs.txt -lk ostrich_genotypenew_lk.txt -prefix superscaffold54.first.run -its 10000000 -bpen 5 -samp 2000
-./interval -seq superscaffold26.2000.500.1.sites.txt -loc superscaffold26.2000.500.1.locs.txt -lk ostrich_genotypenew_lk.txt -prefix superscaffold26.first.run -its 10000000 -bpen 5 -samp 2000
-
-for i in {1..24} 
-do
-echo $i
-sbatch ldhat_slurm.sh superscaffold36.2000.500.${i}.sites.txt superscaffold36.2000.500.${i}.locs.txt superscaffold36.first.runnew_lk.txt superscaffold36.2000.500.${i}.
-done
-./interval -seq test/superscaffold36.2000.500.25.sites.txt -loc test/superscaffold36.2000.500.25.locs.txt -lk ostrich_genotypenew_lk.txt -prefix test/superscaffold36.2000.500.25. -its 10000000 -bpen 5 -samp 2000
-
-for i in {1..18} 
-do
-echo $i
-sbatch ldhat_slurm.sh superscaffold35.2000.500.${i}.sites.txt superscaffold35.2000.500.${i}.locs.txt ostrich_genotypenew_lk.txt superscaffold35.2000.500.${i}.
-done
-./interval -seq test/superscaffold35.2000.500.19.sites.txt -loc test/superscaffold35.2000.500.19.locs.txt -lk ostrich_genotypenew_lk.txt -prefix test/superscaffold35.2000.500.19. -its 10000000 -bpen 5 -samp 2000
-
-for i in {7..58} 
-do
-echo $i
-sbatch ldhat_slurm.sh superscaffold54.2000.500.${i}.sites.txt superscaffold54.2000.500.${i}.locs.txt ostrich_genotypenew_lk.txt superscaffold54.2000.500.${i}.
-done
-./interval -seq test/superscaffold54.2000.500.59.sites.txt -loc test/superscaffold54.2000.500.59.locs.txt -lk ostrich_genotypenew_lk.txt -prefix test/superscaffold54.2000.500.59. -its 10000000 -bpen 5 -samp 2000
-
-for i in {1..100} 
-do
-echo $i
-sbatch ldhat_slurm.sh superscaffold26.2000.500.${i}.sites.txt superscaffold26.2000.500.${i}.locs.txt ostrich_genotypenew_lk.txt superscaffold26.2000.500.${i}.
-done
-./interval -seq test/superscaffold26.2000.500.101.sites.txt -loc test/superscaffold26.2000.500.101.locs.txt -lk ostrich_genotypenew_lk.txt -prefix test/superscaffold26.2000.500.101. -its 10000000 -bpen 5 -samp 2000
-
-for i in {1..24} 
-do
-echo $i
-./interval -seq superscaffold36.2000.500.${i}.sites.txt -loc superscaffold36.2000.500.${i}.locs.txt -lk ostrich_genotypenew_lk.txt -prefix superscaffold36.2000.500.${i}. -its 10000000 -bpen 5 -samp 2000
-done
-
-for i in {1..18} 
-do
-echo $i
-./interval -seq superscaffold35.2000.500.${i}.sites.txt -loc superscaffold35.2000.500.${i}.locs.txt -lk ostrich_genotypenew_lk.txt -prefix superscaffold35.2000.500.${i}. -its 10000000 -bpen 5 -samp 2000
-done
-
-for i in {7..58} 
-do
-echo $i
-./interval -seq superscaffold54.2000.500.${i}.sites.txt -loc superscaffold54.2000.500.${i}.locs.txt -lk ostrich_genotypenew_lk.txt -prefix superscaffold54.2000.500.${i}. -its 10000000 -bpen 5 -samp 2000
-done
-
-for i in {1..100} 
-do
-echo $i
-./interval -seq superscaffold26.2000.500.${i}.sites.txt -loc superscaffold26.2000.500.${i}.locs.txt -lk ostrich_genotypenew_lk.txt -prefix superscaffold26.2000.500.${i}. -its 10000000 -bpen 5 -samp 2000
-done
-
-python vcf_to_ldhat_out_black.py vcf_rho/black.PAR.hwe.filtered.vcf.gz vcf_rho/par_scaf.bed 20 5 superscaffold36 10
-
-
-for i in {1..10} 
-do
-echo $i
-./interval -seq superscaffold36.20.5.${i}.sites.txt -loc superscaffold36.20.5.${i}.locs.txt -lk ostrich_genotypenew_lk.txt -prefix superscaffold36.20.5.${i}. -its 10000000 -bpen 5 -samp 2000
-done
-
-# Just add the non-PAR segments
-The nonPAR needs to be calculated only using the male SNPs
