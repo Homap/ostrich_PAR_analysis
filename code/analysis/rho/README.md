@@ -100,7 +100,7 @@ The script outputs boxplots of the Gelman point estimates for likelihood, block 
 For the SDR, calculate Rho only in males and then for the sex-averaged recombination rate, do 2/3*(male recombination
 rate).
 
-![image description](../../../data/rho/ldhat_mcmc/nonpar_gelman.pdf)
+![image description](../../../data/rho/ldhat_mcmc/nonpar_gelman.pdf?raw=True "Title")
 
 
 
