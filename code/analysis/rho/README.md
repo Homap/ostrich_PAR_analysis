@@ -82,10 +82,19 @@ the original positions of sites on the scaffold, later used for plotting:
 
 ## Running *interval*
 
+We run 3 chain, each of 25,000,000 iterations and sample every 5000 interations.
+
 `bash 2_interval_run_script.sh`
 
 ## Output likelihood, block number and map length of MCMC chain
 `bash 3_summarize_MCMC_chain.sh`
+
+## Read the MCMC summaries into R, output summary statistics
+
+In addition to calculating summary statistics, we use the Gelman diagnostic to check for chain convergence.
+The script outputs boxplots of the Gelman point estimates for likelihood, block number and map length.
+
+`bash 4_MCMC_convergence_check.R`
 
 
 For the SDR, calculate Rho only in males and then for the sex-averaged recombination rate, do 2/3*(male recombination
