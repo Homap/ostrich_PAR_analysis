@@ -100,7 +100,7 @@ The script outputs boxplots of the Gelman point estimates for likelihood, block 
 For the SDR, calculate Rho only in males and then for the sex-averaged recombination rate, do 2/3*(male recombination
 rate).
 
-![Chr4 Gelman diagnostic](../../../data/rho/ldhat_mcmc/chr4_gelman.pdf)
+![Alt text](../../../data/rho/ldhat_mcmc/chr4_gelman.pdf "Chr4 Gelman diagnostic")
 ![Chr5 Gelman diagnostic](../../../data/rho/ldhat_mcmc/chr5_gelman.pdf)
 ![PAR Gelman diagnostic](../../../data/rho/ldhat_mcmc/par_gelman.pdf)
 ![nonPAR Gelman diagnostic](../../../data/rho/ldhat_mcmc/nonpar_gelman.pdf)
