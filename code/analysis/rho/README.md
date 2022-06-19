@@ -105,6 +105,8 @@ rate).
 ![PAR Gelman diagnostic](../../../data/rho/ldhat_mcmc/par_gelman.pdf)
 ![nonPAR Gelman diagnostic](../../../data/rho/ldhat_mcmc/nonpar_gelman.pdf)
 
+<img src="../../../data/rho/ldhat_mcmc/chr4_gelman.pdf" alt="Alt text" title="Optional title">
+
 
 
 
