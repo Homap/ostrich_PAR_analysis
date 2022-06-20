@@ -115,7 +115,19 @@ and one file containing the per site rho for every pair of positions.
 
 `bash 6_map_length_rho_per_site.sh`
 
+Two outputs for each scaffold are as follow:
 
+- Map length
+
+| Scaffold | Locus_start | Locus_end | Mean_rho | Median | L95 | U95 |
+| -------- | ----------- | --------- | -------- | ------ | --- | --- |
+| superscaffold26 | 1306 | 190500 | 199.28876 | 199.15247 | 189.58553 | 210.24434 |
+
+- Per site rho
+
+| Scaffold | Locus_start | Locus_end | Mean_rho | Median | L95 | U95 |
+| -------- | ----------- | --------- | -------- | ------ | --- | --- |
+| superscaffold26 | 1306 | 1622 | 8.09272 | 7.67439 | 5.81891 | 13.38059 |
 
 For the SDR, calculate Rho only in males and then for the sex-averaged recombination rate, do 2/3*(male recombination
 rate).
