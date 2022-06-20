@@ -8,7 +8,6 @@
 #SBATCH --mail-type=FAIL
 
 rates=$1
-locs=$2
-out_prefix=$3
+out_prefix=$2
 
-./LDhat/stat -input $rates -burn 1000 -loc $locs -prefix $out_prefix
+./LDhat/stat -input $rates -burn 1000 -prefix $out_prefix

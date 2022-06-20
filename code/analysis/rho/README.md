@@ -94,7 +94,7 @@ We run 3 chain, each of 25,000,000 iterations and sample every 5000 interations.
 In addition to calculating summary statistics, we use the Gelman diagnostic to check for chain convergence.
 The script outputs boxplots of the Gelman point estimates for likelihood, block number and map length.
 
-`bash 4_MCMC_convergence_check.R`
+`Rscript 4_MCMC_convergence_check.R`
 
 ![Chr4 Gelman diagnostic](../../../data/rho/ldhat_mcmc/chr4_gelman.pdf) <br>
 ![Chr5 Gelman diagnostic](../../../data/rho/ldhat_mcmc/chr5_gelman.pdf) <br>
@@ -104,6 +104,16 @@ The script outputs boxplots of the Gelman point estimates for likelihood, block 
 Gelman diagnostic value of about 1 indicates convergence of MCMC chains. We observe that for our MCMC chains.
 
 ## Extract rho per window and sites from the *rates* output of *interval*
+
+Using the *stat* program in LDhat to summarise the *rates* output
+
+`bash 5_stat_LDhat.sh`
+
+The python script `stat_rho.py` takes the output of LDhat *stat* program with the list of 
+positions of each window. It outputs two files: One file containing the map length for each window
+and one file containing the per site rho for every pair of positions.
+
+`bash 6_map_length_rho_per_site.sh`
 
 For the SDR, calculate Rho only in males and then for the sex-averaged recombination rate, do 2/3*(male recombination
 rate).

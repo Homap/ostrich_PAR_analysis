@@ -38,7 +38,7 @@ echo -e -n 'Scaffold\tLocus_start\tLocus_end\tMean_rho\tMedian\tL95\tU95' > ${rh
 for win_num in `seq $count`
 do
     echo $win_num
-    python summarise_rho.py ${stat_chr4}/${scaffold}.${win_num}.res.txt ${chr4_dir}/${scaffold}.1000.200.${win_num}.pos.txt \
+    python stat_rho.py ${stat_chr4}/${scaffold}.${win_num}.res.txt ${chr4_dir}/${scaffold}.1000.200.${win_num}.pos.txt \
     ${rho_chr4}/${scaffold}.per.site.txt ${rho_chr4}/${scaffold}.map.length.txt $scaffold
 done
 
@@ -52,7 +52,7 @@ echo -e -n 'Scaffold\tLocus_start\tLocus_end\tMean_rho\tMedian\tL95\tU95' > ${rh
 for win_num in `seq $count`
 do
     echo $win_num
-    python summarise_rho.py ${stat_chr5}/${scaffold}.${win_num}.res.txt ${chr5_dir}/${scaffold}.1000.200.${win_num}.pos.txt \
+    python stat_rho.py ${stat_chr5}/${scaffold}.${win_num}.res.txt ${chr5_dir}/${scaffold}.1000.200.${win_num}.pos.txt \
     ${rho_chr5}/${scaffold}.per.site.txt ${rho_chr5}/${scaffold}.map.length.txt $scaffold
 done
 
@@ -69,7 +69,7 @@ do
     for win_num in `seq $count`
     do
     echo $win_num
-    python summarise_rho.py ${stat_par}/${scaffold}.${win_num}.res.txt ${par_dir}/${scaffold}.1000.200.${win_num}.pos.txt \
+    python stat_rho.py ${stat_par}/${scaffold}.${win_num}.res.txt ${par_dir}/${scaffold}.1000.200.${win_num}.pos.txt \
     ${rho_par}/${scaffold}.per.site.txt ${rho_par}/${scaffold}.map.length.txt $scaffold
     done
 done
@@ -87,7 +87,7 @@ do
     for win_num in `seq $count`
     do
     echo $win_num
-    python summarise_rho.py ${stat_nonpar}/${scaffold}.${win_num}.res.txt ${nonpar_dir}/${scaffold}.1000.200.${win_num}.pos.txt \
+    python stat_rho.py ${stat_nonpar}/${scaffold}.${win_num}.res.txt ${nonpar_dir}/${scaffold}.1000.200.${win_num}.pos.txt \
     ${rho_nonpar}/${scaffold}.per.site.txt ${rho_nonpar}/${scaffold}.map.length.txt $scaffold
     done
 done

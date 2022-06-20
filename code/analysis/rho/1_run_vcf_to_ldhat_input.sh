@@ -26,11 +26,11 @@ bcftools sort ${chr5_dir}/superscaffold8.chr5.vcf.gz | bgzip -c > ${chr5_dir}/su
 python vcf_to_ldhat_out.py ${chr5_dir}/superscaffold8.chr5.sorted.vcf.gz ../../../data/lastz/gg_chr5_ostrich.bed $snp_size $snp_overlap superscaffold8 $num_win ../../../data/rho/ldhat_input/chr5
 
 echo "----------------------chrZ--PAR-----------------"
-export z_dir=../../../data/vcf/z_vcf
+export par_vcf=../../../data/vcf/par_vcf/par_vcf.filtered.repeatmasked.hwe.vcf.gz
 for scaffold in $(cat ../../../data/bed/par_scaf.bed | grep -v "^chrom" | cut -f1 | sort | uniq) 
 do
     echo $scaffold
-    python vcf_to_ldhat_out.py ${z_dir}/sorted.z.vcf.gz ../../../data/bed/par_scaf.bed $snp_size $snp_overlap $scaffold $num_win ../../../data/rho/ldhat_input/z/par
+    python vcf_to_ldhat_out.py ${par_vcf} ../../../data/bed/par_scaf.bed $snp_size $snp_overlap $scaffold $num_win ../../../data/rho/ldhat_input/z/par
 done
 echo "----------------------chrZ--nonPAR--------------"
 echo "Produce a male - VCF for nonPAR"

@@ -46,6 +46,7 @@ stat_output = open(sys.argv[1], "r")
 pos = open(sys.argv[2], "r")
 per_site_rho = sys.argv[3]
 length_file = sys.argv[4]
+scaffold = sys.argv[5]
 
 
 # read stat and position files into list
@@ -65,12 +66,12 @@ for line in stat_list[2:]:
     locus_start = pos_list[loci-1].rstrip()
     locus_end = pos_list[loci].rstrip()
 
-    out = str(locus_start)+"\t"+str(locus_end)+"\t"+mean+"\t"+median+"\t"+L95+"\t"+U95
+    out = str(scaffold+"\t"+locus_start)+"\t"+str(locus_end)+"\t"+mean+"\t"+median+"\t"+L95+"\t"+U95
     list_out.append(out)
 
 append_multiple_lines(per_site_rho, list_out)
 
-region_rho = pos_list[0].rstrip()+"\t"+pos_list[-1].rstrip()+"\t"+stat_list[1].rstrip().split("\t")[1]+"\t"\
+region_rho = scaffold+"\t"+pos_list[0].rstrip()+"\t"+pos_list[-1].rstrip()+"\t"+stat_list[1].rstrip().split("\t")[1]+"\t"\
     +stat_list[1].rstrip().split("\t")[2]+"\t"+stat_list[1].rstrip().split("\t")[3]+"\t"+stat_list[1].rstrip().split("\t")[4]
 append_new_line(length_file, region_rho)
 
