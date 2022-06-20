@@ -115,6 +115,8 @@ and one file containing the per site rho for every pair of positions.
 
 `bash 6_map_length_rho_per_site.sh`
 
+
+
 For the SDR, calculate Rho only in males and then for the sex-averaged recombination rate, do 2/3*(male recombination
 rate).
 
