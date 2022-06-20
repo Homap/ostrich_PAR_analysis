@@ -117,13 +117,13 @@ and one file containing the per site rho for every pair of positions.
 
 Two outputs for each scaffold are as follow:
 
-- Map length
+- Map length (total rho for each window)
 
 | Scaffold | Locus_start | Locus_end | Mean_rho | Median | L95 | U95 |
 | -------- | ----------- | --------- | -------- | ------ | --- | --- |
 | superscaffold26 | 1306 | 190500 | 199.28876 | 199.15247 | 189.58553 | 210.24434 |
 
-- Per site rho
+- Per site rho (per site rho for each pair of SNPs)
 
 | Scaffold | Locus_start | Locus_end | Mean_rho | Median | L95 | U95 |
 | -------- | ----------- | --------- | -------- | ------ | --- | --- |
