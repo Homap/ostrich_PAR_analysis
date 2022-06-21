@@ -22,6 +22,7 @@ and for the nonPAR with only recombination in male is (male_map)x(2/3).
 `Rscript get_recombination_frequency.R` 
 
 - Recombination rate table
+
 | start_pos | end_pos | female_pair_cm_per_site | male_pair_cm_per_site | sex_averaged_pair_cm_per_site | female_smoothed male_smoothed | sex_averaged_smoothed |
 | ------- | --------- | ------- | --------------- | ----------------- | --------------- | ----------------------- | 
 | 1113306 | 2113305 | 2.03 |   1.318  | 1.674 |  2.747 |  1.721 |  2.234 |
