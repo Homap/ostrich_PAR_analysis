@@ -109,6 +109,10 @@ Using the *stat* program in LDhat to summarise the *rates* output
 
 `bash 5_stat_LDhat.sh`
 
+The per site rate from the *interval* as reported in the *rates.txt* file is per kb (kilo base)
+since the *locs* input was in kb. To convert that per site, the rate for each pair of site must 
+be divided by 1000. This gives per bp rate of recombination. 
+
 The python script `stat_rho.py` takes the output of LDhat *stat* program with the list of 
 positions of each window. It outputs two files: One file containing the map length for each window
 and one file containing the per site rho for every pair of positions.
@@ -123,11 +127,17 @@ Two outputs for each scaffold are as follow:
 | -------- | ----------- | --------- | -------- | ------ | --- | --- |
 | superscaffold26 | 1306 | 190500 | 199.28876 | 199.15247 | 189.58553 | 210.24434 |
 
-- Per site rho (per site rho for each pair of SNPs)
+- Per site rho (per kbp rho for each pair of SNPs)
+To convert to bp divide by 1000. 
+To obtain the map length from the Per site rho, in *R* you can do:
+
+`map_length <- sum((persite$Locus_end - persite$Locus_start)*(persite$Mean_rho/1000))`
 
 | Scaffold | Locus_start | Locus_end | Mean_rho | Median | L95 | U95 |
 | -------- | ----------- | --------- | -------- | ------ | --- | --- |
 | superscaffold26 | 1306 | 1622 | 8.09272 | 7.67439 | 5.81891 | 13.38059 |
+
+
 
 For the SDR, calculate Rho only in males and then for the sex-averaged recombination rate, do 2/3*(male recombination
 rate).
