@@ -137,6 +137,9 @@ To convert to bp divide Mean_rho by 1000. To obtain the map length from the per 
 
 `map_length <- sum((persite$Locus_end - persite$Locus_start)*(persite$Mean_rho/1000))`
 
+## Rho, cM/Mb and Ne estimate for PAR
+
+
 
 For the SDR, calculate Rho only in males and then for the sex-averaged recombination rate, do 2/3*(male recombination
 rate).
