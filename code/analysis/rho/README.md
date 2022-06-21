@@ -137,7 +137,20 @@ To convert to bp divide Mean_rho by 1000. To obtain the map length from the per 
 
 `map_length <- sum((persite$Locus_end - persite$Locus_start)*(persite$Mean_rho/1000))`
 
-## Rho, cM/Mb and Ne estimate for PAR
+## Map length and per site rho with Z chromosome coordinates
+We concatenate the map and rates files and create one for each with the Z coordinates.
+
+Order of Z scaffolds:
+superscaffold26 - superscaffold54 - superscaffold35 - superscaffold36 - superscaffold62 - 
+superscaffold67 - superscaffold69-1 - superscaffold93 - superscaffold63 - superscaffold88 - superscaffold83 - superscaffold92
+
+python ../../processing/scaffold_to_chr.py ../../../data/rho/ldhat_rho/z/par/superscaffold26.map.length.txt gg
+
+Also in 200 Kb windows with 50 Kb overlap
+
+## Use rho and recombination rate to obtain Ne for the PAR
+
+
 
 
 
