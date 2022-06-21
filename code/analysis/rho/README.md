@@ -140,9 +140,22 @@ To convert to bp divide Mean_rho by 1000. To obtain the map length from the per 
 ## Map length and per site rho with Z chromosome coordinates
 We concatenate the map and rates files and create one for each with the Z coordinates.
 
-Order of Z scaffolds:
-superscaffold26 - superscaffold54 - superscaffold35 - superscaffold36 - superscaffold62 - 
-superscaffold67 - superscaffold69-1 - superscaffold93 - superscaffold63 - superscaffold88 - superscaffold83 - superscaffold92
+Order of Z scaffolds
+
+| Number | Scaffold |
+| ------ | -------- |
+| 1 | superscaffold26 |
+| 2 | superscaffold54 |
+| 3 | superscaffold35 |
+| 4 | superscaffold36 |
+| 5 | superscaffold62 |
+| 6 | superscaffold67 |
+| 7 | superscaffold69-1 |
+| 8 | superscaffold93 |
+| 9 | superscaffold63 |
+| 10| superscaffold88 |
+| 11| superscaffold83 |
+| 12| superscaffold92 |
 
 python ../../processing/scaffold_to_chr.py ../../../data/rho/ldhat_rho/z/par/superscaffold26.map.length.txt gg
 
