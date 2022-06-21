@@ -18,16 +18,31 @@ write.table(kosambi_sex_averaged, "../../../data/geneticmap/kosambi_sex_averaged
 
 start_pos <- female_rate[[2]]$start
 end_pos <- female_rate[[2]]$end
-female_pair_cm_per_site <- female_rate[[2]]$pair_cm_per_site
-male_pair_cm_per_site <- male_rate[[2]]$pair_cm_per_site
-sex_averaged_pair_cm_per_site <- sex_averaged_rate[[2]]$pair_cm_per_site
+female_pair_cm_per_site <- round(female_rate[[2]]$pair_cm_per_site, 3)
+male_pair_cm_per_site <- round(male_rate[[2]]$pair_cm_per_site, 3)
+sex_averaged_pair_cm_per_site <- round(sex_averaged_rate[[2]]$pair_cm_per_site, 3)
 
-female_smoothed <- female_rate[[4]]
-male_smoothed <- male_rate[[4]]
-sex_averaged_smoothed <- sex_averaged_rate[[4]]
+female_smoothed <- round(female_rate[[4]], 3)
+male_smoothed <- round(male_rate[[4]], 3)
+sex_averaged_smoothed <- round(sex_averaged_rate[[4]], 3)
 
 recombination_rate <- data.frame(start_pos, end_pos, female_pair_cm_per_site, male_pair_cm_per_site, sex_averaged_pair_cm_per_site, 
                                 female_smoothed, male_smoothed, sex_averaged_smoothed)
 
 write.table(recombination_rate, "../../../data/geneticmap/recombination_rate.txt", quote = FALSE, sep = "\t", row.names = FALSE, col.names = TRUE)
+
+## Genetic length in PAR in females, males and sex-averaged where PAR is defined at 53065777
+female_PAR_length = 80.628  
+male_PAR_length = 42.641
+sex_averaged_PAR_length = 61.6345
+
+female_PAR_r = round((0.5 * ((exp(4*(female_PAR_length/100))-1)/(exp(4*(female_PAR_length/100))+1))), 3)
+male_PAR_r = round((0.5 * ((exp(4*(male_PAR_length/100))-1)/(exp(4*(male_PAR_length/100))+1))), 3)
+sex_averaged_PAR_r = round((0.5 * ((exp(4*(sex_averaged_PAR_length/100))-1)/(exp(4*(sex_averaged_PAR_length/100))+1))), 3)
+
+par_map_rate <- data.frame(female_PAR_length, male_PAR_length, sex_averaged_PAR_length,
+                           female_PAR_r, male_PAR_r, sex_averaged_PAR_r)
+
+write.table(par_map_rate, "../../../data/geneticmap/par_map_rate.txt", quote = FALSE, sep = "\t", row.names = FALSE, col.names = TRUE)
+
 
