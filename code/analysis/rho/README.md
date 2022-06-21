@@ -157,13 +157,13 @@ Order of Z scaffolds
 | 11| superscaffold83 |
 | 12| superscaffold92 |
 
-python ../../processing/scaffold_to_chr.py ../../../data/rho/ldhat_rho/z/par/superscaffold26.map.length.txt gg
-
-Also in 200 Kb windows with 50 Kb overlap
+`bash 7_rho_Z_coordinates.sh &`
 
 ## Use rho and recombination rate to obtain Ne for the PAR
 
 
+
+Also in 200 Kb windows with 50 Kb overlap
 
 
 
