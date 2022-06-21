@@ -1,7 +1,8 @@
 #!/use/bin/R
 
+library(dplyr)
+
 ## Genetic map
-mb = 10^6
 female_map <- read.table("../../../data/geneticmap/LGZ3.female.lifted.cleaned.bed.txt", sep = "")
 colnames(female_map) <- c("Chr", "Pos", "PosPlus1", "mapname", "cM", "scaffold")
 male_map <- read.table("../../../data/geneticmap/LGZ3.male.lifted.cleaned.bed.txt", sep = "")
@@ -10,7 +11,7 @@ colnames(male_map) <- c("Chr", "Pos", "PosPlus1", "mapname", "cM", "scaffold")
 sex_averaged_map <- inner_join(female_map, male_map, by = "Pos")
 
 par <- sex_averaged_map[which(sex_averaged_map$Pos < 53065777),]
-nonpar <- sex_averaged_map[which(sex_averaged_map$Pos => 53065777),]
+nonpar <- sex_averaged_map[which(sex_averaged_map$Pos >= 53065777),]
 
 sex_averaged_cM <- c((par$cM.x + par$cM.y)*0.5, (nonpar$cM.y)*(2/3))
 Pos <- sex_averaged_map$Pos
