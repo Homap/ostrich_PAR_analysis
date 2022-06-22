@@ -97,21 +97,21 @@ plot_gelman_point_estimate <- function(gelman_likelihood, gelman_block, gelman_m
 }
 
 
-# print("Chr4")
-# chr4_scaf_list = c("superscaffold11")
-# mcmc_summary_gelman(chrom = "chr4", scaf_vector = chr4_scaf_list, path_to_folder = "../../../data/rho/ldhat_mcmc/chr4", outputdir = "../../../data/rho/ldhat_mcmc/")
+print("Chr4")
+chr4_scaf_list = c("superscaffold11")
+mcmc_summary_gelman(chrom = "chr4", scaf_vector = chr4_scaf_list, path_to_folder = "../../../data/rho/ldhat_mcmc/chr4", outputdir = "../../../data/rho/ldhat_mcmc/")
 
-# plot_gelman_point_estimate("../../../data/rho/ldhat_mcmc/chr4.gelman.likelihood.txt",
-#                            "../../../data/rho/ldhat_mcmc/chr4.gelman.block.txt",
-#                            "../../../data/rho/ldhat_mcmc/chr4.gelman.map.txt", "../../../data/rho/ldhat_mcmc/chr4_gelman.pdf")
+plot_gelman_point_estimate("../../../data/rho/ldhat_mcmc/chr4.gelman.likelihood.txt",
+                           "../../../data/rho/ldhat_mcmc/chr4.gelman.block.txt",
+                           "../../../data/rho/ldhat_mcmc/chr4.gelman.map.txt", "../../../data/rho/ldhat_mcmc/chr4_gelman.pdf")
 
-# print("Chr5")
-# chr5_scaf_list = c("superscaffold8")
-# mcmc_summary_gelman(chrom = "chr5", scaf_vector = chr5_scaf_list, path_to_folder = "../../../data/rho/ldhat_mcmc/chr5", outputdir = "../../../data/rho/ldhat_mcmc/")
+print("Chr5")
+chr5_scaf_list = c("superscaffold8")
+mcmc_summary_gelman(chrom = "chr5", scaf_vector = chr5_scaf_list, path_to_folder = "../../../data/rho/ldhat_mcmc/chr5", outputdir = "../../../data/rho/ldhat_mcmc/")
 
-# plot_gelman_point_estimate("../../../data/rho/ldhat_mcmc/chr5.gelman.likelihood.txt",
-#                            "../../../data/rho/ldhat_mcmc/chr5.gelman.block.txt",
-#                            "../../../data/rho/ldhat_mcmc/chr5.gelman.map.txt", "../../../data/rho/ldhat_mcmc/chr5_gelman.pdf")
+plot_gelman_point_estimate("../../../data/rho/ldhat_mcmc/chr5.gelman.likelihood.txt",
+                           "../../../data/rho/ldhat_mcmc/chr5.gelman.block.txt",
+                           "../../../data/rho/ldhat_mcmc/chr5.gelman.map.txt", "../../../data/rho/ldhat_mcmc/chr5_gelman.pdf")
 
 print("PAR")
 par_scaf_list = c("superscaffold26", "superscaffold54", "superscaffold35", "superscaffold35")
@@ -121,10 +121,10 @@ plot_gelman_point_estimate("../../../data/rho/ldhat_mcmc/par.gelman.likelihood.t
                            "../../../data/rho/ldhat_mcmc/par.gelman.block.txt",
                            "../../../data/rho/ldhat_mcmc/par.gelman.map.txt", "../../../data/rho/ldhat_mcmc/par_gelman.pdf")
 
-# print("nonPAR")
-# nonpar_scaf_list = c("superscaffold36", "superscaffold62", "superscaffold67", "superscaffold69-1", "superscaffold93", "superscaffold63", "superscaffold88", "superscaffold83", "superscaffold92")
-# mcmc_summary_gelman(chrom = "nonpar", scaf_vector = nonpar_scaf_list, path_to_folder = "../../../data/rho/ldhat_mcmc/z/nonpar", outputdir = "../../../data/rho/ldhat_mcmc/")
+print("nonPAR")
+nonpar_scaf_list = c("superscaffold36", "superscaffold62", "superscaffold67", "superscaffold69-1", "superscaffold93", "superscaffold63", "superscaffold88", "superscaffold83", "superscaffold92")
+mcmc_summary_gelman(chrom = "nonpar", scaf_vector = nonpar_scaf_list, path_to_folder = "../../../data/rho/ldhat_mcmc/z/nonpar", outputdir = "../../../data/rho/ldhat_mcmc/")
 
-# plot_gelman_point_estimate("../../../data/rho/ldhat_mcmc/nonpar.gelman.likelihood.txt",
-#                            "../../../data/rho/ldhat_mcmc/nonpar.gelman.block.txt",
-#                            "../../../data/rho/ldhat_mcmc/nonpar.gelman.map.txt", "../../../data/rho/ldhat_mcmc/nonpar_gelman.pdf")
+plot_gelman_point_estimate("../../../data/rho/ldhat_mcmc/nonpar.gelman.likelihood.txt",
+                           "../../../data/rho/ldhat_mcmc/nonpar.gelman.block.txt",
+                           "../../../data/rho/ldhat_mcmc/nonpar.gelman.map.txt", "../../../data/rho/ldhat_mcmc/nonpar_gelman.pdf")
