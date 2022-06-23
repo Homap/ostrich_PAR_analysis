@@ -21,6 +21,14 @@ and for the nonPAR with only recombination in male is (male_map)x(2/3).
 
 `Rscript get_recombination_frequency.R` 
 
+- Kosambi sex-averaged recombination frequency
+
+| start |  end    | pair_cm |pair_cm_per_site     |   kosambi_r_length_region| kosambi_r_per_site   |   length_region|
+| ----- | ------- | ------- | ------------------- | ------------------------ | -------------------- | -------------- |
+| 1113306 |3461663| 3.932  | 1.67436211785516e-06  |  0.0392391451067574    |  1.67091907690174e-08 |   2348357|
+| 3461664 |4790874 |4.096  | 3.08152963038196e-06  |  0.0408686193213236    |  3.07465481912742e-08 |   1329210|
+| 4790875 |5218698 |3.4785 | 8.13069891053076e-06  |  0.0347289888099115    |  8.11760676960134e-08  |  427823|
+
 - Recombination rate table
 
 | start_pos | end_pos | female_pair_cm_per_site | male_pair_cm_per_site | sex_averaged_pair_cm_per_site | female_smoothed | male_smoothed | sex_averaged_smoothed |
