@@ -26,8 +26,12 @@ and for the nonPAR with only recombination in male is (male_map)x(2/3).
 | start |  end    | pair_cm |pair_cm_per_site     |   kosambi_r_length_region| kosambi_r_per_site   |   length_region|
 | ----- | ------- | ------- | ------------------- | ------------------------ | -------------------- | -------------- |
 | 1113306 |3461663| 3.932  | 1.674e-06  |  0.03924    |  1.6709e-08 |   2348357|
-| 3461664 |4790874 |4.096  | 3.0815e-06  |  0.0409    |  3.0746e-08 |   1329210|
+| 3461664 |4790874 |4.096  | 3.0815e-06  |  0.04087    |  3.0746e-08 |   1329210|
 | 4790875 |5218698 |3.4785 | 8.1307e-06  |  0.03473    |  8.1177e-08  |  427823|
+
+## Window-based recombination rate
+
+
 
 - Recombination rate table
 
