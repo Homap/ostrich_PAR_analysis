@@ -88,7 +88,7 @@ The filtered VCF files for autosomes, PAR and nonPAR are used for the analysis i
     - Tajima's D
     - Site Frequency Spectrum (SFS)
 
-## Conversion of scaffold to chromosome coordinates 
+## Z chromosome assembly in this study
 The Z chromosome assembly used in this study is composed of 12 scaffolds with the order as follows:
 
  - Order and length of Z scaffolds from Yazdi and Ellegren 2018
@@ -118,8 +118,28 @@ The gap is excluded when calculating the total length of PAR and nonPAR as it ca
 
 52,185,293 + 28,678,721 + 7590 = 80,871,604 (Total Z length)
 
+## Conversion of scaffold to chromosome coordinates
+
 To convert to Z chromosome, superscaffold 54 must be cut at position 16379243 and inverted.
 Superscaffold 36 as a whole must also gets inverted (! Do not invert PAR and nonPAR separately, the whole superscaffold must get inverted in one piece).
+
+Script used to convert scaffold to chromosome coordinates is called `scaffold_to_chr.py`. 
+
+## Window-based measures
+
+Population genetics measure in this paper such as LD, rho, diversity, Tajima's D, etc are reported in windows of a certain size.
+The chromosome order and orientation of ostrich Z is driven from genetic map and therefore reflects a true connection among scaffolds. 
+To measure window-based statistics, we first convert the coordinates of a given statistic computed within each scaffold into chromosome level coordinates using
+the script `scaffold_to_chr.py`. 
+
+Using script `sliding_window.py`, we produce windows of any given size with Z coordinates.
+
+To find overlap between our computed statistic and a given window, we use BEDTools' command: 
+`bedtools intersect -a window.txt -b statistic.txt  -wao > window_statistic_overlap.txt`
+
+Now that we have the overlap between windows and statistic of interest, we use a suitable script in each case to obtain a window-based average of our computed measure.
+
+
 
 
 
