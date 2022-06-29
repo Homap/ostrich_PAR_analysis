@@ -93,21 +93,21 @@ The Z chromosome assembly used in this study is composed of 12 scaffolds with th
 
  - Order and length of Z scaffolds from Yazdi and Ellegren 2018
 
-| number | scaffold | Start | end | segment | length |
-| ------ | -------- | ----- | --- | ------- | ------ |
-| 1 | superscaffold26 | 0 | 25310599 | PAR | 25310599 |
-| 2 | superscaffold54 | 0 | 16379243 | PAR | 29256470 |
-| 3 | superscaffold35 | 0 | 4625539 | PAR | 4625539 |
-| 4-a | superscaffold36 | 0 | 3516673 | nonPAR | 3516673 |
-| 4-b | superscaffold36 | 3524263 | 9394175 | PAR | 5869912 |
-| 5 | superscaffold62 | 0 | 2917291 | nonPAR | 2917291 |
-| 6 | superscaffold67 | 0 | 5300260 | nonPAR | 5300260 |
-| 7 | superscaffold69-1 | 0 | 5978518 | nonPAR | 5978518 |
-| 8 | superscaffold93 | 0 | 4983591 | nonPAR | 4983591 |
-| 9 | superscaffold63 | 0 | 1692925 | nonPAR | 1692925 |
-| 10 | superscaffold88 | 0 | 624114 | nonPAR | 624114 |
-| 11 | superscaffold83 | 0 | 782506 | nonPAR | 782506 |
-| 12 | superscaffold92 | 0 | 2882843 | nonPAR | 2882843 |
+| number | scaffold | Start | end | orientation | segment | length |
+| ------ | -------- | ----- | --- | ----------- | ------- | ------ |
+| 1 | superscaffold26 | 0 | 25310599 | + | PAR | 25310599 |
+| 2 | superscaffold54 | 0 | 16379243 | - | PAR | 29256470 |
+| 3 | superscaffold35 | 0 | 4625539 | + | PAR | 4625539 |
+| 4-a | superscaffold36 | 0 | 3516673 | - | nonPAR | 3516673 |
+| 4-b | superscaffold36 | 3524263 | - | 9394175 | PAR | 5869912 |
+| 5 | superscaffold62 | 0 | 2917291 | + | nonPAR | 2917291 |
+| 6 | superscaffold67 | 0 | 5300260 | + | nonPAR | 5300260 |
+| 7 | superscaffold69-1 | 0 | 5978518 | + | nonPAR | 5978518 |
+| 8 | superscaffold93 | 0 | 4983591 | + | nonPAR | 4983591 |
+| 9 | superscaffold63 | 0 | 1692925 | + | nonPAR | 1692925 |
+| 10 | superscaffold88 | 0 | 624114 | + | nonPAR | 624114 |
+| 11 | superscaffold83 | 0 | 782506 | + | nonPAR | 782506 |
+| 12 | superscaffold92 | 0 | 2882843 | + | nonPAR | 2882843 |
 
 Total length of Z chromosome is 80,871,604 bp.
 Total length of PAR is 52,185,293 bp.
@@ -117,4 +117,9 @@ There is a gap with Ns between coordinates 3516673 and 3524263 of 7590 bp in sup
 The gap is excluded when calculating the total length of PAR and nonPAR as it cannot be assigned to neither. 
 
 52,185,293 + 28,678,721 + 7590 = 80,871,604 (Total Z length)
+
+To convert to Z chromosome, superscaffold 54 must be cut at position 16379243 and inverted.
+Superscaffold 36 as a whole must also gets inverted (! Do not invert PAR and nonPAR separately, the whole superscaffold must get inverted in one piece).
+
+
 
