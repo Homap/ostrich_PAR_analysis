@@ -94,7 +94,7 @@ The Z chromosome assembly used in this study is composed of 12 scaffolds with th
  - Order and length of Z scaffolds from Yazdi and Ellegren 2018
 
 | number | scaffold | Start | end | segment | length |
-| ------ | -------- | ------ |
+| ------ | -------- | ----- | --- | ------- | ------ |
 | 1 | superscaffold26 | 0 | 25310599 | PAR | 25310599 |
 | 2 | superscaffold54 | 0 | 16379243 | PAR | 29256470 |
 | 3 | superscaffold35 | 0 | 4625539 | PAR | 4625539 |
