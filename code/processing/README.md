@@ -93,24 +93,26 @@ The Z chromosome assembly used in this study is composed of 12 scaffolds with th
 
  - Order and length of Z scaffolds from Yazdi and Ellegren 2018
 
-| number | scaffold | Start | end | orientation | segment | length |
-| ------ | -------- | ----- | --- | ----------- | ------- | ------ |
-| 1 | superscaffold26 | 0 | 25310599 | + | PAR | 25310599 |
-| 2 | superscaffold54 | 0 | 16379243 | - | PAR | 29256470 |
-| 3 | superscaffold35 | 0 | 4625539 | + | PAR | 4625539 |
-| 4-a | superscaffold36 | 0 | 3516673 | - | nonPAR | 3516673 |
-| 4-b | superscaffold36 | 3524263 | - | 9394175 | PAR | 5869912 |
-| 5 | superscaffold62 | 0 | 2917291 | + | nonPAR | 2917291 |
-| 6 | superscaffold67 | 0 | 5300260 | + | nonPAR | 5300260 |
-| 7 | superscaffold69-1 | 0 | 5978518 | + | nonPAR | 5978518 |
-| 8 | superscaffold93 | 0 | 4983591 | + | nonPAR | 4983591 |
-| 9 | superscaffold63 | 0 | 1692925 | + | nonPAR | 1692925 |
-| 10 | superscaffold88 | 0 | 624114 | + | nonPAR | 624114 |
-| 11 | superscaffold83 | 0 | 782506 | + | nonPAR | 782506 |
-| 12 | superscaffold92 | 0 | 2882843 | + | nonPAR | 2882843 |
+| number | scaffold | Start | end | orientation | segment | scaffold length | Z length |
+| ------ | -------- | ----- | --- | ----------- | ------- | --------------- | -------- |
+| 1 | superscaffold26 | 0 | 25310599 | + | PAR | 25310599 | 25310599 |
+| 2 | superscaffold54 | 16379243 | 0 | - | PAR | 29256470 | 41689842 |
+| 3 | superscaffold35 | 0 | 4625539 | + | PAR | 4625539 | 46315381 | 
+| 4-a | superscaffold36 | 9394175 | 3524263 | - | PAR | 5869912 | 52185293 |
+| gap | superscaffold36 | 3524264 | 3516674 | - | GAP | 7590 | 52192883
+| 4-b | superscaffold36 | 3516673 | 0 | - | nonPAR | 3516673 | 55709556 |
+| 5 | superscaffold62 | 0 | 2917291 | + | nonPAR | 2917291 | 58626847 |
+| 6 | superscaffold67 | 0 | 5300260 | + | nonPAR | 5300260 | 63927107 |
+| 7 | superscaffold69-1 | 0 | 5978518 | + | nonPAR | 5978518 | 69905625 |
+| 8 | superscaffold93 | 0 | 4983591 | + | nonPAR | 4983591 | 74889216 |
+| 9 | superscaffold63 | 0 | 1692925 | + | nonPAR | 1692925 | 76582141 |
+| 10 | superscaffold88 | 0 | 624114 | + | nonPAR | 624114 | 77206255 |
+| 11 | superscaffold83 | 0 | 782506 | + | nonPAR | 782506 | 77988761 |
+| 12 | superscaffold92 | 0 | 2882843 | + | nonPAR | 2882843 | 80871604 |
 
 Total length of Z chromosome is 80,871,604 bp. <br>
 Total length of PAR is 52,185,293 bp. <br>
+The PAR boundary is located at the gap between 52185293 and 52192883. 
 Total length of nonPAR is 28,678,721 bp. <br>
 
 There is a gap with Ns between coordinates 3516673 and 3524263 of 7590 bp in superscaffold36.
@@ -123,7 +125,13 @@ The gap is excluded when calculating the total length of PAR and nonPAR as it ca
 To convert to Z chromosome, superscaffold 54 must be cut at position 16379243 and inverted.
 Superscaffold 36 as a whole must also gets inverted (! Do not invert PAR and nonPAR separately, the whole superscaffold must get inverted in one piece).
 
-Script used to convert scaffold to chromosome coordinates is called `scaffold_to_chr.py`. 
+Script used to convert scaffold to chromosome coordinates is called `scaffold_to_chr.py`. Throughout the manuscript, we need measures of PAR and nonPAR separately.
+The conversion from scaffold to chromosome coordinate can therefore be done in three ways:
+- Conversion of whole Z
+
+- Conversion of only PAR
+
+- Conversion of only nonPAR
 
 ## Window-based measures
 
