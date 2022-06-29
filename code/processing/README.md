@@ -98,9 +98,9 @@ The Z chromosome assembly used in this study is composed of 12 scaffolds with th
 | 1 | superscaffold26 | 0 | 25310599 | + | PAR | 25310599 | 25310599 |
 | 2 | superscaffold54 | 16379243 | 0 | - | PAR | 29256470 | 41689842 |
 | 3 | superscaffold35 | 0 | 4625539 | + | PAR | 4625539 | 46315381 | 
-| 4-a | superscaffold36 | 9394175 | 3524263 | - | PAR | 5869912 | 52185293 |
-| gap | superscaffold36 | 3524264 | 3516674 | - | GAP | 7590 | 52192883
-| 4-b | superscaffold36 | 3516673 | 0 | - | nonPAR | 3516673 | 55709556 |
+| 4-a | superscaffold36 | 9394175 | 3524264 | - | PAR | 5869911 | 52185292 |
+| gap | superscaffold36 | 3524264 | 3516672 | - | gap | 7592 | 52192884
+| 4-b | superscaffold36 | 3516672 | 0 | - | nonPAR | 3516672 | 55709556 |
 | 5 | superscaffold62 | 0 | 2917291 | + | nonPAR | 2917291 | 58626847 |
 | 6 | superscaffold67 | 0 | 5300260 | + | nonPAR | 5300260 | 63927107 |
 | 7 | superscaffold69-1 | 0 | 5978518 | + | nonPAR | 5978518 | 69905625 |
@@ -111,43 +111,45 @@ The Z chromosome assembly used in this study is composed of 12 scaffolds with th
 | 12 | superscaffold92 | 0 | 2882843 | + | nonPAR | 2882843 | 80871604 |
 
 Total length of Z chromosome is 80,871,604 bp. <br>
-Total length of PAR is 52,185,293 bp. <br>
-The PAR boundary is located at the gap between 52185293 and 52192883. 
-Total length of nonPAR is 28,678,721 bp. <br>
+Total length of PAR is 52,185,292 bp. <br>
+The PAR boundary is located at the gap between 52185292 and 52192884. 
+Total length of nonPAR is 28,678,720 bp. <br>
 
-There is a gap with Ns between coordinates 3516673 and 3524263 of 7590 bp in superscaffold36.
+There is a gap with Ns between coordinates 3516672 and 3524264 of 7592 bp in superscaffold36.
 The gap is excluded when calculating the total length of PAR and nonPAR as it cannot be assigned to neither. 
 
-52,185,293 + 28,678,721 + 7590 = 80,871,604 (Total Z length)
+52,185,292 + 28,678,720 + 7592 = 80,871,604 (Total Z length)
 
 ## Conversion of scaffold to chromosome coordinates
 
 To convert to Z chromosome, superscaffold 54 must be cut at position 16379243 and inverted.
 Superscaffold 36 as a whole must also gets inverted (! Do not invert PAR and nonPAR separately, the whole superscaffold must get inverted in one piece).
 
-Script used to convert scaffold to chromosome coordinates is called `scaffold_to_chr.py`. Throughout the manuscript, we need measures of PAR and nonPAR separately.
-The conversion from scaffold to chromosome coordinate can therefore be done in three ways:
-- Conversion of whole Z
-
-- Conversion of only PAR
-
-- Conversion of only nonPAR
-
-## Window-based measures
-
 Population genetics measure in this paper such as LD, rho, diversity, Tajima's D, etc are reported in windows of a certain size.
 The chromosome order and orientation of ostrich Z is driven from genetic map and therefore reflects a true connection among scaffolds. 
 To measure window-based statistics, we first convert the coordinates of a given statistic computed within each scaffold into chromosome level coordinates using
 the script `scaffold_to_chr.py`. 
 
-Using script `sliding_window.py`, we produce windows of any given size with Z coordinates.
+Script used to convert scaffold to chromosome coordinates is called `scaffold_to_chr.py`. Throughout the manuscript, we need measures of PAR and nonPAR separately.
+The conversion from scaffold to chromosome coordinate can therefore be done in three ways:
+- Conversion of whole Z
+`python scaffold_to_chr.py ../../data/sliding_window/z_scaf_1Mb_window.txt Z`
+- Conversion of only PAR
+`python scaffold_to_chr.py ../../data/sliding_window/z_scaf_1Mb_window.txt PAR`
+- Conversion of only nonPAR
+`python scaffold_to_chr.py ../../data/sliding_window/z_scaf_1Mb_window.txt nonPAR`
 
-To find overlap between our computed statistic and a given window, we use BEDTools' command: <br>
+## Window-based measures
+
+- Produce the sliding windows:
+
+`python sliding_window.py start_length_file.txt windowsize stepsize start > windows.bed`
+
+- To find overlap between our computed statistic and a given window:
+
 `bedtools intersect -a window.txt -b statistic.txt  -wao > window_statistic_overlap.txt`
 
 Now that we have the overlap between windows and statistic of interest, we use a suitable script in each case to obtain a window-based average of our computed measure.
-
-
 
 
 
