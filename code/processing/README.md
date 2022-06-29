@@ -134,7 +134,7 @@ the script `scaffold_to_chr.py`.
 
 Using script `sliding_window.py`, we produce windows of any given size with Z coordinates.
 
-To find overlap between our computed statistic and a given window, we use BEDTools' command: 
+To find overlap between our computed statistic and a given window, we use BEDTools' command: <br>
 `bedtools intersect -a window.txt -b statistic.txt  -wao > window_statistic_overlap.txt`
 
 Now that we have the overlap between windows and statistic of interest, we use a suitable script in each case to obtain a window-based average of our computed measure.
