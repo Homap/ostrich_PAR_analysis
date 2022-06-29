@@ -109,9 +109,9 @@ The Z chromosome assembly used in this study is composed of 12 scaffolds with th
 | 11 | superscaffold83 | 0 | 782506 | + | nonPAR | 782506 |
 | 12 | superscaffold92 | 0 | 2882843 | + | nonPAR | 2882843 |
 
-Total length of Z chromosome is 80,871,604 bp.
-Total length of PAR is 52,185,293 bp.
-Total length of nonPAR is 28,678,721 bp.
+Total length of Z chromosome is 80,871,604 bp. <br>
+Total length of PAR is 52,185,293 bp. <br>
+Total length of nonPAR is 28,678,721 bp. <br>
 
 There is a gap with Ns between coordinates 3516673 and 3524263 of 7590 bp in superscaffold36.
 The gap is excluded when calculating the total length of PAR and nonPAR as it cannot be assigned to neither. 
