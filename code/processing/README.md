@@ -88,7 +88,24 @@ The filtered VCF files for autosomes, PAR and nonPAR are used for the analysis i
     - Tajima's D
     - Site Frequency Spectrum (SFS)
 
+## Conversion of scaffold to chromosome coordinates 
+The Z chromosome assembly used in this study is composed of 12 scaffolds with the order as follows:
 
+Order and length of Z scaffolds from Yazdi and Ellegren 2018
 
+| Number | Scaffold | length |
+| ------ | -------- | ------ |
+| 1 | superscaffold26 | 25310599 |
+| 2 | superscaffold54 | 16379243 |
+| 3 | superscaffold35 | 4625539 |
+| 4 | superscaffold36 | 9394175 |
+| 5 | superscaffold62 | 2917291 |
+| 6 | superscaffold67 | 5300260 |
+| 7 | superscaffold69-1 | 5978518 |
+| 8 | superscaffold93 | 4983591 |
+| 9 | superscaffold63 | 1692925 |
+| 10 | superscaffold88 | 624114 |
+| 11 | superscaffold83 | 782506 |
+| 12 | superscaffold92 | 2882843 |
 
 
