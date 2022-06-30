@@ -31,14 +31,19 @@ and for the nonPAR with only recombination in male is (male_map)x(2/3).
 
 ## Window-based recombination rate
 
+```
+module load bioinfo-tools BEDTools/2.29.2
 
+awk 'BEGIN{OFS="\t"}NR==1{$(NF+1)="CHROM"} NR>1{$(NF+1)="ChrZ"} {chr=$NF; print chr,$1,$2,$3,$4,$5,$6,$7}' ../../../data/geneticmap/kosambi_sex_averaged.txt > temp && mv -f temp ../../../data/geneticmap/kosambi_sex_averaged.txt
 
-- Recombination rate table
+# 1Mb window
+bedtools intersect -a ../../../data/sliding_window/Z.coord.1Mb.windows.PAR.txt -b ../../../data/geneticmap/kosambi_sex_averaged.txt -wao | \
+awk 'BEGIN{print "CHROM""\t""win_start""\t""win_end""\t""chr""\t""start""\t""end""\t""pair_cm""\t""pair_cm_per_site""\t""kosambi_r_length_region""\t""kosambi_r_per_site""\t""length_region"}{print $0}' > ../../../data/geneticmap/kosambi_sex_averaged.bedtools.txt
 
-| start_pos | end_pos | female_pair_cm_per_site | male_pair_cm_per_site | sex_averaged_pair_cm_per_site | female_smoothed | male_smoothed | sex_averaged_smoothed |
-| ------- | --------- | ------- | --------------- | ----------------- | --------------- | ----------------------- | ---|
-| 1113306 | 2113305 | 2.03 |   1.318  | 1.674 |  2.747 |  1.721 |  2.234 |
-| 2113306 | 3113305 | 2.03 |   1.318  | 1.674 |  2.855 |  1.653 |  2.254 |
+python get_recombination_per_window.py ../../../data/geneticmap/kosambi_sex_averaged.bedtools.txt ../../../data/sliding_window/Z.coord.1Mb.windows.PAR.txt > ../../../data/geneticmap/kosambi_sex_averaged_1MB.window.PAR.txt
+
+rm -f ../../../data/geneticmap/kosambi_sex_averaged.bedtools.txt 
+```
 
 - Map length and recombination rate for the PAR
 
