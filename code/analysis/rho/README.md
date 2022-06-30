@@ -139,41 +139,11 @@ To convert to bp divide Mean_rho by 1000. To obtain the map length from the per 
 
 ## Window-based rho with Z coordinates
 
-Order of Z scaffolds
-
-| Number | Scaffold |
-| ------ | -------- |
-| 1 | superscaffold26 |
-| 2 | superscaffold54 |
-| 3 | superscaffold35 |
-| 4 | superscaffold36 |
-| 5 | superscaffold62 |
-| 6 | superscaffold67 |
-| 7 | superscaffold69-1 |
-| 8 | superscaffold93 |
-| 9 | superscaffold63 |
-| 10| superscaffold88 |
-| 11| superscaffold83 |
-| 12| superscaffold92 |
-
 `bash 7_rho_window_Z_coordinates.sh`
 
-## Use rho and recombination rate to obtain Ne for the PAR
-
-We have recombination rate obtained from genetic map and population scaled recombination rate (rho) from SNP data estimated by LDhat.
-We know that rho = 4Ner, therefore we can obtain Ne = rho/4r.
-
-| start	  | end	    | real_rate_map_cM_Mb |	smooth_rate_map_cM_Mb |	rho	             | Ne_smooth_r       | Ne_real_r        |
-| ------- | ------- | ------------------- | --------------------- | ---------------- | ----------------- | ---------------- |
-| 1113306 |	2113305	| 1.67436211785516    |	2.23440306369648	  | 3259.56577588062 |	36470.2079589007 | 48668.7697529863 |
-| 2113306 |	3113305	| 1.67436211785516    |	2.25400661620525	  | 3446.22125241359 |	38223.2823501589 | 51455.7337338137 |
-
-Also in 200 Kb windows with 50 Kb overlap
 
 
 
-For the SDR, calculate Rho only in males and then for the sex-averaged recombination rate, do 2/3*(male recombination
-rate).
 
 
 
