@@ -61,9 +61,10 @@ python get_recombination_per_window.py ${rho_z}/chrZ.map.length.PAR.coord.200Kb.
 python get_recombination_per_window.py ${rho_z}/chrZ.map.length.nonPAR.coord.200Kb.window.txt ${sw}/Z.coord.200Kb.windows.nonPAR.txt > ${rho_z}/200Kb_rho_nonPAR.txt
 
 # remove intermediate files
-rm -f ${rho_z}/chrZ.map.length.Z.coord.200Kb.window.txt \
-{rho_z}/chrZ.map.length.PAR.coord.200Kb.window.txt \
-{rho_z}/chrZ.map.length.nonPAR.coord.200Kb.window.txt \
+rm -f ${rho_z}/chrZ.map.length.PAR.coord.1Mbwindow.txt \
+${rho_z}/chrZ.map.length.Z.coord.200Kb.window.txt \
+${rho_z}/chrZ.map.length.PAR.coord.200Kb.window.txt \
+${rho_z}/chrZ.map.length.nonPAR.coord.200Kb.window.txt \
 ${rho_z}/chrZ.map.length.Z.coord.txt \
 ${rho_z}/chrZ.map.length.PAR.coord.txt \
 ${rho_z}/chrZ.map.length.nonPAR.coord.txt \
