@@ -52,14 +52,14 @@ def main():
 		for scaffold in scaffold_order:
 			if scaffold == "superscaffold26":
 				for l in vcf_dict[scaffold]:
-					print ("ChrZ" + "\t" + "\t".join(l) + "\t" + scaffold + "\t" + "\t".join(l[0:2]))
+					print ("ChrZ" + "\t" + l[0] + "\t" + l[1] + "\t" + scaffold + "\t" + "\t".join(l[0:2]) + "\t" + "\t".join(l[2:]))
 		# ******************************************************************************			
 			elif scaffold == "superscaffold54":
 				new_list = []
 				scaf_list = []
 				for l in vcf_dict[scaffold]:
 					if int(l[0]) <= Z_scaffold_length[scaffold]:
-						scaf_list.append(l[0:2])
+						scaf_list.append(l[0:])
 						l[0] = str(Z_scaffold_length["superscaffold26"] + (Z_scaffold_length[scaffold] - int(l[0]) + 1))
 						l[1] = str(Z_scaffold_length["superscaffold26"] + (Z_scaffold_length[scaffold] - int(l[1]) + 1))
 						new_list.append(l)
@@ -74,13 +74,13 @@ def main():
 					scaf_list.append(l[0:2])
 					l[0] = str(Z_scaffold_length["superscaffold26"] + Z_scaffold_length["superscaffold54"] + int(l[0]))
 					l[1] = str(Z_scaffold_length["superscaffold26"] + Z_scaffold_length["superscaffold54"] + int(l[1]))
-					print ("ChrZ" + "\t" + "\t".join(l) + "\t" + scaffold + "\t" + ["\t".join(map(str,x)) for x in scaf_list][ind])
+					print ("ChrZ" + "\t" + l[0] + "\t" + l[1] + "\t" + scaffold + "\t" + ["\t".join(map(str,x)) for x in scaf_list][ind] + "\t" + "\t".join(l[2:]))
 		# ******************************************************************************			
 			elif scaffold == "superscaffold36":
 				new_list = []
 				scaf_list = []
 				for l in vcf_dict[scaffold]:
-					scaf_list.append(l[0:2])
+					scaf_list.append(l[0:])
 					l[0] = str(Z_scaffold_length["superscaffold26"] + Z_scaffold_length["superscaffold54"] + Z_scaffold_length["superscaffold35"] + (Z_scaffold_length[scaffold] - int(l[0]) + 1))
 					l[1] = str(Z_scaffold_length["superscaffold26"] + Z_scaffold_length["superscaffold54"] + Z_scaffold_length["superscaffold35"] + (Z_scaffold_length[scaffold] - int(l[1]) + 1))
 					new_list.append(l)
@@ -95,7 +95,7 @@ def main():
 					scaf_list.append(l[0:2])
 					l[0] = str(Z_scaffold_length["superscaffold26"] + Z_scaffold_length["superscaffold54"] + Z_scaffold_length["superscaffold35"] + Z_scaffold_length["superscaffold36"] + int(l[0]))
 					l[1] = str(Z_scaffold_length["superscaffold26"] + Z_scaffold_length["superscaffold54"] + Z_scaffold_length["superscaffold35"] + Z_scaffold_length["superscaffold36"] + int(l[1]))
-					print ("ChrZ" + "\t"+ "\t".join(l) + "\t" + scaffold + "\t" + ["\t".join(map(str,x)) for x in scaf_list][ind])
+					print ("ChrZ" + "\t" + l[0] + "\t" + l[1] + "\t" + scaffold + "\t" + ["\t".join(map(str,x)) for x in scaf_list][ind] + "\t" + "\t".join(l[2:]))
 		# ******************************************************************************			
 			elif scaffold == "superscaffold67":
 				scaf_list = []
@@ -104,7 +104,7 @@ def main():
 					scaf_list.append(l[0:2])
 					l[0] = str(Z_scaffold_length["superscaffold26"] + Z_scaffold_length["superscaffold54"] + Z_scaffold_length["superscaffold35"] + Z_scaffold_length["superscaffold36"] + Z_scaffold_length["superscaffold62"] + int(l[0]))
 					l[1] = str(Z_scaffold_length["superscaffold26"] + Z_scaffold_length["superscaffold54"] + Z_scaffold_length["superscaffold35"] + Z_scaffold_length["superscaffold36"] + Z_scaffold_length["superscaffold62"] + int(l[1]))			
-					print ("ChrZ" + "\t" + "\t".join(l) + "\t" + scaffold + "\t" + ["\t".join(map(str,x)) for x in scaf_list][ind])
+					print ("ChrZ" + "\t" + l[0] + "\t" + l[1] + "\t" + scaffold + "\t" + ["\t".join(map(str,x)) for x in scaf_list][ind] + "\t" + "\t".join(l[2:]))
 		# ******************************************************************************			
 			elif scaffold == "superscaffold69-1":
 				scaf_list = []
@@ -113,7 +113,7 @@ def main():
 					scaf_list.append(l[0:2])
 					l[0] = str(Z_scaffold_length["superscaffold26"] + Z_scaffold_length["superscaffold54"] + Z_scaffold_length["superscaffold35"] + Z_scaffold_length["superscaffold36"] + Z_scaffold_length["superscaffold62"] + Z_scaffold_length["superscaffold67"] + int(l[0]))
 					l[1] = str(Z_scaffold_length["superscaffold26"] + Z_scaffold_length["superscaffold54"] + Z_scaffold_length["superscaffold35"] + Z_scaffold_length["superscaffold36"] + Z_scaffold_length["superscaffold62"] + Z_scaffold_length["superscaffold67"] + int(l[1]))			
-					print ("ChrZ" + "\t" + "\t".join(l) + "\t" + scaffold + "\t" + ["\t".join(map(str,x)) for x in scaf_list][ind])
+					print ("ChrZ" + "\t" + l[0] + "\t" + l[1] + "\t" + scaffold + "\t" + ["\t".join(map(str,x)) for x in scaf_list][ind] + "\t" + "\t".join(l[2:]))
 		# ******************************************************************************			
 			elif scaffold == "superscaffold93":
 				scaf_list = []
@@ -122,7 +122,7 @@ def main():
 					scaf_list.append(l[0:2])
 					l[0] = str(Z_scaffold_length["superscaffold26"] + Z_scaffold_length["superscaffold54"] + Z_scaffold_length["superscaffold35"] + Z_scaffold_length["superscaffold36"] + Z_scaffold_length["superscaffold62"] + Z_scaffold_length["superscaffold67"] + Z_scaffold_length["superscaffold69-1"] + int(l[0]))
 					l[1] = str(Z_scaffold_length["superscaffold26"] + Z_scaffold_length["superscaffold54"] + Z_scaffold_length["superscaffold35"] + Z_scaffold_length["superscaffold36"] + Z_scaffold_length["superscaffold62"] + Z_scaffold_length["superscaffold67"] + Z_scaffold_length["superscaffold69-1"] + int(l[1]))			
-					print ("ChrZ" + "\t" + "\t".join(l) + "\t" + scaffold + "\t" + ["\t".join(map(str,x)) for x in scaf_list][ind])
+					print ("ChrZ" + "\t" + l[0] + "\t" + l[1] + "\t" + scaffold + "\t" + ["\t".join(map(str,x)) for x in scaf_list][ind] + "\t" + "\t".join(l[2:]))
 		# ******************************************************************************			
 			elif scaffold == "superscaffold63":
 				scaf_list = []
@@ -131,7 +131,7 @@ def main():
 					scaf_list.append(l[0:2])
 					l[0] = str(Z_scaffold_length["superscaffold26"] + Z_scaffold_length["superscaffold54"] + Z_scaffold_length["superscaffold35"] + Z_scaffold_length["superscaffold36"] + Z_scaffold_length["superscaffold62"] + Z_scaffold_length["superscaffold67"] + Z_scaffold_length["superscaffold69-1"] + Z_scaffold_length["superscaffold93"] + int(l[0]))
 					l[1] = str(Z_scaffold_length["superscaffold26"] + Z_scaffold_length["superscaffold54"] + Z_scaffold_length["superscaffold35"] + Z_scaffold_length["superscaffold36"] + Z_scaffold_length["superscaffold62"] + Z_scaffold_length["superscaffold67"] + Z_scaffold_length["superscaffold69-1"] + Z_scaffold_length["superscaffold93"] + int(l[1]))			
-					print ("ChrZ" + "\t" + "\t".join(l) + "\t" + scaffold + "\t" + ["\t".join(map(str,x)) for x in scaf_list][ind])
+					print ("ChrZ" + "\t" + l[0] + "\t" + l[1] + "\t" + scaffold + "\t" + ["\t".join(map(str,x)) for x in scaf_list][ind] + "\t" + "\t".join(l[2:]))
 		# ******************************************************************************			
 			elif scaffold == "superscaffold88":
 				scaf_list = []
@@ -140,7 +140,7 @@ def main():
 					scaf_list.append(l[0:2])
 					l[0] = str(Z_scaffold_length["superscaffold26"] + Z_scaffold_length["superscaffold54"] + Z_scaffold_length["superscaffold35"] + Z_scaffold_length["superscaffold36"] + Z_scaffold_length["superscaffold62"] + Z_scaffold_length["superscaffold67"] + Z_scaffold_length["superscaffold69-1"] + Z_scaffold_length["superscaffold93"] + Z_scaffold_length["superscaffold63"] + int(l[0]))
 					l[1] = str(Z_scaffold_length["superscaffold26"] + Z_scaffold_length["superscaffold54"] + Z_scaffold_length["superscaffold35"] + Z_scaffold_length["superscaffold36"] + Z_scaffold_length["superscaffold62"] + Z_scaffold_length["superscaffold67"] + Z_scaffold_length["superscaffold69-1"] + Z_scaffold_length["superscaffold93"] + Z_scaffold_length["superscaffold63"] + int(l[1]))
-					print ("ChrZ"  + "\t" + "\t".join(l) + "\t" + scaffold + "\t" + ["\t".join(map(str,x)) for x in scaf_list][ind])
+					print ("ChrZ" + "\t" + l[0] + "\t" + l[1] + "\t" + scaffold + "\t" + ["\t".join(map(str,x)) for x in scaf_list][ind] + "\t" + "\t".join(l[2:]))
 		# ******************************************************************************			
 			elif scaffold == "superscaffold83":
 				scaf_list = []
@@ -149,7 +149,7 @@ def main():
 					scaf_list.append(l[0:2])
 					l[0] = str(Z_scaffold_length["superscaffold26"] + Z_scaffold_length["superscaffold54"] + Z_scaffold_length["superscaffold35"] + Z_scaffold_length["superscaffold36"] + Z_scaffold_length["superscaffold62"] + Z_scaffold_length["superscaffold67"] + Z_scaffold_length["superscaffold69-1"] + Z_scaffold_length["superscaffold93"] + Z_scaffold_length["superscaffold63"] + Z_scaffold_length["superscaffold88"] + int(l[0]))
 					l[1] = str(Z_scaffold_length["superscaffold26"] + Z_scaffold_length["superscaffold54"] + Z_scaffold_length["superscaffold35"] + Z_scaffold_length["superscaffold36"] + Z_scaffold_length["superscaffold62"] + Z_scaffold_length["superscaffold67"] + Z_scaffold_length["superscaffold69-1"] + Z_scaffold_length["superscaffold93"] + Z_scaffold_length["superscaffold63"] + Z_scaffold_length["superscaffold88"] + int(l[1]))			
-					print ("ChrZ" + "\t" + "\t".join(l) + "\t" + scaffold + "\t" + ["\t".join(map(str,x)) for x in scaf_list][ind])
+					print ("ChrZ" + "\t" + l[0] + "\t" + l[1] + "\t" + scaffold + "\t" + ["\t".join(map(str,x)) for x in scaf_list][ind] + "\t" + "\t".join(l[2:]))
 		# ******************************************************************************			
 			elif scaffold == "superscaffold92":
 				scaf_list = []
@@ -158,13 +158,13 @@ def main():
 					scaf_list.append(l[0:2])
 					l[0] = str(Z_scaffold_length["superscaffold26"] + Z_scaffold_length["superscaffold54"] + Z_scaffold_length["superscaffold35"] + Z_scaffold_length["superscaffold36"] + Z_scaffold_length["superscaffold62"] + Z_scaffold_length["superscaffold67"] + Z_scaffold_length["superscaffold69-1"] + Z_scaffold_length["superscaffold93"] + Z_scaffold_length["superscaffold63"] + Z_scaffold_length["superscaffold88"] + Z_scaffold_length["superscaffold83"] + int(l[0]))
 					l[1] = str(Z_scaffold_length["superscaffold26"] + Z_scaffold_length["superscaffold54"] + Z_scaffold_length["superscaffold35"] + Z_scaffold_length["superscaffold36"] + Z_scaffold_length["superscaffold62"] + Z_scaffold_length["superscaffold67"] + Z_scaffold_length["superscaffold69-1"] + Z_scaffold_length["superscaffold93"] + Z_scaffold_length["superscaffold63"] + Z_scaffold_length["superscaffold88"] + Z_scaffold_length["superscaffold83"] + int(l[1]))			
-					print ("ChrZ" + "\t" + "\t".join(l) + "\t" + scaffold + "\t" + ["\t".join(map(str,x)) for x in scaf_list][ind])
+					print ("ChrZ" + "\t" + l[0] + "\t" + l[1] + "\t" + scaffold + "\t" + ["\t".join(map(str,x)) for x in scaf_list][ind] + "\t" + "\t".join(l[2:]))
 		# ******************************************************************************				
 	elif chr_seg == "PAR":
 		for scaffold in scaffold_order:
 			if scaffold == "superscaffold26":
 				for l in vcf_dict[scaffold]:
-					print ("ChrZ" + "\t" + "\t".join(l) + "\t" + scaffold + "\t" + "\t".join(l[0:2]))
+					print ("ChrZ" + "\t" + l[0] + "\t" + l[1] + "\t" + scaffold + "\t" + "\t".join(l[0:2]) + "\t" + "\t".join(l[2:]))
 		# ******************************************************************************			
 			elif scaffold == "superscaffold54":
 				new_list = []
@@ -186,7 +186,7 @@ def main():
 					scaf_list.append(l[0:2])
 					l[0] = str(PAR_scaffold_length["superscaffold26"] + PAR_scaffold_length["superscaffold54"] + int(l[0]))
 					l[1] = str(PAR_scaffold_length["superscaffold26"] + PAR_scaffold_length["superscaffold54"] + int(l[1]))
-					print ("ChrZ" + "\t" + "\t".join(l) + "\t" + scaffold + "\t" + ["\t".join(map(str,x)) for x in scaf_list][ind])
+					print ("ChrZ" + "\t" + l[0] + "\t" + l[1] + "\t" + scaffold + "\t" + ["\t".join(map(str,x)) for x in scaf_list][ind] + "\t" + "\t".join(l[2:]))
 		# ******************************************************************************			
 			elif scaffold == "superscaffold36":
 				new_list = []
@@ -223,7 +223,7 @@ def main():
 					scaf_list.append(l[0:2])
 					l[0] = str(PAR_scaffold_length["superscaffold26"] + PAR_scaffold_length["superscaffold54"] + PAR_scaffold_length["superscaffold35"] + Z_scaffold_length["superscaffold36"] + int(l[0]))
 					l[1] = str(PAR_scaffold_length["superscaffold26"] + PAR_scaffold_length["superscaffold54"] + PAR_scaffold_length["superscaffold35"] + Z_scaffold_length["superscaffold36"] + int(l[1]))
-					print ("ChrZ" + "\t"+ "\t".join(l) + "\t" + scaffold + "\t" + ["\t".join(map(str,x)) for x in scaf_list][ind])
+					print ("ChrZ" + "\t" + l[0] + "\t" + l[1] + "\t" + scaffold + "\t" + ["\t".join(map(str,x)) for x in scaf_list][ind] + "\t" + "\t".join(l[2:]))
 		# ******************************************************************************			
 			elif scaffold == "superscaffold67":
 				scaf_list = []
@@ -232,7 +232,7 @@ def main():
 					scaf_list.append(l[0:2])
 					l[0] = str(PAR_scaffold_length["superscaffold26"] + PAR_scaffold_length["superscaffold54"] + PAR_scaffold_length["superscaffold35"] + Z_scaffold_length["superscaffold36"] + nonPAR_scaffold_length["superscaffold62"] + int(l[0]))
 					l[1] = str(PAR_scaffold_length["superscaffold26"] + PAR_scaffold_length["superscaffold54"] + PAR_scaffold_length["superscaffold35"] + Z_scaffold_length["superscaffold36"] + nonPAR_scaffold_length["superscaffold62"] + int(l[1]))			
-					print ("ChrZ" + "\t" + "\t".join(l) + "\t" + scaffold + "\t" + ["\t".join(map(str,x)) for x in scaf_list][ind])
+					print ("ChrZ" + "\t" + l[0] + "\t" + l[1] + "\t" + scaffold + "\t" + ["\t".join(map(str,x)) for x in scaf_list][ind] + "\t" + "\t".join(l[2:]))
 		# ******************************************************************************			
 			elif scaffold == "superscaffold69-1":
 				scaf_list = []
@@ -241,7 +241,7 @@ def main():
 					scaf_list.append(l[0:2])
 					l[0] = str(PAR_scaffold_length["superscaffold26"] + PAR_scaffold_length["superscaffold54"] + PAR_scaffold_length["superscaffold35"] + Z_scaffold_length["superscaffold36"] + nonPAR_scaffold_length["superscaffold62"] + nonPAR_scaffold_length["superscaffold67"] + int(l[0]))
 					l[1] = str(PAR_scaffold_length["superscaffold26"] + PAR_scaffold_length["superscaffold54"] + PAR_scaffold_length["superscaffold35"] + Z_scaffold_length["superscaffold36"] + nonPAR_scaffold_length["superscaffold62"] + nonPAR_scaffold_length["superscaffold67"] + int(l[1]))			
-					print ("ChrZ" + "\t" + "\t".join(l) + "\t" + scaffold + "\t" + ["\t".join(map(str,x)) for x in scaf_list][ind])
+					print ("ChrZ" + "\t" + l[0] + "\t" + l[1] + "\t" + scaffold + "\t" + ["\t".join(map(str,x)) for x in scaf_list][ind] + "\t" + "\t".join(l[2:]))
 		# ******************************************************************************			
 			elif scaffold == "superscaffold93":
 				scaf_list = []
@@ -250,7 +250,7 @@ def main():
 					scaf_list.append(l[0:2])
 					l[0] = str(PAR_scaffold_length["superscaffold26"] + PAR_scaffold_length["superscaffold54"] + PAR_scaffold_length["superscaffold35"] + Z_scaffold_length["superscaffold36"] + nonPAR_scaffold_length["superscaffold62"] + nonPAR_scaffold_length["superscaffold67"] + nonPAR_scaffold_length["superscaffold69-1"] + int(l[0]))
 					l[1] = str(PAR_scaffold_length["superscaffold26"] + PAR_scaffold_length["superscaffold54"] + PAR_scaffold_length["superscaffold35"] + Z_scaffold_length["superscaffold36"] + nonPAR_scaffold_length["superscaffold62"] + nonPAR_scaffold_length["superscaffold67"] + nonPAR_scaffold_length["superscaffold69-1"] + int(l[1]))			
-					print ("ChrZ" + "\t" + "\t".join(l) + "\t" + scaffold + "\t" + ["\t".join(map(str,x)) for x in scaf_list][ind])
+					print ("ChrZ" + "\t" + l[0] + "\t" + l[1] + "\t" + scaffold + "\t" + ["\t".join(map(str,x)) for x in scaf_list][ind] + "\t" + "\t".join(l[2:]))
 		# ******************************************************************************			
 			elif scaffold == "superscaffold63":
 				scaf_list = []
@@ -259,7 +259,7 @@ def main():
 					scaf_list.append(l[0:2])
 					l[0] = str(PAR_scaffold_length["superscaffold26"] + PAR_scaffold_length["superscaffold54"] + PAR_scaffold_length["superscaffold35"] + Z_scaffold_length["superscaffold36"] + nonPAR_scaffold_length["superscaffold62"] + nonPAR_scaffold_length["superscaffold67"] + nonPAR_scaffold_length["superscaffold69-1"] + nonPAR_scaffold_length["superscaffold93"] + int(l[0]))
 					l[1] = str(PAR_scaffold_length["superscaffold26"] + PAR_scaffold_length["superscaffold54"] + PAR_scaffold_length["superscaffold35"] + Z_scaffold_length["superscaffold36"] + nonPAR_scaffold_length["superscaffold62"] + nonPAR_scaffold_length["superscaffold67"] + nonPAR_scaffold_length["superscaffold69-1"] + nonPAR_scaffold_length["superscaffold93"] + int(l[1]))			
-					print ("ChrZ" + "\t" + "\t".join(l) + "\t" + scaffold + "\t" + ["\t".join(map(str,x)) for x in scaf_list][ind])
+					print ("ChrZ" + "\t" + l[0] + "\t" + l[1] + "\t" + scaffold + "\t" + ["\t".join(map(str,x)) for x in scaf_list][ind] + "\t" + "\t".join(l[2:]))
 		# ******************************************************************************			
 			elif scaffold == "superscaffold88":
 				scaf_list = []
@@ -268,7 +268,7 @@ def main():
 					scaf_list.append(l[0:2])
 					l[0] = str(PAR_scaffold_length["superscaffold26"] + PAR_scaffold_length["superscaffold54"] + PAR_scaffold_length["superscaffold35"] + Z_scaffold_length["superscaffold36"] + nonPAR_scaffold_length["superscaffold62"] + nonPAR_scaffold_length["superscaffold67"] + nonPAR_scaffold_length["superscaffold69-1"] + nonPAR_scaffold_length["superscaffold93"] + nonPAR_scaffold_length["superscaffold63"] + int(l[0]))
 					l[1] = str(PAR_scaffold_length["superscaffold26"] + PAR_scaffold_length["superscaffold54"] + PAR_scaffold_length["superscaffold35"] + Z_scaffold_length["superscaffold36"] + nonPAR_scaffold_length["superscaffold62"] + nonPAR_scaffold_length["superscaffold67"] + nonPAR_scaffold_length["superscaffold69-1"] + nonPAR_scaffold_length["superscaffold93"] + nonPAR_scaffold_length["superscaffold63"] + int(l[1]))
-					print ("ChrZ"  + "\t" + "\t".join(l) + "\t" + scaffold + "\t" + ["\t".join(map(str,x)) for x in scaf_list][ind])
+					print ("ChrZ" + "\t" + l[0] + "\t" + l[1] + "\t" + scaffold + "\t" + ["\t".join(map(str,x)) for x in scaf_list][ind] + "\t" + "\t".join(l[2:]))
 		# ******************************************************************************			
 			elif scaffold == "superscaffold83":
 				scaf_list = []
@@ -277,7 +277,7 @@ def main():
 					scaf_list.append(l[0:2])
 					l[0] = str(PAR_scaffold_length["superscaffold26"] + PAR_scaffold_length["superscaffold54"] + PAR_scaffold_length["superscaffold35"] + Z_scaffold_length["superscaffold36"] + nonPAR_scaffold_length["superscaffold62"] + nonPAR_scaffold_length["superscaffold67"] + nonPAR_scaffold_length["superscaffold69-1"] + nonPAR_scaffold_length["superscaffold93"] + nonPAR_scaffold_length["superscaffold63"] + nonPAR_scaffold_length["superscaffold88"] + int(l[0]))
 					l[1] = str(PAR_scaffold_length["superscaffold26"] + PAR_scaffold_length["superscaffold54"] + PAR_scaffold_length["superscaffold35"] + Z_scaffold_length["superscaffold36"] + nonPAR_scaffold_length["superscaffold62"] + nonPAR_scaffold_length["superscaffold67"] + nonPAR_scaffold_length["superscaffold69-1"] + nonPAR_scaffold_length["superscaffold93"] + nonPAR_scaffold_length["superscaffold63"] + nonPAR_scaffold_length["superscaffold88"] + int(l[1]))			
-					print ("ChrZ" + "\t" + "\t".join(l) + "\t" + scaffold + "\t" + ["\t".join(map(str,x)) for x in scaf_list][ind])
+					print ("ChrZ" + "\t" + l[0] + "\t" + l[1] + "\t" + scaffold + "\t" + ["\t".join(map(str,x)) for x in scaf_list][ind] + "\t" + "\t".join(l[2:]))
 		# ******************************************************************************			
 			elif scaffold == "superscaffold92":
 				scaf_list = []
@@ -286,7 +286,7 @@ def main():
 					scaf_list.append(l[0:2])
 					l[0] = str(PAR_scaffold_length["superscaffold26"] + PAR_scaffold_length["superscaffold54"] + PAR_scaffold_length["superscaffold35"] + Z_scaffold_length["superscaffold36"] + nonPAR_scaffold_length["superscaffold62"] + nonPAR_scaffold_length["superscaffold67"] + nonPAR_scaffold_length["superscaffold69-1"] + nonPAR_scaffold_length["superscaffold93"] + nonPAR_scaffold_length["superscaffold63"] + nonPAR_scaffold_length["superscaffold88"] + nonPAR_scaffold_length["superscaffold83"] + int(l[0]))
 					l[1] = str(PAR_scaffold_length["superscaffold26"] + PAR_scaffold_length["superscaffold54"] + PAR_scaffold_length["superscaffold35"] + Z_scaffold_length["superscaffold36"] + nonPAR_scaffold_length["superscaffold62"] + nonPAR_scaffold_length["superscaffold67"] + nonPAR_scaffold_length["superscaffold69-1"] + nonPAR_scaffold_length["superscaffold93"] + nonPAR_scaffold_length["superscaffold63"] + nonPAR_scaffold_length["superscaffold88"] + nonPAR_scaffold_length["superscaffold83"] + int(l[1]))			
-					print ("ChrZ" + "\t" + "\t".join(l) + "\t" + scaffold + "\t" + ["\t".join(map(str,x)) for x in scaf_list][ind])
+					print ("ChrZ" + "\t" + l[0] + "\t" + l[1] + "\t" + scaffold + "\t" + ["\t".join(map(str,x)) for x in scaf_list][ind] + "\t" + "\t".join(l[2:]))
 		# ******************************************************************************
 
 	return 0
