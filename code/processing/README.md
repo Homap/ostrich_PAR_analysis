@@ -88,6 +88,21 @@ The filtered VCF files for autosomes, PAR and nonPAR are used for the analysis i
     - Tajima's D
     - Site Frequency Spectrum (SFS)
 
+## Processing of reference genome by filtering it for coverage
+
+- Coverage for the bam files
+`sbatch get_depth.sh`
+
+- Create a bed file with variants with coverage less than 5 or more than 70
+`sbatch get_background_coverage.sh ../../data/coverage/coverage_per_site.txt ../../data/coverage/coverage_per_site_5_70.txt`
+
+- Background Filtering for Coverage
+`module load bioinfo-tools BEDTools/2.29.2`
+```
+bedtools maskfasta -fi ../../data/genome/repeatmask/Struthio_camelus.20130116.OM.fa.masked \
+-bed ../../data/coverage/coverage_per_site_5_70.txt -fo ../../data/genome/black.repeat.depth.masked.fa
+```
+
 ## Z chromosome assembly in this study
 The Z chromosome assembly used in this study is composed of 12 scaffolds with the order as follows:
 
@@ -137,7 +152,7 @@ To measure window-based statistics, we first convert the coordinates of a given 
 
 - Produce the sliding windows:
 
-`python sliding_window.py start_length_file.txt windowsize stepsize start > Z.coord.windows.bed`
+`python sliding_window.py start_length_file.txt windowsize stepsize > Z.coord.windows.bed`
 
 - To find overlap between our computed popgene measure and a given window:
 
