@@ -90,14 +90,15 @@ The filtered VCF files for autosomes, PAR and nonPAR are used for the analysis i
 
 ## Processing of reference genome by filtering it for coverage
 
-- Coverage for the bam files
+- Coverage for the bam files <br>
 `sbatch get_depth.sh`
 
-- Create a bed file with variants with coverage less than 5 or more than 70
+- Create a bed file with variants with coverage less than 5 or more than 70 <br>
 `sbatch get_background_coverage.sh ../../data/coverage/coverage_per_site.txt ../../data/coverage/coverage_per_site_5_70.txt`
 
-- Background Filtering for Coverage
+- Background Filtering for Coverage <br>
 `module load bioinfo-tools BEDTools/2.29.2`
+
 ```
 bedtools maskfasta -fi ../../data/genome/repeatmask/Struthio_camelus.20130116.OM.fa.masked \
 -bed ../../data/coverage/coverage_per_site_5_70.txt -fo ../../data/genome/black.repeat.depth.masked.fa
