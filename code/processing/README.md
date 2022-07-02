@@ -94,7 +94,11 @@ The filtered VCF files for autosomes, PAR and nonPAR are used for the analysis i
 `sbatch get_depth.sh`
 
 - Create a bed file with variants with coverage less than 5 or more than 70 <br>
-`sbatch get_background_coverage.sh ../../data/coverage/coverage_per_site.txt ../../data/coverage/coverage_per_site_5_70.txt`
+
+```
+sbatch get_background_coverage.sh ../../data/coverage/coverage_per_site.txt \
+../../data/coverage/coverage_per_site_5_70.txt
+```
 
 - Background Filtering for Coverage <br>
 `module load bioinfo-tools BEDTools/2.29.2`
