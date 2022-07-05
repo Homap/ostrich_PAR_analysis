@@ -1,6 +1,10 @@
 #!/usr/bin/python
 import sys
 
+# Homa Papoli Yazdi
+# It takes a file containing scaffold name and their length,
+# with window size and step and outputs windows across the region in bed format.
+# start and end of each interval is closed and open as such [start, end).
 
 seq_l = open(sys.argv[1], 'r')
 winSize = int(sys.argv[2])
@@ -37,10 +41,13 @@ for line in seq_l:
         start = int(line.strip("\n").split("\t")[1])
         sequence_l = int(line.strip("\n").split("\t")[2])
         if winSize > sequence_l:
-            print(line.strip("\n").split("\t")[0]+"\t"+"1"+"\t"+str(sequence_l))
+            print(line.strip("\n").split("\t")[0]+"\t"+"0"+"\t"+str(sequence_l))
         else:
             for index, item in enumerate(slidingWindow(start, sequence_l, winSize, step)):
-                print(line.strip("\n").split("\t")[0]+"\t"+str(item[0]+1)+"\t"+str(item[1]))
-                # For the last window when sequence_l%winSize != 0
-                if (sequence_l-item[1]) < winSize and (sequence_l%winSize) != 0:
-                    print(line.strip("\n").split("\t")[0]+"\t"+str(item[1]+1)+"\t"+str(sequence_l))
+                if item[1] > sequence_l:
+                    pass
+                elif item[1] < sequence_l and item[1] + winSize > sequence_l:
+                    print(line.strip("\n").split("\t")[0]+"\t"+str(item[0])+"\t"+str(item[1]))
+                    print(line.strip("\n").split("\t")[0]+"\t"+str(item[1])+"\t"+str(sequence_l))
+                else:
+                    print(line.strip("\n").split("\t")[0]+"\t"+str(item[0])+"\t"+str(item[1]))
