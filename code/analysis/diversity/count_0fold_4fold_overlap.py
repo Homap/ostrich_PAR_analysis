@@ -33,7 +33,8 @@ Written by Homa Papoli
 
 annt_list = open(sys.argv[1], "r")
 snp_list = open(sys.argv[2], "r")
-num_chr =int(sys.argv[3])
+num_chr = int(sys.argv[3])
+outdirpath = sys.argv[4]
 
 #print("snp dict")
 snp_dict = {}
@@ -49,8 +50,8 @@ for line in snp_list:
 #print(snp_dict)
 
 # 4fold sites
-fourfold_counts = open("fourfold_A_counts.txt", "w")
-zerofold_counts = open("zerofold_A_counts.txt", "w")
+fourfold_counts = open(outdirpath+"/fourfold_counts.txt", "w")
+zerofold_counts = open(outdirpath+"/zerofold_counts.txt", "w")
 
 # 0fold sites
 

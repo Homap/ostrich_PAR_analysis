@@ -44,22 +44,22 @@ done
 # - chr4
 
 cat ../../../data/diversity/allele_count/chr4/*frq.count | grep -v "CHROM" | awk 'BEGIN{print "CHROM""\t""POS""\t""N_ALLELES""\t""N_CHR""\t""{ALLELE:COUNT}"}{print $0}' \
-> ../../../data/diversity/allele_count/chr4/chr4.scafs.frq.count
+> ../../../data/diversity/allele_count/chr4/chr4.frq.count
 for w_size in 100000 200000 1000000
 do
 echo $w_size
-python SFS_measures.py ../../../data/diversity/allele_count/chr4/chr4.scafs.frq.count 20 ../../../data/genomic_features/chr4.scaf.${w_size}.intergene.overlap.density.sorted.txt all > ${outdir}/chr4/chr4.${w_size}.sfs.txt
+python SFS_measures.py ../../../data/diversity/allele_count/chr4/chr4.frq.count 20 ../../../data/genomic_features/chr4.scaf.${w_size}.intergene.overlap.density.sorted.txt all > ${outdir}/chr4/chr4.${w_size}.sfs.txt
 done
 
 
 # - chr5
 
 cat ../../../data/diversity/allele_count/chr5/*frq.count | grep -v "CHROM" | awk 'BEGIN{print "CHROM""\t""POS""\t""N_ALLELES""\t""N_CHR""\t""{ALLELE:COUNT}"}{print $0}' \
-> ../../../data/diversity/allele_count/chr5/chr5.scafs.frq.count
+> ../../../data/diversity/allele_count/chr5/chr5.frq.count
 for w_size in 100000 200000 1000000
 do
 echo $w_size
-python SFS_measures.py ../../../data/diversity/allele_count/chr5/chr5.scafs.frq.count 20 ../../../data/genomic_features/chr5.scaf.${w_size}.intergene.overlap.density.sorted.txt all > ${outdir}/chr5/chr5.${w_size}.sfs.txt
+python SFS_measures.py ../../../data/diversity/allele_count/chr5/chr5.frq.count 20 ../../../data/genomic_features/chr5.scaf.${w_size}.intergene.overlap.density.sorted.txt all > ${outdir}/chr5/chr5.${w_size}.sfs.txt
 done
 
 ## Get the distribution of SFS for PAR, nonPAR, chr4 and chr5

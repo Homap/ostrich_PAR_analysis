@@ -7,11 +7,12 @@ import math
 Written by Homa Papoli
 11 June 2020
 ./count_total_num_syn_nonsyn.py ../src/snpEff/scaf26.annotate.txt 
-../src/snpEff/scaf26.snp.txt > ../src/snpEff/scaf26.het.txt"""
+../src/snpEff/scaf26.snp.txt > ../src/snpEff/scaf26.het.txt
+"""
 
 # To run:
-python count_total_num_syn_nonsyn.py ../data/gff/genome.annotated.txt \
-../data/allele_count/black.nonPAR.filtered.adjusted.frq.count 15 > ../data/allele_count/black.nonPAR.annotated.pi.txt
+# python count_total_num_syn_nonsyn.py ../data/gff/genome.annotated.txt \
+# ../data/allele_count/black.nonPAR.filtered.adjusted.frq.count 15 > ../data/allele_count/black.nonPAR.annotated.pi.txt
 # superscaffold54 848     849     2       10      A:4     G:6
 # superscaffold54 2811    2812    2       10      G:2     A:8
 # **********************************

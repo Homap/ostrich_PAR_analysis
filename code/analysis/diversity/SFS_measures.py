@@ -79,13 +79,13 @@ def sfs_measures(win_start, win_end, genotype_array, het_l, num_chr):
     tajimad_l[midpoint] = TajimaD(sfs_list, num_chr, sum(het_l))
     return(sum(het_l), theta_w(len(het_l), num_chr), midpoint, tajimad_l[midpoint][0], tajimad_l[midpoint][1], tajimad_l[midpoint][2],tajimad_l[midpoint][1]-sum(het_l), len(sfs_list))
 # #********************************************************************
-# def resampling_fun(het_array, len_array, reps):
-#     resampling_list = [sum(het_array)]
-#     for i in range(0, reps):
-#         d = list(np.random.randint(low=0, high=len_array, size=len_array))
-#         overlap = itemgetter(*d)(het_array)
-#         resampling_list.append(sum(overlap))
-#     return(np.mean(resampling_list), np.percentile(resampling_list, 2.5), np.percentile(resampling_list, 97.5))
+def resampling_fun(het_array, len_array, reps):
+    resampling_list = [sum(het_array)]
+    for i in range(0, reps):
+        d = list(np.random.randint(low=0, high=len_array, size=len_array))
+        overlap = itemgetter(*d)(het_array)
+        resampling_list.append(sum(overlap))
+    return(np.mean(resampling_list), np.percentile(resampling_list, 2.5), np.percentile(resampling_list, 97.5))
 # #********************************************************************
 snp_dict = alleleCountdict(sys.argv[1])
 # len_dict = scaf_len_dict(sys.argv[2])
@@ -133,7 +133,7 @@ for scaffold in snp_dict.keys():
         if len(geno_array) != 0:
             het_list = genotypeArray(window_start, window_end, snp_dict, scaffold)[1]
             # print(len(het_list))
-            # conf_interval = resampling_fun(het_array = het_list, len_array = len(het_list), reps = 99)
+            conf_interval = resampling_fun(het_array = het_list, len_array = len(het_list), reps = 99)
             sfs = sfs_measures(window_start, window_end, geno_array, het_list, num_chr)
             pi = sfs[0]
             theta = sfs[1]
@@ -142,7 +142,7 @@ for scaffold in snp_dict.keys():
             pi_td = sfs[4]
             theta_td = sfs[5]
             diff = sfs[6]
-            out = [scaffold, str(window_start), str(window_end), str(midpoint), str(pi), str(theta), str(td), str(window_length)] #, str(conf_interval[0]), str(conf_interval[1]), str(conf_interval[2])]
+            out = [scaffold, str(window_start), str(window_end), str(midpoint), str(pi), str(theta), str(td), str(window_length), str(conf_interval[0]), str(conf_interval[1]), str(conf_interval[2])]
             print("\t".join(out))
         else:
             # midpoint = (window_start + window_end)/2
