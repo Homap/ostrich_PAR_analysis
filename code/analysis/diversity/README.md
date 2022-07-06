@@ -1,4 +1,14 @@
-# Steps for obtaining genetic diversity (pi and theta) and folded SFS together with male-female Fst
+# Measures of genetic variation
+
+Using SNPs, we calculate different measures of genetic variation:
+
+- Average number of pairwise differences (π)
+- Average number of segregating sites (θ)
+- Tajima's D which reflects the relationship between π and θ
+
+Getting allele counts from scaffolds of chromosomes 4, 5, PAR and nonPAR
+
+`bash 1_get_allele_count.sh`
 
 ```
 export result=/proj/snic2020-16-269/private/homap/ostrich_z/result/sfs_measures
@@ -14,7 +24,7 @@ all > ${result}/black.autosome.sfs.txt
 
 ### PAR and nonPAR
 ```
-python SFS_measures.py ../data/allele_count/black.PAR.repeat.frq.count 20 ../data/bed/black.par_scaf.100Kb.intergenic.overlap.density.sorted.txt \
+python SFS_measures.py ../../../data/diversity/allele_count/par/PAR.frq.count 20 ../../../data/bed/black.par_scaf.100Kb.intergenic.overlap.density.sorted.txt \
 all > ${result}/black.PAR.sfs.txt
 python SFS_measures.py ../data/allele_count/black.PAR.repeat.frq.count 20 ../data/bed/black.par_scaf.500Kb.intergenic.overlap.density.sorted.txt \
 all > ${result}/black.PAR.500Kb.sfs.txt
@@ -52,23 +62,6 @@ python SFS_measures.py ../data/allele_count/black.PAR.superscaffold36.repeat.frq
 all > ${result}/black.PAR.scaf36.1Kb.sfs.txt
 python SFS_measures.py ../data/allele_count/black.PAR.superscaffold36.repeat.frq.count 20 ../data/bed/black.par_scaf.0.5Kb.intergenic.overlap.density.sorted.txt \
 all > ${result}/black.PAR.scaf36.0.5Kb.sfs.txt
-```
-
-### Male-Female FST
-```
-vcftools --gzvcf ../data/vcf/black.PAR.filtered.vcf.gz --chr 'superscaffold36' --recode --stdout | gzip -c > ../data/vcf/black.PAR.superscaffold36.filtered.vcf.gz
-vcftools --gzvcf ../data/vcf/black.PAR.superscaffold36.filtered.vcf.gz --weir-fst-pop ../data/samples/black_male.txt --weir-fst-pop ../data/samples/black_female.txt \
---fst-window-size 1000 --out black_male_female_1Kb
-```
-
-### Male-Female FST
-# Exclude female positions with heterozygous SNPs
-```
-awk '{print $1"\t"$3}' ../data/bed/${species}.nonPAR.female_het.bed > ../data/bed/${species}.nonPAR.female_het.txt
-vcftools --gzvcf ../data/vcf/LD_vcf/black.Z.pos.vcf.gz --exclude-positions ../data/bed/${species}.nonPAR.female_het.txt --stdout | gzip -c > ../data/vcf/LD_vcf/black.Z.pos.nohetfemalenonPAR.vcf.gz
-
-vcftools --gzvcf ../data/vcf/LD_vcf/black.Z.pos.nohetfemalenonPAR.vcf.gz --weir-fst-pop ../data/samples/black_male.txt --weir-fst-pop ../data/samples/black_female.txt --fst-window-size 100000 --out ../data/FST/black_male_female_Z_100Kb
-python scaffold_to_chr_vcf.py ../data/FST/black_male_female_Z_100Kb.windowed.weir.fst > ../data/FST/black_male_female_Z_100Kb.windowed.weir.Z.coord.fst
 ```
 
 ### Get the distribution of SFS for autosomes, PAR and nonPAR
