@@ -5,74 +5,16 @@ Using SNPs, we calculate different measures of genetic variation:
 - Average number of pairwise differences (π)
 - Average number of segregating sites (θ)
 - Tajima's D which reflects the relationship between π and θ
+- Folded site frequency spectrum
 
-Getting allele counts from scaffolds of chromosomes 4, 5, PAR and nonPAR
+## Getting allele counts from scaffolds of chromosomes 4, 5, PAR and nonPAR
 
 `bash 1_get_allele_count.sh`
 
-```
-export result=/proj/snic2020-16-269/private/homap/ostrich_z/result/sfs_measures
-```
+## Calculate measures of genetic variation
 
-## Measure of genetic diversity (pi and theta) and folded SFS
+`bash 2_get_genetic_variation.sh`
 
-### Autosomes
-```
-python SFS_measures_autosome.py ../data/allele_count/black.A.repeat.frq.count 20 ../data/bed/black.autosome.100Kb.intergenic.overlap.density.sorted.txt \
-all > ${result}/black.autosome.sfs.txt
-```
-
-### PAR and nonPAR
-```
-python SFS_measures.py ../../../data/diversity/allele_count/par/PAR.frq.count 20 ../../../data/bed/black.par_scaf.100Kb.intergenic.overlap.density.sorted.txt \
-all > ${result}/black.PAR.sfs.txt
-python SFS_measures.py ../data/allele_count/black.PAR.repeat.frq.count 20 ../data/bed/black.par_scaf.500Kb.intergenic.overlap.density.sorted.txt \
-all > ${result}/black.PAR.500Kb.sfs.txt
-python SFS_measures.py ../data/allele_count/black.PAR.repeat.frq.count 20 ../data/bed/black.par_scaf.1000Kb.intergenic.overlap.density.sorted.txt \
-all > ${result}/black.PAR.1000Kb.sfs.txt
-
-python SFS_measures.py ../data/allele_count/black.nonPAR.filtered.adjusted.frq.count 15 \
-../data/bed/black.nonpar_scaf.100Kb.intergenic.overlap.density.sorted.txt all > ${result}/black.nonPAR.sfs.txt
-python SFS_measures.py ../data/allele_count/black.nonPAR.filtered.adjusted.frq.count 15 \
-../data/bed/black.nonpar_scaf.500Kb.intergenic.overlap.density.sorted.txt all > ${result}/black.nonPAR.500Kb.sfs.txt
-python SFS_measures.py ../data/allele_count/black.nonPAR.filtered.adjusted.frq.count 15 \
-../data/bed/black.nonpar_scaf.1000Kb.intergenic.overlap.density.sorted.txt all > ${result}/black.nonPAR.1000Kb.sfs.txt
-```
-
-### Diversity measures for whole Z
-```
-awk 'NR>1' ${result}/black.nonPAR.sfs.txt | cat ${result}/black.PAR.sfs.txt - > ${result}/black.Z.sfs.txt
-```
-
-### Translate scafoold to chromosome Z coordinates
-```
-python scaffold_to_chr_vcf.py ${result}/black.Z.sfs.txt > ${result}/black.Z.coordinates.sfs.txt
-```
-
-### Get the genetic diversity for superscaffold36 in windows of 1Kb and 0.5 Kb
-```
-grep 'superscaffold36' ../data/allele_count/black.PAR.repeat.frq.count > ../data/allele_count/black.PAR.superscaffold36.repeat.frq.count
-grep 'superscaffold36' ../data/allele_count/black.nonPAR.repeat.frq.count > ../data/allele_count/black.nonPAR.superscaffold36.repeat.frq.count
-python SFS_measures.py ../data/allele_count/black.PAR.superscaffold36.repeat.frq.count 20 ../data/bed/black.par_scaf.10Kb.intergenic.overlap.density.sorted.txt \
-all > ${result}/black.PAR.scaf36.10Kb.sfs.txt
-python SFS_measures.py ../data/allele_count/black.nonPAR.superscaffold36.repeat.frq.count 15 \
-../data/bed/black.nonpar_scaf.10Kb.intergenic.overlap.density.sorted.txt all > ${result}/black.nonPAR.scaf36.10Kb.sfs.txt
-
-python SFS_measures.py ../data/allele_count/black.PAR.superscaffold36.repeat.frq.count 20 ../data/bed/black.par_scaf.1Kb.intergenic.overlap.density.sorted.txt \
-all > ${result}/black.PAR.scaf36.1Kb.sfs.txt
-python SFS_measures.py ../data/allele_count/black.PAR.superscaffold36.repeat.frq.count 20 ../data/bed/black.par_scaf.0.5Kb.intergenic.overlap.density.sorted.txt \
-all > ${result}/black.PAR.scaf36.0.5Kb.sfs.txt
-```
-
-### Get the distribution of SFS for autosomes, PAR and nonPAR
-```
-echo "PAR"
-python get_sfs.py ../data/allele_count/${species}.PAR.repeat.frq.count ${species} PAR > ../result/sfs_measures/${species}_PAR.foldedSFS.txt
-echo "nonPAR"
-python get_sfs.py ../data/allele_count/${species}.nonPAR.filtered.adjusted.frq.count ${species} nonPAR > ../result/sfs_measures/${species}_nonPAR.foldedSFS.txt
-echo "Autosome"
-python get_sfs.py ../data/allele_count/${species}.A.repeat.frq.count ${species} A > ../result/sfs_measures/${species}_A.foldedSFS.txt
-```
 # Obtain SFS of synonymous and nonsynonymous sites
 """
 I want to calculate the site frequency spectrum of the zerofold and fourfold sites of the PAR, nonPAR and chromosome 4 and 5 of autosomes.
@@ -142,3 +84,18 @@ python get_sfs.py zerofold_A_counts.txt black nonPAR > zerofold_nonPAR_SFS.txt
 3009164 4298    2812    2016    1529    1264    1119    969 825 883 542
 11477529 4235    2530    1709    1261    974 783 640 563 525 343
 
+
+### Get the genetic diversity for superscaffold36 in windows of 1Kb and 0.5 Kb
+```
+grep 'superscaffold36' ../data/allele_count/black.PAR.repeat.frq.count > ../data/allele_count/black.PAR.superscaffold36.repeat.frq.count
+grep 'superscaffold36' ../data/allele_count/black.nonPAR.repeat.frq.count > ../data/allele_count/black.nonPAR.superscaffold36.repeat.frq.count
+python SFS_measures.py ../data/allele_count/black.PAR.superscaffold36.repeat.frq.count 20 ../data/bed/black.par_scaf.10Kb.intergenic.overlap.density.sorted.txt \
+all > ${result}/black.PAR.scaf36.10Kb.sfs.txt
+python SFS_measures.py ../data/allele_count/black.nonPAR.superscaffold36.repeat.frq.count 15 \
+../data/bed/black.nonpar_scaf.10Kb.intergenic.overlap.density.sorted.txt all > ${result}/black.nonPAR.scaf36.10Kb.sfs.txt
+
+python SFS_measures.py ../data/allele_count/black.PAR.superscaffold36.repeat.frq.count 20 ../data/bed/black.par_scaf.1Kb.intergenic.overlap.density.sorted.txt \
+all > ${result}/black.PAR.scaf36.1Kb.sfs.txt
+python SFS_measures.py ../data/allele_count/black.PAR.superscaffold36.repeat.frq.count 20 ../data/bed/black.par_scaf.0.5Kb.intergenic.overlap.density.sorted.txt \
+all > ${result}/black.PAR.scaf36.0.5Kb.sfs.txt
+```
