@@ -51,7 +51,7 @@ Table 2. Number of SNPs after removing variant overlapping repeats and heterzygo
 | PAR | 285271 |
 | nonPAR | 104540 |
 
-Finally, we need to have a look at the HWE. Most sites are expected to be HWE. Interesting biological features
+We need to have a look at the HWE. Most sites are expected to be HWE. Interesting biological features
 such as population structure can cause a deviation from HWE. However, genotyping errors can also cause 
 deviations from HWE. We remove SNPs with a HWE p-value below 0.005. For nonpar, since the homozygosity in females
 can cause deviations from the HWE, we detected deviations from the male samples only and removed sites from the nonpar
@@ -66,7 +66,7 @@ Table 3. Number of SNPs after removing variant overlapping repeats and heterzygo
 | PAR | 285186 |
 | nonPAR | 104540 |
 
-## Fixed sites for alternative allele
+Finally, we need to remove fixed sites for alternative allele since these sites are not variable and therefore cannot be used as SNPs.
 
 `bash 10_VCF_remove_fixed_alternative.sh`
 
@@ -78,9 +78,9 @@ Table 4. Number of SNPs after removing fixed sites for alternative allele
 | nonPAR | 89540 |
 
 Final VCF files are
-- ../../data/vcf/par_vcf/par_vcf.filtered.repeatmasked.hwe.snps.vcf.gz
-- ../../data/vcf/nonpar_vcf/nonpar_vcf.filtered.repeatmasked.nofemalehet.hwe.snps.vcf.gz
-- ../../data/vcf/a_vcf/a_vcf.filtered.repeatmasked.hwe.snps.vcf.gz
+`../../data/vcf/par_vcf/par_vcf.filtered.repeatmasked.hwe.snps.vcf.gz`
+`../../data/vcf/nonpar_vcf/nonpar_vcf.filtered.repeatmasked.nofemalehet.hwe.snps.vcf.gz`
+`../../data/vcf/a_vcf/a_vcf.filtered.repeatmasked.hwe.snps.vcf.gz`
 
 The PAR and nonPAR VCF files are concatenated into Z VCF:
 
