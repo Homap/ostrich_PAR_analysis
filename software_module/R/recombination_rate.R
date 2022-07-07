@@ -1,3 +1,13 @@
+## Recombination frequency per Mb
+
+library(magrittr)
+library(dplyr)
+library(reshape2) 
+library(devtools)
+
+# Using interpolated data for males, females and the sex-averaged map, I use the 
+# Kosambi map function to obtain an estimate of recombination fraction per meiosis.
+
 rate_function <- function(genetic_map, len_markers, column, span, first_marker = 1113306, mb = 10^6){
   start <- genetic_map$Pos[1:len_markers-1]
   end <- genetic_map$Pos[2:len_markers]-1
@@ -32,5 +42,5 @@ rate_function <- function(genetic_map, len_markers, column, span, first_marker =
     select(-group)
   rate_loess <- loess(pair_cm_per_site ~ start, data=df2, span=span, na.action = na.exclude)
   rate_smoothed <- predict(rate_loess)
-  return(list(df, df2, rate_loess, rate_smoothed))
+  return(list(df, df2, rate_smoothed))
 }
