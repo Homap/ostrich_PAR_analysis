@@ -77,10 +77,11 @@ Table 4. Number of SNPs after removing fixed sites for alternative allele
 | PAR | 268006 |
 | nonPAR | 89540 |
 
-Final VCF files are
-`../../data/vcf/par_vcf/par_vcf.filtered.repeatmasked.hwe.snps.vcf.gz`
-`../../data/vcf/nonpar_vcf/nonpar_vcf.filtered.repeatmasked.nofemalehet.hwe.snps.vcf.gz`
-`../../data/vcf/a_vcf/a_vcf.filtered.repeatmasked.hwe.snps.vcf.gz`
+Final VCF files are:
+
+`../../data/vcf/par_vcf/par_vcf.filtered.repeatmasked.hwe.snps.vcf.gz` <br>
+`../../data/vcf/nonpar_vcf/nonpar_vcf.filtered.repeatmasked.nofemalehet.hwe.snps.vcf.gz` <br>
+`../../data/vcf/a_vcf/a_vcf.filtered.repeatmasked.hwe.snps.vcf.gz` <br>
 
 The PAR and nonPAR VCF files are concatenated into Z VCF:
 
