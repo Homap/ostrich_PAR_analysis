@@ -18,15 +18,15 @@ write.table(kosambi_sex_averaged, "../../../data/geneticmap/kosambi_sex_averaged
 
 start_pos <- female_rate[[2]]$start
 end_pos <- female_rate[[2]]$end
-female_pair_cm_per_site <- round(female_rate[[2]]$pair_cm_per_site, 3)
-male_pair_cm_per_site <- round(male_rate[[2]]$pair_cm_per_site, 3)
-sex_averaged_pair_cm_per_site <- round(sex_averaged_rate[[2]]$pair_cm_per_site, 3)
+female_pair_cm_per_mb <- round(female_rate[[2]]$pair_cm_per_site, 3)
+male_pair_cm_per_mb <- round(male_rate[[2]]$pair_cm_per_site, 3)
+sex_averaged_pair_cm_per_mb <- round(sex_averaged_rate[[2]]$pair_cm_per_site, 3)
 
-female_smoothed <- round(female_rate[[4]], 3)
-male_smoothed <- round(male_rate[[4]], 3)
-sex_averaged_smoothed <- round(sex_averaged_rate[[4]], 3)
+female_smoothed <- round(female_rate[[3]], 3)
+male_smoothed <- round(male_rate[[3]], 3)
+sex_averaged_smoothed <- round(sex_averaged_rate[[3]], 3)
 
-recombination_rate <- data.frame(start_pos, end_pos, female_pair_cm_per_site, male_pair_cm_per_site, sex_averaged_pair_cm_per_site, 
+recombination_rate <- data.frame(start_pos, end_pos, female_pair_cm_per_mb, male_pair_cm_per_mb, sex_averaged_pair_cm_per_mb, 
                                 female_smoothed, male_smoothed, sex_averaged_smoothed)
 
 write.table(recombination_rate, "../../../data/geneticmap/recombination_rate.txt", quote = FALSE, sep = "\t", row.names = FALSE, col.names = TRUE)

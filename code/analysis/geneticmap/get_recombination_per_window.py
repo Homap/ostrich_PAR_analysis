@@ -37,19 +37,21 @@ f2 = open(sys.argv[2], "r")
 
 f2_l = []
 for line in f2:
-	if not line.startswith("Scaffold"):
-		line = line.strip("\n").split("\t")
-		f2_l.append(line[0]+":"+line[1]+":"+line[2])
+	if not line.startswith("CHROM"):
+		if not line.startswith("Scaffold"):
+			line = line.strip("\n").split("\t")
+			f2_l.append(line[0]+":"+line[1]+":"+line[2])
 
 f1_dict = {}
 for line in f1:
-	line = line.strip("\n").split("\t")
-	key = line[0]+":"+line[1]+":"+line[2]
-	value = line[3:]
-	if key in f1_dict.keys():
-		f1_dict[key].append(value)
-	else:
-		f1_dict[key] = [value]
+	if not line.startswith("CHROM"):
+		line = line.strip("\n").split("\t")
+		key = line[0]+":"+line[1]+":"+line[2]
+		value = line[3:]
+		if key in f1_dict.keys():
+			f1_dict[key].append(value)
+		else:
+			f1_dict[key] = [value]
 
 # print(f2_l)
 # print(f1_dict)
@@ -58,25 +60,23 @@ for line in f1:
 print("Scaffold"+"\t"+"Window_start"+"\t"+"Window_end"+"\t"+"CM_per_bp"+"\t"+"kosambi_r_per_bp")
 for key in f2_l:
 	if len(f1_dict[key]) == 1:
-		print(key)
+		# print(key)
 		if f1_dict[key][0][0] == ".":
-			print(key.split(":")[0]+"\t"+key.split(":")[1]+"\t"+key.split(":")[2]+"\t"+"NA")
+			print(key.split(":")[0]+"\t"+key.split(":")[1]+"\t"+key.split(":")[2]+"\t"+"NA"+"\t"+"NA")
 		else:
 			print(key.split(":")[0]+"\t"+key.split(":")[1]+"\t"+key.split(":")[2]+"\t"+f1_dict[key][0][4]+"\t"+f1_dict[key][0][6])
 	else:
-		print(key)
+		# print(key)
 		addup_pair_cm = 0
-		total_pair_cm = 0 #int(key.split(":")[2])-int(key.split(":")[1])
 		addup_pair_kosambi = 0
-		total_pair_kosambi = 0 #int(key.split(":")[2])-int(key.split(":")[1])
+		total_pair = 0 #int(key.split(":")[2])-int(key.split(":")[1])
 		for element in f1_dict[key]:
-			print(element)
-			addup_pair_cm = addup_pair_cm + int(element[8])*float(element[3])
-			total_pair_cm = total_pair_cm + int(element[8])
-		new_pair_cm = addup_pair_cm/total_pair_cm
-			addup_pair_kosambi = addup_pair_kosambi + int(element[6])*float(element[3])
-			total_pair_kosambi = total_pair_kosambi + int(element[8])
-		new_pair_kosambi = addup_pair_kosambi/total_pair_kosambi
+			# print(element)
+			addup_pair_cm = addup_pair_cm + int(element[8])*float(element[4])
+			addup_pair_kosambi = addup_pair_kosambi + int(element[8])*float(element[6])
+			total_pair = total_pair + int(element[8])
+		new_pair_cm = addup_pair_cm/total_pair
+		new_pair_kosambi = addup_pair_kosambi/total_pair
 		print(key.split(":")[0]+"\t"+key.split(":")[1]+"\t"+key.split(":")[2]+"\t"+str(new_pair_cm)+"\t"+str(new_pair_kosambi))
 
 

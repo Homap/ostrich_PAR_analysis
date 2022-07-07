@@ -21,12 +21,12 @@ Rscript LD_slidingWin.R ${ld_window_z}/${scaffold}.pairwise.LD.05-500 \
 ../../../data/bed/z_scaf.bed 200000 50000
 done
 
-echo "Concatenate all scaffolds for each subspecies LD"
+echo "Concatenate all scaffolds"
 awk 'NR==1' ${ld_window_z}/superscaffold26.pairwise.LD.05-500.200kbBin.50.kbStep.out > ${ld_window_z}/header
 cat ${ld_window_z}/*.pairwise.LD.05-500.200kbBin.50.kbStep.out | grep -v "Dprime" | cat ${ld_window_z}/header - >> ${ld_window_z}/Z.scaffolds.LD.05-500.200kbBin.50.kbStep.out
 
 echo "converting scaffold coordinates into chromosome coordinates"
-python ../../processing/scaffold_to_chr.py ${ld_window_z}/Z.scaffolds.LD.05-500.200kbBin.50.kbStep.out > ${ld_window_z}/Z.LD.05-500.200kbBin.50.tab
+python ../../processing/scaffold_to_chr.py ${ld_window_z}/Z.scaffolds.LD.05-500.200kbBin.50.kbStep.out LD > ${ld_window_z}/Z.LD.05-500.200kbBin.50.tab
 
 echo "windowed pairwise for chromosome 4"
 # Chromosome 4 -------------------------------------------------------------------------------------------
