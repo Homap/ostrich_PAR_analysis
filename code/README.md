@@ -5,6 +5,7 @@ Codes for filtering the VCF files, generating sliding windows and conversion of 
 
 - analysis <br>
 Codes for obtaining various population genetics measure including LD, rho, genetic diversity. 
+    * coverage : Median coverage per individual, PAR-nonPAR boundary coverage
     * diversity : π, θ, Tajima's D, folded SFS
     * fst : Male - Female Fst
     * geneticmap : Recombination rate from genetic map in windows
