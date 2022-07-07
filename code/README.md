@@ -15,7 +15,7 @@ Codes for obtaining various population genetics measure including LD, rho, genet
     * **rho** : Population scaled recombination rate (ρ) 
 
 - **statistical_analyses** <br>
-Code for statistical analyses including GLM using the outputs from `analysis`.
+Code for statistical analyses including GLM using the outputs from **analysis**.
 
 - **simulation** <br>
 Code for coalescent simulation presented in the study.
