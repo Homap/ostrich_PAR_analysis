@@ -21,7 +21,7 @@ python median_coverage.py ../../../data/coverage/coverage_per_site_chr4_5.txt 10
 
 `rm -i ../../../data/coverage/coverage_per_site.chr4.txt ../../../data/coverage/coverage_per_site.chr5.txt`
 
-## Obtain data for the plot of boundary coverage
+## Coverage at the PAR-nonPAR boundary on superscaffold36
 
 ```
 module load bioinfo-tools samtools/1.14
