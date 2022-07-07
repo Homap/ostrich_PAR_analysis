@@ -66,6 +66,22 @@ Table 3. Number of SNPs after removing variant overlapping repeats and heterzygo
 | PAR | 285186 |
 | nonPAR | 104540 |
 
+## Fixed sites for alternative allele
+
+`bash 10_VCF_remove_fixed_alternative.sh`
+
+Table 4. Number of SNPs after removing fixed sites for alternative allele
+|   | SNP numbers |
+| ----------- | ----------- |
+| Autosomes | 5776166 |
+| PAR | 268006 |
+| nonPAR | 89540 |
+
+Final VCF files are
+- ../../data/vcf/par_vcf/par_vcf.filtered.repeatmasked.hwe.snps.vcf.gz
+- ../../data/vcf/nonpar_vcf/nonpar_vcf.filtered.repeatmasked.nofemalehet.hwe.snps.vcf.gz
+- ../../data/vcf/a_vcf/a_vcf.filtered.repeatmasked.hwe.snps.vcf.gz
+
 The PAR and nonPAR VCF files are concatenated into Z VCF:
 
 ```
@@ -89,9 +105,6 @@ The filtered VCF files for autosomes, PAR and nonPAR are used for the analysis i
     - Site Frequency Spectrum (SFS)
 
 ## Processing of reference genome by filtering it for coverage
-
-- Coverage for the bam files <br>
-`sbatch get_depth.sh`
 
 - Create a bed file with variants with coverage less than 5 or more than 70 <br>
 ```
