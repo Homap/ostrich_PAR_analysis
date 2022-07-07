@@ -79,16 +79,16 @@ Table 4. Number of SNPs after removing fixed sites for alternative allele
 
 Final VCF files are:
 
-`../../data/vcf/par_vcf/par_vcf.filtered.repeatmasked.hwe.snps.vcf.gz` <br>
-`../../data/vcf/nonpar_vcf/nonpar_vcf.filtered.repeatmasked.nofemalehet.hwe.snps.vcf.gz` <br>
-`../../data/vcf/a_vcf/a_vcf.filtered.repeatmasked.hwe.snps.vcf.gz` <br>
+`../../data/vcf/par_vcf/par_vcf.filtered.repeatmasked.hwe.snps.sorted.vcf.gz` <br>
+`../../data/vcf/nonpar_vcf/nonpar_vcf.filtered.repeatmasked.nofemalehet.hwe.snps.sorted.vcf.gz` <br>
+`../../data/vcf/a_vcf/a_vcf.filtered.repeatmasked.hwe.snps.sorted.vcf.gz` <br>
 
 The PAR and nonPAR VCF files are concatenated into Z VCF:
 
 ```
 module load bioinfo-tools tabix/0.2.6 vcftools/0.1.16 bcftools/1.14
-export par_vcf=../../data/vcf/par_vcf/par_vcf.filtered.repeatmasked.hwe.vcf.gz
-export nonpar_vcf=../../data/vcf/nonpar_vcf/nonpar_vcf.filtered.repeatmasked.nofemalehet.hwe.vcf.gz
+export par_vcf=../../data/vcf/par_vcf/par_vcf.filtered.repeatmasked.hwe.snps.sorted.vcf.gz
+export nonpar_vcf=../../data/vcf/nonpar_vcf/nonpar_vcf.filtered.repeatmasked.nofemalehet.hwe.snps.sorted.vcf.gz
 mkdir -p ../../data/vcf/z_vcf
 vcf-concat ${par_vcf} ${nonpar_vcf} | bgzip -c > ../../data/vcf/z_vcf/z_vcf.gz
 bcftools sort ../../data/vcf/z_vcf/z_vcf.gz -o ../../data/vcf/z_vcf/sorted.z.vcf
