@@ -11,7 +11,7 @@
 
 module load bioinfo-tools samtools/1.14
 
-samtools depth -a -H ../../data/bam/P1878_107.bam ../../data/bam/P1878_108.bam \
-../../data/bam/P1878_109.bam ../../data/bam/P1878_110.bam ../../data/bam/P1878_111.bam \
-../../data/bam/P1878_112.bam ../../data/bam/P1878_113.bam ../../data/bam/P1878_114.bam \
-../../data/bam/P1878_115.bam ../../data/bam/P1878_116.bam -o ../../data/coverage/coverage_per_site.txt
+samtools depth -a -H ../../../data/bam/P1878_107.bam ../../../data/bam/P1878_108.bam \
+../../../data/bam/P1878_109.bam ../../../data/bam/P1878_110.bam ../../../data/bam/P1878_111.bam \
+../../../data/bam/P1878_112.bam ../../../data/bam/P1878_113.bam ../../../data/bam/P1878_114.bam \
+../../../data/bam/P1878_115.bam ../../../data/bam/P1878_116.bam -o ../../../data/coverage/coverage_per_site.txt

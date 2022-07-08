@@ -96,6 +96,12 @@ bgzip ../../data/vcf/z_vcf/sorted.z.vcf
 rm -f ../../data/vcf/z_vcf/z_vcf.gz
 ```
 
+## Check VCF statistic for the final filtered VCF
+
+`bash 11_VCF_stats_finalfilter.sh`
+
+`Rscript 12_VCF_stats_summary_finalfilter.R`
+
 The filtered VCF files for autosomes, PAR and nonPAR are used for the analysis in this project:
 - Linkage Disequilibrium (LD)
 - Population scaled recombination rate (rho)
@@ -152,30 +158,7 @@ The gap is excluded when calculating the total length of PAR and nonPAR as it ca
 
 52,185,292 + 28,678,720 + 7592 = 80,871,604 (Total Z length)
 
-## Conversion of scaffold to chromosome coordinates
 
-Population genetics measure in this paper such as LD, rho, diversity, Tajima's D, etc are reported in windows of a certain size.
-The chromosome order and orientation of ostrich Z is driven from genetic map and therefore reflects a true connection among scaffolds. 
-To measure window-based statistics, we first convert the coordinates of a given statistic computed within each scaffold into chromosome level coordinates using the script `scaffold_to_chr.py`. In short, to convert to scaffold coordinates to Z chromosome, superscaffold 54 must be cut at position 16379243 and inverted. Superscaffold 36 as a whole must also gets inverted (! Do not invert PAR and nonPAR separately, the whole superscaffold must get inverted in one piece). Throughout the manuscript, we need measures of PAR and nonPAR separately. The conversion from scaffold to chromosome coordinate can therefore be done in three ways:
-
-- Conversion of whole Z <br>
-`python scaffold_to_chr.py popgene_measure_file.txt Z > popgene_measure_file.Z.coord.txt`
-- Conversion of only PAR <br>
-`python scaffold_to_chr.py popgene_measure_file.txt PAR > popgene_measure_file.PAR.coord.txt`
-- Conversion of only nonPAR <br>
-`python scaffold_to_chr.py popgene_measure_file.txt nonPAR > popgene_measure_file.nonPAR.coord.txt`
-
-## Window-based measures
-
-- Produce the sliding windows:
-
-`python sliding_window.py start_length_file.txt windowsize stepsize > Z.coord.windows.bed`
-
-- To find overlap between our computed popgene measure and a given window:
-
-`bedtools intersect -a Z.coord.windows.bed -b popgene_measure_file.Z.coord.txt  -wao > window_statistic_overlap.txt`
-
-Now that we have the overlap between windows and statistic of interest, we use a suitable script in each case to obtain a window-based average of our computed measure.
 
 
 

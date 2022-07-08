@@ -171,7 +171,7 @@ def main():
 				scaf_list = []
 				for l in vcf_dict[scaffold]:
 					if int(l[0]) <= PAR_scaffold_length[scaffold]: 
-						scaf_list.append(l[0:2])
+						scaf_list.append(l[0:])
 						l[0] = str(PAR_scaffold_length["superscaffold26"] + (PAR_scaffold_length[scaffold] - int(l[0]) + 1))
 						l[1] = str(PAR_scaffold_length["superscaffold26"] + (PAR_scaffold_length[scaffold] - int(l[1]) + 1))
 						new_list.append(l)
@@ -193,7 +193,7 @@ def main():
 				scaf_list = []
 				for l in vcf_dict[scaffold]:
 					if int(l[0]) >= PAR_start[1]:
-						scaf_list.append(l[0:2])
+						scaf_list.append(l[0:])
 						l[0] = str(PAR_scaffold_length["superscaffold26"] + PAR_scaffold_length["superscaffold54"] + PAR_scaffold_length["superscaffold35"] + (Z_scaffold_length[scaffold] - int(l[0]) + 1))
 						l[1] = str(PAR_scaffold_length["superscaffold26"] + PAR_scaffold_length["superscaffold54"] + PAR_scaffold_length["superscaffold35"] + (Z_scaffold_length[scaffold] - int(l[1]) + 1))
 						new_list.append(l)
@@ -208,7 +208,7 @@ def main():
 				scaf_list = []
 				for l in vcf_dict[scaffold]:
 					if int(l[0]) <= nonPAR_start[0]:
-						scaf_list.append(l[0:2])
+						scaf_list.append(l[0:])
 						l[0] = str(PAR_scaffold_length["superscaffold26"] + PAR_scaffold_length["superscaffold54"] + PAR_scaffold_length["superscaffold35"] + (Z_scaffold_length[scaffold] - int(l[0]) + 1))
 						l[1] = str(PAR_scaffold_length["superscaffold26"] + PAR_scaffold_length["superscaffold54"] + PAR_scaffold_length["superscaffold35"] + (Z_scaffold_length[scaffold] - int(l[1]) + 1))
 						new_list.append(l)
