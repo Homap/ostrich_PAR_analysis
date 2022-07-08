@@ -100,8 +100,6 @@ rm -f ../../data/vcf/z_vcf/z_vcf.gz
 
 `bash 11_VCF_stats_finalfilter.sh`
 
-`Rscript 12_VCF_stats_summary_finalfilter.R`
-
 The filtered VCF files for autosomes, PAR and nonPAR are used for the analysis in this project:
 - Linkage Disequilibrium (LD)
 - Population scaled recombination rate (rho)
