@@ -3,8 +3,8 @@
 We use linkage map data from Yazid and Ellegren 2018 (Genome Biology and Evolution).  
 
 ## Convert to chromosome coordinates
-python scaffold_to_chr.py ../../../data/geneticmap/LGZ3.female.cleaned.bed Z > ../../../data/geneticmap/LGZ3.female.cleaned.chr.bed 
-python scaffold_to_chr.py ../../../data/geneticmap/LGZ3.male.cleaned.bed Z > ../../../data/geneticmap/LGZ3.male.cleaned.chr.bed 
+`python scaffold_to_chr.py ../../../data/geneticmap/LGZ3.female.cleaned.bed Z > ../../../data/geneticmap/LGZ3.female.cleaned.chr.bed`
+`python scaffold_to_chr.py ../../../data/geneticmap/LGZ3.male.cleaned.bed Z > ../../../data/geneticmap/LGZ3.male.cleaned.chr.bed`
 
 ## Sex-averaged genetic map and smoothed map using loess function
 To obtain the sex-averaged genetic map, for the PAR is (male_map + female_map)x0.5
