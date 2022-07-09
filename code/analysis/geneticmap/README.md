@@ -1,6 +1,10 @@
 # Recombination rate from the genetic map
 
-We use linkage map data from Yazid and Ellegren 2018 (Genome Biology and Evolution). 
+We use linkage map data from Yazid and Ellegren 2018 (Genome Biology and Evolution).  
+
+## Convert to chromosome coordinates
+python scaffold_to_chr.py ../../../data/geneticmap/LGZ3.female.cleaned.bed Z > ../../../data/geneticmap/LGZ3.female.cleaned.chr.bed 
+python scaffold_to_chr.py ../../../data/geneticmap/LGZ3.male.cleaned.bed Z > ../../../data/geneticmap/LGZ3.male.cleaned.chr.bed 
 
 ## Sex-averaged genetic map and smoothed map using loess function
 To obtain the sex-averaged genetic map, for the PAR is (male_map + female_map)x0.5
@@ -10,12 +14,10 @@ and for the nonPAR with only recombination in male is (male_map)x(2/3).
 
 - Table output of sex_averaged_map.R
 
-| Pos     | female_cM | male_cM | sex_averaged_cM | female_smoothed25 | male_smoothed25 | sex_averaged_smoothed25 |
-| ------- | --------- | ------- | --------------- | ----------------- | --------------- | ----------------------- | 
-| 1113306 | 0         | 0       | 0               | -1.348 | 0.644 | -0.352 | 
-| 3461664 | 4.768     | 3.096   | 3.932           | 6.853 | 3.646 | 5.249 | 
-| 4790875 | 11.351    | 4.705   | 8.028           | 11.122 | 5.421 | 8.271 | 
-| 5218699 | 13.249    | 9.764   | 11.5065         | 12.437 | 6.002 | 9.22 | 
+| chrom | start | end | Pos | female_cM | male_cM | sex_averaged_cM | first_scaffold | second_scaffold | scaffold_start | scaffold_end | female_smoothed25 | male_smoothed25 | sex_averaged_smoothed25 |
+| ----- | ----- | --- | --- | --------- | ------- | --------------- | -------------- | --------------- | -------------- | ------------ | ----------------- | --------------- | ----------------------- |
+| ChrZ | 1113307 | 3461665 |2287486 | 4.768 | 3.096 | 3.932 | superscaffold26 | superscaffold26 | 1113307 | 3461665 | 6.535 | 3.707 | 5.121 |
+| ChrZ | 3461665 | 4790876 |4126270.5 | 6.583 | 1.609 | 4.096 | superscaffold26 | superscaffold26 | 3461665 | 4790876 | 5.401 | 2.986 | 4.194 |
 
 ## Kosambi-recombination frequency and the smoothed recombination rate using loess function
 
