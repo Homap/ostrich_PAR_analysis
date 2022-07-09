@@ -24,12 +24,12 @@ and for the nonPAR with only recombination in male is (male_map)x(2/3).
 `Rscript get_recombination_frequency.R` 
 
 - Kosambi sex-averaged recombination frequency
-
+ 
 | start |  end    | pair_cm |pair_cm_per_site     |   kosambi_r_length_region| kosambi_r_per_site   |   length_region|
 | ----- | ------- | ------- | ------------------- | ------------------------ | -------------------- | -------------- |
-| 1113306 |3461663| 3.932  | 1.674e-06  |  0.03924    |  1.6709e-08 |   2348357|
-| 3461664 |4790874 |4.096  | 3.0815e-06  |  0.04087    |  3.0746e-08 |   1329210|
-| 4790875 |5218698 |3.4785 | 8.1307e-06  |  0.03473    |  8.1177e-08  |  427823|
+| 1113307 |3461665| 3.932  | 1.674e-06  |  0.03924    |  1.6709e-08 |   2348358|
+| 3461665 |4790876 |4.096  | 3.0815e-06  |  0.04087    |  3.0746e-08 |   1329211|
+| 4790876 |5218700 |3.4785 | 8.1307e-06  |  0.03473    |  8.1177e-08  |  427824|
 
 ## Window-based recombination rate
 
@@ -45,6 +45,13 @@ awk 'BEGIN{print "CHROM""\t""win_start""\t""win_end""\t""chr""\t""start""\t""end
 python get_recombination_per_window.py ../../../data/geneticmap/kosambi_sex_averaged.bedtools.txt ../../../data/sliding_window/Z.coord.1Mb.windows.PAR.txt > ../../../data/geneticmap/kosambi_sex_averaged_1MB.window.PAR.txt
 
 rm -f ../../../data/geneticmap/kosambi_sex_averaged.bedtools.txt 
+
+bedtools intersect -a ../../../data/sliding_window/Z.1000000.bed -b ../../../data/geneticmap/kosambi_sex_averaged.txt -wao | \
+awk 'BEGIN{print "CHROM""\t""win_start""\t""win_end""\t""chr""\t""start""\t""end""\t""pair_cm""\t""pair_cm_per_site""\t""kosambi_r_length_region""\t""kosambi_r_per_site""\t""length_region"}{print $0}' > ../../../data/geneticmap/kosambi_sex_averaged.Z.bedtools.txt
+
+python get_recombination_per_window.py ../../../data/geneticmap/kosambi_sex_averaged.Z.bedtools.txt ../../../data/sliding_window/Z.1000000.bed > ../../../data/geneticmap/kosambi_sex_averaged_1MB.window.Z.txt
+
+rm -f ../../../data/geneticmap/kosambi_sex_averaged.Z.bedtools.txt 
 ```
 
 - Map length and recombination rate for the PAR

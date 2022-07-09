@@ -4,9 +4,9 @@ source("../../../software_module/R/recombination_rate.R")
 
 sex_averaged_map <- read.table("../../../data/geneticmap/sex_averaged_map_loess.txt", header = T)
 
-female_rate <- rate_function(genetic_map = sex_averaged_map, len_markers = 193, column = 2, span = 0.3)
-male_rate <- rate_function(genetic_map = sex_averaged_map, len_markers = 193, column = 3, span = 0.3)
-sex_averaged_rate <- rate_function(genetic_map = sex_averaged_map, len_markers = 193, column = 4, span = 0.3)
+female_rate <- rate_function(genetic_map = sex_averaged_map, len_markers = 193, column = 5, span = 0.3)
+male_rate <- rate_function(genetic_map = sex_averaged_map, len_markers = 193, column = 6, span = 0.3)
+sex_averaged_rate <- rate_function(genetic_map = sex_averaged_map, len_markers = 193, column = 7, span = 0.3)
 
 kosambi_female <- female_rate[[1]]
 kosambi_male <-  male_rate[[1]]
