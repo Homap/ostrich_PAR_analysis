@@ -1,6 +1,6 @@
 #!/usr/bin/bash
 
-module load bcftools/1.14 htslib/1.14 vcftools/0.1.16
+module load bioinfo-tools bcftools/1.14 htslib/1.14 vcftools/0.1.16 
 
 echo "Make output directories"
 mkdir -p ../../../data/rho/ldhat_input/chr4 \
