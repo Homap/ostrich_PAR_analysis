@@ -52,6 +52,24 @@ awk 'BEGIN{print "CHROM""\t""win_start""\t""win_end""\t""chr""\t""start""\t""end
 python get_recombination_per_window.py ../../../data/geneticmap/kosambi_sex_averaged.Z.bedtools.txt ../../../data/sliding_window/Z.1000000.bed > ../../../data/geneticmap/kosambi_sex_averaged_1MB.window.Z.txt
 
 rm -f ../../../data/geneticmap/kosambi_sex_averaged.Z.bedtools.txt 
+
+awk 'BEGIN{OFS="\t"}NR==1{$(NF+1)="CHROM"} NR>1{$(NF+1)="ChrZ"} {chr=$NF; print chr,$1,$2,$3,$4,$5,$6,$7}' ../../../data/geneticmap/kosambi_male.txt > temp && mv -f temp ../../../data/geneticmap/kosambi_male.txt
+
+bedtools intersect -a ../../../data/sliding_window/Z.1000000.bed -b ../../../data/geneticmap/kosambi_male.txt -wao | \
+awk 'BEGIN{print "CHROM""\t""win_start""\t""win_end""\t""chr""\t""start""\t""end""\t""pair_cm""\t""pair_cm_per_site""\t""kosambi_r_length_region""\t""kosambi_r_per_site""\t""length_region"}{print $0}' > ../../../data/geneticmap/kosambi_male.Z.bedtools.txt
+
+python get_recombination_per_window.py ../../../data/geneticmap/kosambi_male.Z.bedtools.txt ../../../data/sliding_window/Z.1000000.bed > ../../../data/geneticmap/kosambi_male_1MB.window.Z.txt
+
+rm -f ../../../data/geneticmap/kosambi_male.Z.bedtools.txt 
+
+awk 'BEGIN{OFS="\t"}NR==1{$(NF+1)="CHROM"} NR>1{$(NF+1)="ChrZ"} {chr=$NF; print chr,$1,$2,$3,$4,$5,$6,$7}' ../../../data/geneticmap/kosambi_female.txt > temp && mv -f temp ../../../data/geneticmap/kosambi_female.txt
+
+bedtools intersect -a ../../../data/sliding_window/Z.1000000.bed -b ../../../data/geneticmap/kosambi_female.txt -wao | \
+awk 'BEGIN{print "CHROM""\t""win_start""\t""win_end""\t""chr""\t""start""\t""end""\t""pair_cm""\t""pair_cm_per_site""\t""kosambi_r_length_region""\t""kosambi_r_per_site""\t""length_region"}{print $0}' > ../../../data/geneticmap/kosambi_female.Z.bedtools.txt
+
+python get_recombination_per_window.py ../../../data/geneticmap/kosambi_female.Z.bedtools.txt ../../../data/sliding_window/Z.1000000.bed > ../../../data/geneticmap/kosambi_female_1MB.window.Z.txt
+
+rm -f ../../../data/geneticmap/kosambi_female.Z.bedtools.txt 
 ```
 
 - Map length and recombination rate for the PAR
