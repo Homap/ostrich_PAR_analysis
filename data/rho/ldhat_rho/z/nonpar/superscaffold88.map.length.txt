@@ -1,3 +1,0 @@
-Scaffold	Locus_start	Locus_end	Mean_rho	Median	L95	U95
-superscaffold88	646	327265	  86.96279	  86.75147	  80.45409	  94.50997
-superscaffold88	327664	623950	  45.48652	  45.37341	  41.35713	  50.02185
