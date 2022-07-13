@@ -58,7 +58,7 @@ python ../../processing/scaffold_to_chr.py ${rho_z}/200Kb200kb_rho_Z.txt Z > ${r
 rm -f ${rho_z}/chrZ.map.length.Z.coord.200kb200Kb.txt ${rho_z}/200Kb200kb_rho_Z.txt
 
 #-------------------------------------------------------------------------------------------------
-# 1Mb window without overlap for using rho with recombination frequency from genetic map to obtain Ne and use in simulation
+# 1Mb PAR window without overlap for using rho with recombination frequency from genetic map to obtain Ne and use in simulation
 #-------------------------------------------------------------------------------------------------
 # Find the overlap between scaffold windows and the rho
 awk 'NR>1' ${rho_z}/chrZ.map.length.txt | bedtools intersect -a ../../../data/sliding_window/par_scaf_1000000_1000000.bed -b - -wao | \
@@ -79,3 +79,26 @@ python get_recombination_per_window_step2.py ${rho_z}/step2.PAR.1000000.txt ../.
 
 # Remove intermediate files
 rm -f ${rho_z}/1Mb1Mb_scaf.PAR.txt ${rho_z}/1Mb1Mb_rho_scaf.PAR.txt ${rho_z}/1Mb1Mb_rho_chrom.PAR.txt ${rho_z}/step2.PAR.1000000.txt 
+
+#-------------------------------------------------------------------------------------------------
+# 1Mb Z window without overlap for comparing rho with genetic map
+#-------------------------------------------------------------------------------------------------
+# Find the overlap between scaffold windows and the rho
+awk 'NR>1' ${rho_z}/chrZ.map.length.txt | bedtools intersect -a ../../../data/sliding_window/z_scaf_1000000_1000000.bed -b - -wao | \
+awk 'BEGIN{print "CHROM""\t""win_start""\t""win_end""\t""chr""\t""start""\t""end""\t""scaffold""\t""start""\t""end""\t""Mean_rho""\t""Median""\t""L95""\t""U95""\t""overlap"}{print $0}' > ${rho_z}/1Mb1Mb_scaf.Z.txt
+
+# Summarise windows and their overlapping regions
+python get_recombination_per_window.py ${rho_z}/1Mb1Mb_scaf.Z.txt \
+../../../data/sliding_window/z_scaf_1000000_1000000.bed > ${rho_z}/1Mb1Mb_rho_scaf.Z.txt
+
+# Conversion of scaffold to chromosome coordinates
+python ../../processing/scaffold_to_chr.py ${rho_z}/1Mb1Mb_rho_scaf.Z.txt PAR > ${rho_z}/1Mb1Mb_rho_chrom.Z.txt
+
+# Re-calculate windows based on Z
+bedtools intersect -a ../../../data/sliding_window/z_chrom_1000000_1000000.bed  -b ${rho_z}/1Mb1Mb_rho_chrom.Z.txt -wao | \
+awk 'BEGIN{print "CHROM""\t""win_start""\t""win_end""\t""chr""\t""start""\t""end""\t""scaffold""\t""start""\t""end""\t""rho_per_site""\t""Mean_rho""\t""overlap"}{print $0}' > ${rho_z}/step2.Z.1000000.txt
+
+python get_recombination_per_window_step2.py ${rho_z}/step2.Z.1000000.txt ../../../data/sliding_window/z_chrom_1000000_1000000.bed > ${rho_z}/1Mb1Mb.rho.chrom.Z.txt
+
+# Remove intermediate files
+rm -f ${rho_z}/1Mb1Mb_scaf.Z.txt ${rho_z}/1Mb1Mb_rho_scaf.Z.txt ${rho_z}/1Mb1Mb_rho_chrom.Z.txt ${rho_z}/step2.Z.1000000.txt 
