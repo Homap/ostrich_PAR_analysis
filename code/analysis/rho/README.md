@@ -63,7 +63,7 @@ export lk_LUT_path=../../../data/rho/ldhat_input/lk_LUT
 
 We would like to calculate the rho for the whole Z chromosome however, if running LDhat on long 
 scaffolds or chromosomes, the algorithm may not coverge. Instead, we split the data into chunks 
-of 2000 SNPs with 200 SNPs overlap between windows. 
+of 1000 SNPs with 200 SNPs overlap between windows. 
 
 `bash 1_run_vcf_to_ldhat_input.sh`
 

@@ -2,8 +2,8 @@
 
 #SBATCH -A snic2022-22-149 
 #SBATCH -p core
-#SBATCH -n 3
-#SBATCH -t 03:00:00
+#SBATCH -n 1
+#SBATCH -t 10:00:00
 #SBATCH --mail-user=homa.papoli_yazdi@biol.lu.se
 #SBATCH --mail-type=FAIL
 

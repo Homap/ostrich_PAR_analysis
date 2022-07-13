@@ -66,21 +66,25 @@ for key in f2_l: # for each window in the order of the sliding window list
 		# print(key)
 		if f1_dict[key][0][0] == ".": # if there is no overlap
 			print(key.split(":")[0]+"\t"+key.split(":")[1]+"\t"+key.split(":")[2]+"\t"+"NA"+"\t"+"NA")
+		elif f1_dict[key][0][6] == "NA": 
+			print(key.split(":")[0]+"\t"+key.split(":")[1]+"\t"+key.split(":")[2]+"\t"+"NA"+"\t"+"NA")
 		else: # if there is an overlap
-			rho_per_site = float(f1_dict[key][0][3])/(int(f1_dict[key][0][2])-int(f1_dict[key][0][1]))
+			rho_per_site = float(f1_dict[key][0][6])
 			window_size = int(key.split(":")[2]) - int(key.split(":")[1])
-			print(key.split(":")[0]+"\t"+key.split(":")[1]+"\t"+key.split(":")[2]+"\t"+str(round(rho_per_site, 6))+"\t"+str(round(rho_per_site*window_size, 6)))
+			print(key.split(":")[0]+"\t"+key.split(":")[1]+"\t"+key.split(":")[2]+"\t"+str(round(rho_per_site, 6))+"\t"+str(float(f1_dict[key][0][7])))
 	else: # if there is more than one overlap
 		# print(key)
 		addup_pair_rho = 0
 		total_pair = 0
 		for element in f1_dict[key]:
 			# print(element)
-			rho_per_site = float(element[3])/(int(element[2])-int(element[1]))
-			addup_pair_rho = addup_pair_rho + (int(element[7])*rho_per_site)
-			total_pair = total_pair + int(element[7])
+			if not element[6] == "NA":
+				rho_per_site = float(element[6])
+				addup_pair_rho = addup_pair_rho + (int(element[8])*rho_per_site)
+				total_pair = total_pair + int(element[8])
 		new_pair_rho = addup_pair_rho/total_pair
 		window_size = int(key.split(":")[2]) - int(key.split(":")[1])
+		#print(new_pair_rho*window_size)
 		print(key.split(":")[0]+"\t"+key.split(":")[1]+"\t"+key.split(":")[2]+"\t"+str(round(new_pair_rho,6))+"\t"+str(round(new_pair_rho*window_size, 6)))
 
 
