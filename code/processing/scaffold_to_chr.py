@@ -11,7 +11,7 @@ from collections import defaultdict
 def usage():
 	msg = '''converts scaffold coordinates of ostrich Z chromosome into chromosome coordinates based on linkage map Yazdi and Ellegren 2018
 	Usage:
-	scaffold_to_chr.py <tab-separated-coordinate-file> > <output-file-name>
+	scaffold_to_chr.py <tab-separated-coordinate-file> <Z/PAR/nonPAR> > <output-file-name>
 		'''
 	print(msg)
 
@@ -34,7 +34,7 @@ def main():
 	PAR_scaffold_length = {'superscaffold26': 25310599, 'superscaffold54':16379243 , 'superscaffold35': 4625539, 'superscaffold36': 5869911}
 	nonPAR_scaffold_length = {'superscaffold36': 3516672, 'superscaffold62': 2917291, 'superscaffold67': 5300260, 'superscaffold69-1': 5978518, 'superscaffold93': 4983591, 'superscaffold63': 1692925, 'superscaffold88': 624114, 'superscaffold83': 782506, 'superscaffold92': 2882843}
 
-	PAR_start = [9394175, 3524264]
+	PAR_start = [9394175, 3524263]
 	nonPAR_start = [3516672, 0]
 	# Read file into a dictionary
 	vcf_dict = {}

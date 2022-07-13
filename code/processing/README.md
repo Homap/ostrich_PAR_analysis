@@ -156,7 +156,16 @@ The gap is excluded when calculating the total length of PAR and nonPAR as it ca
 
 52,185,292 + 28,678,720 + 7592 = 80,871,604 (Total Z length)
 
+## Generate sliding windows
+`mkdir -p ../../data/sliding_window`
 
+- 200 Kb window with 50 Kb overlap for Z scaffolds used for comparison of LD and rho
+`python sliding_window.py ../../data/bed/z_scaf.bed 200000 150000 > ../../data/sliding_window/z_scaf_200000_50000.bed`
 
+- 200 Kb window without overlap for Z scaffolds used for comparison of rho, genetic diversity, genomic features, etc.
+`python sliding_window.py ../../data/bed/z_scaf.bed 200000 200000 > ../../data/sliding_window/z_scaf_200000_200000.bed`
 
+- 1Mb window without overlap for using rho with recombination frequency from genetic map to obtain Ne and use in simulation
+`python sliding_window.py ../../data/bed/par_scaf.bed 1000000 1000000 > ../../data/sliding_window/par_scaf_1000000_1000000.bed`
+`python sliding_window.py ../../data/bed/z_par.bed 1000000 1000000 > ../../data/sliding_window/z_par_1000000_1000000.bed`
 

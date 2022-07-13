@@ -1,6 +1,6 @@
 #!/usr/bin/python
 import sys
-
+import numpy as np
 # Homa Papoli Yazdi
 # It takes a file containing scaffold name and their length,
 # with window size and step and outputs windows across the region in bed format.
@@ -8,7 +8,7 @@ import sys
 
 seq_l = open(sys.argv[1], 'r')
 winSize = int(sys.argv[2])
-step = winSize
+step = int(sys.argv[3])
 
 
 # Function for sliding window
@@ -29,11 +29,22 @@ def slidingWindow(start, sequence_l, winSize, step):
 	#numOfChunks = int(numOfChunks)
 	#else:
 	# Pre-compute number of chunks to emit
-	numOfChunks = ((int(sequence_l-winSize)/step))+1
-	numOfChunks = int(numOfChunks) 
+	window_start = []
+	for i in range(start, (sequence_l - step), step):
+		window_start.append(i)
 
-	for i in range(start, numOfChunks*step, step):
-		yield i,i+winSize
+	window_end = np.add(window_start, winSize)
+
+	window_end[-1] = sequence_l
+
+	window_list = []
+
+	for c in range(0, len(window_start)):
+		window_list.append([window_start[c], window_end[c]])
+
+	return(window_list)
+
+
 
 print("CHROM"+"\t"+"Start"+"\t"+"End")
 for line in seq_l:
@@ -43,11 +54,6 @@ for line in seq_l:
         if winSize > sequence_l:
             print(line.strip("\n").split("\t")[0]+"\t"+"0"+"\t"+str(sequence_l))
         else:
-            for index, item in enumerate(slidingWindow(start, sequence_l, winSize, step)):
-                if item[1] > sequence_l:
-                    pass
-                elif item[1] < sequence_l and item[1] + winSize > sequence_l:
-                    print(line.strip("\n").split("\t")[0]+"\t"+str(item[0])+"\t"+str(item[1]))
-                    print(line.strip("\n").split("\t")[0]+"\t"+str(item[1])+"\t"+str(sequence_l))
-                else:
-                    print(line.strip("\n").split("\t")[0]+"\t"+str(item[0])+"\t"+str(item[1]))
+            windows = slidingWindow(start, sequence_l, winSize, step)
+            for index, item in enumerate(windows):
+                print(line.strip("\n").split("\t")[0]+"\t"+str(item[0])+"\t"+str(item[1]))
