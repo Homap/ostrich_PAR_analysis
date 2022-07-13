@@ -36,14 +36,13 @@ done
 # Separating Z scaffolds ---------------------------------------------------------------------------------
 mkdir -p ../../../data/vcf/ld_vcf/z_vcf
 
-export z_vcf=../../../data/vcf/z_vcf/z_vcf.gz
+export z_vcf=../../../data/vcf/z_vcf/sorted.z.vcf.gz
 
 # chromosome Z
 for scaffold in $(cat ../../../data/bed/z_scaf.bed | grep -v "^chrom" | cut -f1 | sort | uniq)
 do
 echo $scaffold
-vcftools --gzvcf ${z_vcf} --chr $scaffold \
---recode --recode-INFO-all --stdout | bgzip -c > ../../../data/vcf/ld_vcf/z_vcf/${scaffold}.chrz.vcf.gz
+vcftools --gzvcf ${z_vcf} --chr $scaffold --recode --recode-INFO-all --stdout | bgzip -c > ../../../data/vcf/ld_vcf/z_vcf/${scaffold}.chrz.vcf.gz
 done
 
 # PAR : This is the same as the scaffolds in Z except for superscaffold36
