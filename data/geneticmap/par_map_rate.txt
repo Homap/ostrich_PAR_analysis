@@ -1,2 +1,0 @@
-female_PAR_length	male_PAR_length	sex_averaged_PAR_length	female_PAR_r	male_PAR_r	sex_averaged_PAR_r
-80.628	42.641	61.6345	0.462	0.346	0.422
