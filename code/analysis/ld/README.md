@@ -96,6 +96,7 @@ Table 3. Output of pairwise LD calculation.
 
     - whole PAR
         ```
+        mkdir -p ${ld_dir}/z/par
         cat ${ld_dir}/z/superscaffold26.LDdecay.stat \
         ${ld_dir}/z/superscaffold54.LDdecay.stat \
         ${ld_dir}/z/superscaffold35.LDdecay.stat \
@@ -121,6 +122,7 @@ Table 3. Output of pairwise LD calculation.
         ```
     - nonPAR
         ```
+        mkdir -p ${ld_dir}/z/nonpar
         cat ${ld_dir}/z/superscaffold62.LDdecay.stat \
         ${ld_dir}/z/superscaffold63.LDdecay.stat \
         ${ld_dir}/z/superscaffold67.LDdecay.stat \

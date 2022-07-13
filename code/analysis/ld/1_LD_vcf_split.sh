@@ -15,7 +15,7 @@ module load bioinfo-tools vcftools/0.1.16 htslib/1.14
 mkdir -p ../../../data/vcf/ld_vcf/a_vcf/chr4
 mkdir -p ../../../data/vcf/ld_vcf/a_vcf/chr5
 
-export a_vcf=../../../data/vcf/a_vcf/a_vcf.filtered.repeatmasked.hwe.vcf.gz
+export a_vcf=../../../data/vcf/a_vcf/a_vcf.filtered.repeatmasked.hwe.snps.sorted.vcf.gz
 
 # Chromosome 4 -------------------------------------------------------------------------------------------
 for scaffold in $(cat ../../../data/lastz/gg_chr4_ostrich.bed | grep -v "^chrom" | cut -f1 | sort | uniq)

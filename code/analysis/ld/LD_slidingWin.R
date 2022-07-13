@@ -38,6 +38,7 @@ win.starts <- seq(0, scaf.size-step.size, by=step.size)
 win.ends <- win.starts + bin.size
 win.ends[length(win.ends)] <- scaf.size
 
+
 # store results here
 chr.out <- rep(scaf, length(win.starts))
 nSNP.out <- vector(length=length(win.starts))
