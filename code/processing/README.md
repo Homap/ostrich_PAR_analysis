@@ -168,4 +168,5 @@ The gap is excluded when calculating the total length of PAR and nonPAR as it ca
 - 1Mb window without overlap for using rho with recombination frequency from genetic map to obtain Ne and use in simulation
 `python sliding_window.py ../../data/bed/par_scaf.bed 1000000 1000000 > ../../data/sliding_window/par_scaf_1000000_1000000.bed`
 `python sliding_window.py ../../data/bed/z_par.bed 1000000 1000000 > ../../data/sliding_window/z_par_1000000_1000000.bed`
-
+`python sliding_window.py ../../data/bed/z_chrom.bed 1000000 1000000 > ../../data/sliding_window/z_chrom_1000000_1000000.bed`
+`python sliding_window.py ../../data/bed/z_scaf.bed 1000000 1000000 > ../../data/sliding_window/z_scaf_1000000_1000000.bed`
