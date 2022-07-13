@@ -8,7 +8,7 @@ library(devtools)
 # Using interpolated data for males, females and the sex-averaged map, I use the 
 # Kosambi map function to obtain an estimate of recombination fraction per meiosis.
 
-rate_function <- function(genetic_map, len_markers, column, span, first_marker = 1113307, mb = 10^6){
+rate_function <- function(genetic_map, column){
   start <- genetic_map$start
   end <- genetic_map$end
   pair_cm <- genetic_map[,column]
