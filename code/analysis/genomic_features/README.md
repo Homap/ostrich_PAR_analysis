@@ -1,14 +1,7 @@
-# Windows, bases and genomic features
-
-Many analyses in this paper are done in sliding window. Each sliding window summarises information in a region.
-Choosing a size for the sliding window is not a trivial task. Smaller window sizes add noise and larger ones, might
-reduce the resolution in the data. Here we choose the following window sizes: 100 Kb,200 Kb and 1M. 
+# Genomic features - CDS and intergenic
 
 ## Extract genomic coordinates for CDS, intron and intergenic regions
 `bash extract_ostrich_coordinates.sh`
-
-## Create window files
-`bash generate_windows.sh`
 
 ## CDS overlap
 `bash cds_window.sh`
