@@ -92,7 +92,7 @@ python get_recombination_per_window.py ${rho_z}/1Mb1Mb_scaf.Z.txt \
 ../../../data/sliding_window/z_scaf_1000000_1000000.bed > ${rho_z}/1Mb1Mb_rho_scaf.Z.txt
 
 # Conversion of scaffold to chromosome coordinates
-python ../../processing/scaffold_to_chr.py ${rho_z}/1Mb1Mb_rho_scaf.Z.txt PAR > ${rho_z}/1Mb1Mb_rho_chrom.Z.txt
+python ../../processing/scaffold_to_chr.py ${rho_z}/1Mb1Mb_rho_scaf.Z.txt Z > ${rho_z}/1Mb1Mb_rho_chrom.Z.txt
 
 # Re-calculate windows based on Z
 bedtools intersect -a ../../../data/sliding_window/z_chrom_1000000_1000000.bed  -b ${rho_z}/1Mb1Mb_rho_chrom.Z.txt -wao | \
@@ -102,3 +102,29 @@ python get_recombination_per_window_step2.py ${rho_z}/step2.Z.1000000.txt ../../
 
 # Remove intermediate files
 rm -f ${rho_z}/1Mb1Mb_scaf.Z.txt ${rho_z}/1Mb1Mb_rho_scaf.Z.txt ${rho_z}/1Mb1Mb_rho_chrom.Z.txt ${rho_z}/step2.Z.1000000.txt 
+
+#-------------------------------------------------------------------------------------------------
+# 200 Kb without overlap for the comparison of rho for chromosomes 4 and 5
+#-------------------------------------------------------------------------------------------------
+grep 'superscaffold11' ../../../data/sliding_window/chr4_200000_200000.bed >  ../../../data/sliding_window/superscaffold11_200000_200000.bed
+grep -w 'superscaffold8' ../../../data/sliding_window/chr5_200000_200000.bed > ../../../data/sliding_window/superscaffold8_200000_200000.bed
+
+# Find overlap between windows and rho estimates
+export ldhat_rho_a=../../../data/rho/ldhat_rho
+
+awk 'NR>1' ${ldhat_rho_a}/chr4/superscaffold11.map.length.txt | bedtools intersect -a ../../../data/sliding_window/superscaffold11_200000_200000.bed -b - -wao | \
+awk 'BEGIN{print "CHROM""\t""win_start""\t""win_end""\t""chr""\t""start""\t""end""\t""scaffold""\t""start""\t""end""\t""Mean_rho""\t""Median""\t""L95""\t""U95""\t""overlap"}{print $0}' > ${ldhat_rho_a}/chr4/superscaffold11.200kb200Kb.txt
+
+awk 'NR>1' ${ldhat_rho_a}/chr5/superscaffold8.map.length.txt | bedtools intersect -a ../../../data/sliding_window/superscaffold8_200000_200000.bed -b - -wao | \
+awk 'BEGIN{print "CHROM""\t""win_start""\t""win_end""\t""chr""\t""start""\t""end""\t""scaffold""\t""start""\t""end""\t""Mean_rho""\t""Median""\t""L95""\t""U95""\t""overlap"}{print $0}' > ${ldhat_rho_a}/chr5/superscaffold8.200kb200Kb.txt
+
+# Summarise windows and their overlapping regions
+python get_recombination_per_window.py ${ldhat_rho_a}/chr4/superscaffold11.200kb200Kb.txt \
+../../../data/sliding_window/superscaffold11_200000_200000.bed > ${ldhat_rho_a}/chr4/superscaffold11.200kb200Kb.rho.txt
+
+python get_recombination_per_window.py ${ldhat_rho_a}/chr5/superscaffold8.200kb200Kb.txt \
+../../../data/sliding_window/superscaffold8_200000_200000.bed > ${ldhat_rho_a}/chr5/superscaffold8.200kb200Kb.rho.txt
+
+# Remove intermediate files
+rm -f ${ldhat_rho_a}/chr4/superscaffold11.200kb200Kb.txt
+rm -f ${ldhat_rho_a}/chr5/superscaffold8.200kb200Kb.txt
