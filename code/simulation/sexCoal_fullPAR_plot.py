@@ -8,14 +8,14 @@ def cMtoR(cM=1):
     return (1 - np.exp(-(2*cM)/100))/2
 
 # Import dataframe with rho, r, estimates
-rhoFileRev = pd.read_table('rho_r_Ne_table_reversed.txt') # Change the path to the one in the repository (Use the original coordinates & remove '_rev' from filenames)
-print(rhoFileRev)
-# pull out relevant variables from rhoFileRev dataframe
-real_rate_map_cM_Mb   = np.array(rhoFileRev['real_rate_map_cM_Mb_rev']) # the direct recombination rate over 1 Mb
-smooth_rate_map_cM_Mb = np.array(rhoFileRev['smooth_rate_map_cM_Mb_rev']) # the smoothed rate of recombination over 1Mb
-rhoVals               = np.array(rhoFileRev['rho_rev']) # the rho from LDhat for the window of 1 Mb
-Ne_smooth_r           = np.array(rhoFileRev['Ne_smooth_r_rev']) # the Ne obtained using smooth_rate_map_cM_Mb
-Ne_real_r             = np.array(rhoFileRev['Ne_real_r_rev']) # the Ne obtained using real_rate_map_cM_Mb
+rhoFile = pd.read_table('../../data/simulation_input/rho_r_Ne_table.txt') # Change the path to the one in the repository (Use the original coordinates & remove '_' from filenames)
+print(rhoFile)
+# pull out relevant variables from rhoFile dataframe
+real_rate_map_cM_Mb   = np.array(rhoFile['real_rate_map_cM_Mb']) # the direct recombination rate over 1 Mb
+smooth_rate_map_cM_Mb = np.array(rhoFile['smooth_rate_map_cM_Mb']) # the smoothed rate of recombination over 1Mb
+rhoVals               = np.array(rhoFile['rho']) # the rho from LDhat for the window of 1 Mb
+Ne_smooth_r           = np.array(rhoFile['Ne_smooth_r']) # the Ne obtained using smooth_rate_map_cM_Mb
+Ne_real_r             = np.array(rhoFile['Ne_real_r']) # the Ne obtained using real_rate_map_cM_Mb
  
 # Define per generation neutral mutation rate 
 # -- mu for Struthioformes from Zhang et al. 2014 Fig.3
@@ -276,7 +276,7 @@ def seq_along(x):
     return(seq(along = x))
 
 
-# Variable names from rhoFileRev.txt
+# Variable names from rhoFile.txt
 # real_rate_map_cM_Mb
 # smooth_rate_map_cM_Mb
 # rhoVals
