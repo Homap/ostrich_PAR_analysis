@@ -1,7 +1,6 @@
 import msprime
 import numpy as np
 import pandas as pd
-from functions_Conv import cMtoR
 import matplotlib.pyplot as plt
 
 # define function to convert from cM to Pr(recombination)
@@ -9,7 +8,7 @@ def cMtoR(cM=1):
     return (1 - np.exp(-(2*cM)/100))/2
 
 # Import dataframe with rho, r, estimates
-rhoFileRev = pd.read_table('../data/rho_r_Ne_table_reversed.txt') # Change the path to the one in the repository
+rhoFileRev = pd.read_table('rho_r_Ne_table_reversed.txt') # Change the path to the one in the repository (Use the original coordinates & remove '_rev' from filenames)
 print(rhoFileRev)
 # pull out relevant variables from rhoFileRev dataframe
 real_rate_map_cM_Mb   = np.array(rhoFileRev['real_rate_map_cM_Mb_rev']) # the direct recombination rate over 1 Mb
