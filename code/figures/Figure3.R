@@ -1,40 +1,162 @@
-#------------------------------------------------------------
-# Homa Papoli
-# Created on: May 2022
-# Description: Script to create plots of Tajima's D distributions
-# for Italian sparrow population based on thetas Analysis from ANGSD
-# Note: Before running, set the working directory to the root of the project
-#------------------------------------------------------------
+#!/usr/bin/R
+
+# Clean the workspace
 rm(list = ls())
-library(cowplot)
-# Z chromosome coordinates
-black_Z <- read.table("data/diversity/black.Z.coordinates.sfs.txt", header=F)
-colnames(x = black_Z) = c("Chr", "Scaffold", "Window_start", "Window_end", "Chr_start", "Chr_end", "Window_mid",
+
+library(ggplot2)
+library(tidyquant)
+library(patchwork)
+
+mb = 10^6
+kb = 10^3
+
+#-----------------------
+# pi
+#-----------------------
+Z_pi <- read.table("../../data/diversity/genetic_variation/z/Z.200000.chr.coord.sfs.txt", header=F)
+colnames(x = Z_pi) = c("Chr", "Chr_start", "Chr_end", "Scaffold", "Window_start", "Window_end", "Window_mid",
                           "pi", "theta", "Td", "win_length", "pi_resamp_mean", "pi_resamp_CI_low", "pi_resamp_CI_up")
-td = ggplot(black_Z, aes(y=Td, x=(Chr_start+Chr_end)/(2*mb))) +
+
+pi_plot <- ggplot(Z_pi, aes(y=pi/win_length, x=(Chr_start+Chr_end)/(2*mb))) +
   geom_point(size = 1.3, col="grey", alpha = 0.7) + geom_ma(ma_fun = SMA, n = 5, col = "black", size = 0.8, linetype = 6) + theme_classic()+
-  xlab("Position (Mb)") + ylab("Tajima's D") +
-  theme(axis.title.x = element_blank(), axis.text.x = element_blank(), axis.ticks.x = element_blank()) +
-  geom_vline(xintercept = (52193205)/mb, linetype="dashed", color = "black") 
+  theme(axis.text.y=element_text(size=12), axis.title.x = element_blank(), axis.text.x = element_blank(), axis.ticks.x = element_blank(),
+        axis.title.y = element_text(angle = 0, vjust = 0.5, hjust = 1, size = 12)) +
+  xlab("Position (Mb)") + ylab(expression(pi)) +  scale_x_continuous(breaks=seq(0,82,10)) +
+  geom_vline(xintercept = (52185292)/mb, linetype="dashed", color = "black") +
+  geom_hline(yintercept=0.0016, linetype="dashed", color = "black") + ggtitle('A')
 
-mfFST <- read.table("data/fst/black_male_female_Z_100Kb.windowed.weir.Z.coord.fst", header=F)
-mfFST$V8[mfFST$V8 < 0] <- 0
-par_mfFST <- mfFST[(mfFST$V5<52193205),]
-nonpar_mfFST <- mfFST[(mfFST$V5>52193205),]
-mean(par_mfFST$V8)
-mean(nonpar_mfFST$V8)
-t.test(par_mfFST$V8, nonpar_mfFST$V8)
-hist(par_mfFST$V8)
-hist(nonpar_mfFST$V8)
+#-----------------------
+# GC
+#-----------------------
+GC <- read.table("../../data/genomic_features/z_scaf.200000.intergene.overlap.density.sorted.coord.txt", header=F)
+colnames(GC) = c("Chr", "Chr_start", "Chr_end", "Scaffold", "Window_start", "Window_end", "Window_Base_count",
+                 "Window_GC_count", "Feat_start", "Feat_end", "Feat_Base_count", "Feat_GC_count")
 
+GC_chr4 <- read.table("../../data/genomic_features/chr4.scaf.200000.intergene.overlap.density.sorted.txt", header=T)
+GC_chr5 <- read.table("../../data/genomic_features/chr5.scaf.200000.intergene.overlap.density.sorted.txt", header=T)
 
-fst = ggplot(mfFST, aes(y=mfFST$V8, x=(mfFST$V5+mfFST$V6)/(2*mb))) +
+GC_a <- rbind(GC_chr4, GC_chr5)
+GC_a_mean <- mean(GC_a$Window_GC_count/GC_a$Window_Base_count)
+
+gc_plot <- ggplot(GC, aes(y=(GC$Window_GC_count/GC$Window_Base_count)*100, x=(Chr_start+Chr_end)/(2*mb))) +
   geom_point(size = 1.3, col="grey", alpha = 0.7) + geom_ma(ma_fun = SMA, n = 5, col = "black", size = 0.8, linetype = 6) + theme_classic()+
-  xlab("Position (Mb)") + ylab("FST") +
-  geom_vline(xintercept = (52193205)/mb, linetype="dashed", color = "black") 
+  theme(axis.text.y=element_text(size=12), axis.title.x = element_blank(), axis.text.x = element_blank(), axis.ticks.x = element_blank(),
+        axis.title.y = element_text(angle = 0, vjust = 0.5, hjust = 1, size = 12)) +
+  xlab("Position (Mb)") + ylab("GC %") +  scale_x_continuous(breaks=seq(0,82,10)) +
+  geom_vline(xintercept = (52185292)/mb, linetype="dashed", color = "black") +
+  geom_hline(yintercept=GC_a_mean*100, linetype="dashed", color = "black") + ggtitle('B')
 
-ggdraw(ylim = c(0,0.9)) +
-  draw_plot(td, x = 0.02, y = 0.5, width = 0.98, height = 0.4) +
-  draw_plot(fst, x = 0, y = 0, width = 1, height = 0.5) +
-  draw_plot_label(label = c("A", "B"), size = 12,
-                  x = c(0, 0), y = c(0.9,0.5))
+#-----------------------
+# CDS
+#-----------------------
+CDS <- read.table("../../data/genomic_features/z_scaf.200000.CDS.overlap.density.sorted.coord.txt", header=F)
+colnames(CDS) = c("Chr", "Chr_start", "Chr_end", "Scaffold", "Window_start", "Window_end", "Window_Base_count",
+                  "Window_GC_count", "Feat_start", "Feat_end", "Feat_Base_count", "Feat_GC_count")
+
+CDS_chr4 <- read.table("../../data/genomic_features/chr4.scaf.200000.CDS.overlap.density.sorted.txt", header=T)
+CDS_chr5 <- read.table("../../data/genomic_features/chr5.scaf.200000.CDS.overlap.density.sorted.txt", header=T)
+CDS_a <- rbind(CDS_chr4, CDS_chr5)
+
+CDS_a_mean <- mean(CDS_a$Feat_Base_count/CDS_a$Window_Base_count)
+
+cds_plot <- ggplot(CDS, aes(y=(CDS$Feat_Base_count/CDS$Window_Base_count)*100, x=(Chr_start+Chr_end)/(2*mb))) +
+  geom_point(size = 1.3, col="grey", alpha = 0.7) + geom_ma(ma_fun = SMA, n = 5, col = "black", size = 0.8, linetype = 6) + theme_classic()+
+  theme(axis.text.y=element_text(size=12), axis.title.x = element_blank(), axis.text.x = element_blank(), axis.ticks.x = element_blank(),
+        axis.title.y = element_text(angle = 0, vjust = 0.5, hjust = 1, size = 12)) +
+  xlab("Position (Mb)") + ylab("CDS %") +  scale_x_continuous(breaks=seq(0,82,10)) +
+  geom_vline(xintercept = (52185292)/mb, linetype="dashed", color = "black") +
+  geom_hline(yintercept = CDS_a_mean*100, linetype="dashed", color = "black") + ggtitle('C')
+
+#-----------------------
+# TD
+#-----------------------
+chr4_pi <- read.table("../../data/diversity/genetic_variation/chr4/chr4.200000.sfs.txt", header=T)
+chr5_pi <- read.table("../../data/diversity/genetic_variation/chr5/chr5.200000.sfs.txt", header=T)
+
+pi_a <- rbind(chr4_pi, chr5_pi)
+td_a_mean <- mean(pi_a$Td)
+
+td_plot <- ggplot(Z_pi, aes(y=Td, x=(Chr_start+Chr_end)/(2*mb))) +
+  geom_point(size = 1.3, col="grey", alpha = 0.7) + geom_ma(ma_fun = SMA, n = 5, col = "black", size = 0.8, linetype = 6) + theme_classic()+
+  theme(axis.text.y=element_text(size=12), axis.title.x = element_blank(), axis.text.x = element_blank(), axis.ticks.x = element_blank(),
+        axis.title.y = element_text(angle = 0, vjust = 0.5, hjust = 1, size = 12)) +
+  xlab("Position (Mb)") + ylab(expression("T"["d"])) +  scale_x_continuous(breaks=seq(0,82,10)) +
+  geom_vline(xintercept = (52185292)/mb, linetype="dashed", color = "black") +
+  geom_hline(yintercept = td_a_mean, linetype="dashed", color = "black") + ggtitle('D')
+
+#-----------------------
+# Fst
+#-----------------------
+fst <- read.table("../../data/fst/z/black_male_female_Z_200Kb.windowed.weir.Z.coord.fst")
+colnames(fst) <- c("Chr", "Chr_start", "Chr_end", "Scaffold", "Window_start",
+                   "Window_end", "N_VARIANTS", "WEIGHTED_FST", "MEAN_FST")
+
+fst$WEIGHTED_FST[fst$WEIGHTED_FST<0] <- 0
+
+chr4_fst <- read.table("../../data/fst/autosome/chr4/chr4.200Kb.windowed.weir.fst", header = F)
+chr5_fst <- read.table("../../data/fst/autosome/chr5/chr5.200Kb.windowed.weir.fst", header = F)
+
+fst_a <- rbind(chr4_fst, chr5_fst)
+colnames(fst_a) <- c("Scaffold", "Window_start", "Window_end", "N_VARIANTS", "WEIGHTED_FST", "MEAN_FST")
+
+fst_a$WEIGHTED_FST[fst_a$WEIGHTED_FST<0] <- 0
+
+fst_a_mean <- mean(fst_a$WEIGHTED_FST)
+
+fst_plot <- ggplot(fst, aes(y=WEIGHTED_FST, x=(Chr_start+Chr_end)/(2*mb))) +
+  geom_point(size = 1.3, col="grey", alpha = 0.7) + geom_ma(ma_fun = SMA, n = 5, col = "black", size = 0.8, linetype = 6) + theme_classic()+
+  theme(axis.text.y=element_text(size=12), axis.title.y = element_text(angle = 0, vjust = 0.5, hjust = 1, size = 12)) +
+  xlab("Position (Mb)") + ylab(expression('M-F F'['st'])) +  scale_x_continuous(breaks=seq(0,82,10)) +
+  geom_vline(xintercept = (52185292)/mb, linetype="dashed", color = "black") +
+  geom_hline(yintercept = fst_a_mean, linetype="dashed", color = "black") + ggtitle('E')
+
+
+#-----------------------
+# pi vs. rho
+#-----------------------
+rho <- read.table("../../data/rho/ldhat_rho/z/200Kb200Kb_rho_Z.chr.coord.txt")
+colnames(rho) <- c("Chr", "Window_start", "Window_end", "scaffold", "start", "end", "rho_per_site", "rho_per_window")
+
+par_rho <- rho[rho$Window_start < 52000000,]
+nonpar_rho <- rho[rho$Window_start > 52000000,]
+
+par_pi <- Z_pi[Z_pi$Chr_start < 52000000,]
+nonpar_pi <- Z_pi[Z_pi$Chr_start > 52000000,]
+
+par_gc <- GC[GC$Chr_start < 52000000,]
+nonpar_gc <- GC[GC$Chr_start > 52000000,]
+
+par_cds <- CDS[CDS$Chr_start < 52000000,]
+nonpar_cds <- CDS[CDS$Chr_start > 52000000,]
+
+cds_gc_rho_pi_dataset <- data.frame( cds = c(par_cds$Feat_Base_count/par_cds$Window_Base_count),#, nonpar_cds$Feat_Base_count/nonpar_cds$Window_Base_count),
+                              gc = c(par_gc$Window_GC_count/par_gc$Window_Base_count), #nonpar_gc$Window_GC_count/nonpar_gc$Window_Base_count),
+                              rho = c(par_rho$rho_per_window), # nonpar_rho$rho_per_window),
+                              pi = c(par_pi$pi/par_pi$win_length), # nonpar_pi$pi/nonpar_pi$win_length),
+                              chr = c(rep("PAR", 258)))#, rep("nonPAR", 139)))
+
+rho_pi_plot <- ggplot(cds_gc_rho_pi_dataset, aes(x = rho/kb, y = pi)) + ylab(expression(pi)) +
+  geom_point(aes(color = chr), size = 0.8, alpha = 0.6) + theme_classic() + xlab(expression(4~N[e]~r/Kb))+
+  theme(axis.text.y=element_text(size=12), legend.position = "none", axis.title.y = element_text(angle = 0, vjust = 0.5, hjust = 1, size = 12)) +
+  scale_colour_manual(values=c("black"))  + ggtitle('F')
+
+
+
+#-----------------------
+# pi vs. gc
+#-----------------------
+gc_pi_plot <- ggplot(cds_gc_rho_pi_dataset, aes(x = gc*100, y = pi)) + ylab(expression(pi)) +
+  geom_point(aes(color = chr), size = 0.8, alpha = 0.6) + theme_classic() + xlab(expression("GC %"))+
+  theme(axis.text.y=element_text(size=12), legend.position = "none", axis.title.y = element_text(angle = 0, vjust = 0.5, hjust = 1, size = 12)) +
+  scale_colour_manual(values=c("black")) + ggtitle('G')
+
+#-----------------------
+# pi vs. gene density
+#-----------------------
+cds_pi_plot <- ggplot(cds_gc_rho_pi_dataset, aes(x = cds*100, y = pi)) + ylab(expression(pi)) +
+  geom_point(aes(color = chr), size = 0.8, alpha = 0.6) + theme_classic() + xlab(expression("CDS %"))+
+  theme(axis.text.y=element_text(size=12), legend.position = "none", axis.title.y = element_text(angle = 0, vjust = 0.5, hjust = 1, size = 12)) +
+  scale_colour_manual(values=c("black")) + ggtitle('H')
+
+figure2 <- (pi_plot / gc_plot / cds_plot / td_plot / fst_plot) /(rho_pi_plot | gc_pi_plot | cds_pi_plot)
+ggsave("../../figures/Figure2.pdf", figure2, width = 7.33, height = 10.46, units = "in")
