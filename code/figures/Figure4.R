@@ -8,6 +8,7 @@ library(plyr)
 library(lattice)
 library(latticeExtra)
 library(wesanderson)
+library(dplyr)
 
 
 #######################
@@ -282,7 +283,7 @@ axis(2, las=1)
 proportionalLabel(0.03, 1.05, 'A', cex=1.2, adj=c(0.5, 0.5), xpd=NA)
 proportionalLabel(-0.15, 0.5, expression(paste("Genetic diversity (", bar(italic(pi)), ")")), cex=1.2, adj=c(0.5, 0.5), xpd=NA, srt=90)
 # legend
-legend( x       =  18,
+legend( x       =  22,
         y       =  usr[4],
         legend  =  c(
           expression(paste("Autosomal  ", bar(italic(pi)))),
@@ -325,7 +326,7 @@ axis(2, las=1)
 proportionalLabel(0.03, 1.05, 'B', cex=1.2, adj=c(0.5, 0.5), xpd=NA)
 proportionalLabel(-0.15, 0.5, expression(paste("Divergence (", bar(italic(F))[FM], ")")), cex=1.2, adj=c(0.5, 0.5), xpd=NA, srt=90)
 # legend
-legend( x       =  18,
+legend( x       =  22,
         y       =  usr[4],
         legend  =  c(
           expression(paste("Expected ", bar(italic(F))[FM]))),
