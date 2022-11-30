@@ -1,10 +1,6 @@
 ###############
 # DEPENDENCIES
 ###############
-library(extrafont)
-library(fontcm)
-loadfonts(quiet=TRUE)
-library(plyr)
 library(lattice)
 library(latticeExtra)
 library(wesanderson)
@@ -158,8 +154,6 @@ fibonacci.scale  <-  function(n) {
 ## 4 panel figure for paper
 ############################
 
-
-
 # Import data for Full PAR
 fullPARCoord  <- read.table(file="../../data/simulation_input/rho_r_Ne_table.txt", header=TRUE)
 fullPAR2     <-  read.csv(file="../../simulation_output/fullPAR_Black_smooth_PlotData.csv", header=TRUE)
@@ -218,8 +212,14 @@ COLS  <-  list(
   "FstXY_ci"  =  transparentColor('dodgerblue', opacity=0.3),
   "FstFM_ci"  =  transparentColor('tomato', opacity=0.3)                    )
 
+#*******************************************************************************
+# Save as PDF
+#*******************************************************************************
+pdf("../../figures/Figure4.pdf", height = 8.1, width = 9.8)
 
+#*******************************************************************************
 # Set plot layout
+#*******************************************************************************
 layout.mat  <- matrix(c(1,1,2,2,
                         3,3,4,4,
                         5,5,6,6), nrow=3, ncol=4, byrow=TRUE)
@@ -227,8 +227,178 @@ layout      <- layout(layout.mat,respect=TRUE)
 
 par(mfrow=c(2,2))
 
+#*******************************************************************************
 # Autosomal average diversity
+#*******************************************************************************
 autoPi   <-  0.00165
+
+#*******************************************************************************
+#*******************************************************************************
+## Panel A: Nucleotide Diversity - FULL PAR
+#*******************************************************************************
+#*******************************************************************************
+# Make the plot
+par(mar = c(3, 5, 3, 1))
+plot(NA, axes=FALSE, type='n', main='', xlim = c((min(fullPAR2$midPosMB)), max(fullPAR2$midPosMB)), ylim = c(0,0.004), ylab='', xlab='', cex.lab=1.2)
+usr  <-  par('usr')
+rect(usr[1], usr[3], usr[2], usr[4], col='white', border=NA)
+#        plotGrid(lineCol='grey80')
+box()
+# Simulation Results
+polygon(x = c(fullPAR2$midPosMB, rev(fullPAR2$midPosMB)), y=c((fullPAR2$Tt_ci_hi*autoPi), rev((fullPAR2$Tt_ci_lo*autoPi))), col=COLS$Tt_ci, border=COLS$Tt_ci)
+lines(Tbar_t*autoPi ~ fullPAR2$midPosMB, lwd=2, col=COLS$Tt, data=fullPAR2)
+abline(v=max(fullPAR2$midPosMB), lwd=2, lty=2)
+abline(h=autoPi, lwd=1, lty=2, col=2)
+# Empirical estimates
+points((pi/rev(winsize))[empPi_full$midPosMB >= min(fullPAR2$midPosMB)] ~ empPi_full$midPosMB[empPi_full$midPosMB >= min(fullPAR2$midPosMB)], pch=21, col="black", bg=COLS$Tt_ci, data=empPi_full)
+ss5  <-  smooth.spline(y=(empPi_full$pi/empPi_full$winsize)[empPi_full$midPosMB >= min(fullPAR2$midPosMB)], x=empPi_full$midPosMB[empPi_full$midPosMB >= min(fullPAR2$midPosMB)], df=5)
+lines(ss5, lwd=1, col=4)
+# axes
+axis(1, las=1)
+axis(2, las=1)
+# Labels/annotations
+proportionalLabel(0.03, 1.05, 'A', cex=1.2, adj=c(0.5, 0.5), xpd=NA)
+proportionalLabel(-0.18, 0.5, expression(paste("Genetic diversity (", bar(italic(pi)), ")")), cex=1.2, adj=c(0.5, 0.5), xpd=NA, srt=90)
+# legend
+legend( x       =  24,
+        y       =  usr[4],
+        legend  =  c(
+          expression(paste("Autosomal  ", bar(italic(pi)))),
+          expression(paste("Expected ", bar(italic(pi))[PAR]))),
+        cex     =  1.25,
+        lty     =  c(2,1),
+        lwd     =  c(1,2),
+        col     =  c(2, COLS$Tt),
+        xjust   =  1,
+        yjust   =  1,
+        bty     =  'n',
+        border  =  NA)
+
+#*******************************************************************************
+#*******************************************************************************
+## Panel B: Fst MF - FULL PAR
+#*******************************************************************************
+#*******************************************************************************
+FstFM_ci_lo_zero  <-  fullPAR2$FstFM_ci_lo
+FstFM_ci_lo_zero[FstFM_ci_lo_zero < 0]  <-  0
+
+plotFST  <-  empFst_full$WEIGHTED_FST[empFst_full$midPosMB >= min(fullPAR2$midPosMB)]
+plotFST[plotFST < 0]  <-  0
+
+# Make the plot
+par(mar = c(3, 5, 3, 1))
+plot(NA, axes=FALSE, type='n', main='', xlim = c((min(fullPAR2$midPosMB)), max(fullPAR2$midPosMB)), ylim = c(0,max(fullPAR2$FstFM_ci_hi, 0.3)), ylab='', xlab='', cex.lab=1.2)
+usr  <-  par('usr')
+rect(usr[1], usr[3], usr[2], usr[4], col='white', border=NA)
+#        plotGrid(lineCol='grey80')
+box()
+# Benchmarks
+abline(v=max(fullPAR2$midPosMB), lwd=2, lty=2)
+abline(h=0, lwd=1, lty=1)
+# Simulation Results
+polygon(x = c(fullPAR2$midPosMB, rev(fullPAR2$midPosMB)), y=c(fullPAR2$FstFM_ci_hi, rev(FstFM_ci_lo_zero)), col=COLS$FstFM_ci, border=COLS$FstFM_ci)
+lines(FstBarFM ~ fullPAR2$midPosMB, lwd=2, col=COLS$FstFM, data=fullPAR2)
+# Empirical estimates
+points(plotFST ~ empFst_full$midPosMB[empFst_full$midPosMB >= min(fullPAR2$midPosMB)], pch=21, col="black", bg=COLS$FstFM_ci, data=empFst_full)
+ss5  <-  smooth.spline(y=plotFST, x = empFst_full$midPosMB[empFst_full$midPosMB >= min(fullPAR2$midPosMB)], df=5)
+lines(ss5, lwd=1, col=4)
+# axes
+axis(1, las=1)
+axis(2, las=1)
+# Labels/annotations
+proportionalLabel(0.03, 1.05, 'B', cex=1.2, adj=c(0.5, 0.5), xpd=NA)
+proportionalLabel(-0.18, 0.5, expression(paste("Divergence (", bar(italic(F))[FM], ")")), cex=1.2, adj=c(0.5, 0.5), xpd=NA, srt=90)
+# legend
+legend( x       =  24,
+        y       =  usr[4],
+        legend  =  c(
+          expression(paste("Expected ", bar(italic(F))[FM]))),
+        cex     =  1.25,
+        lty     =  c(1),
+        lwd     =  c(2),
+        col     =  c(COLS$FstFM),
+        xjust   =  1,
+        yjust   =  1,
+        bty     =  'n',
+        border  =  NA)
+
+#*******************************************************************************
+#*******************************************************************************
+## Panel C: Nucleotide Diversity - PAR BOUNDARY
+#*******************************************************************************
+#*******************************************************************************
+# Make the plot
+empPi_bound <- empPi_bound %>% filter(if_all(everything(), ~ !is.na(.x)))
+
+par(mar = c(5, 5, 1, 1))
+plot(NA, axes=FALSE, type='n', main='', xlim = c((min(PARbound2$pos.coord.Mb)), max(PARbound2$pos.coord.Mb)), ylim = c(0,0.006), ylab='', xlab='', cex.lab=1.2)
+usr  <-  par('usr')
+rect(usr[1], usr[3], usr[2], usr[4], col='white', border=NA)
+#        plotGrid(lineCol='grey80')
+box()
+# Simulation Results
+polygon(x = c(PARbound2$pos.coord.Mb, rev(PARbound2$pos.coord.Mb)), y=c((PARbound2$Tt_ci_hi*autoPi), rev((PARbound2$Tt_ci_lo*autoPi))), col=COLS$Tt_ci, border=COLS$Tt_ci)
+lines(Tbar_t*autoPi ~ PARbound2$pos.coord.Mb, lwd=2, col=COLS$Tt, data=PARbound2)
+abline(v=max(PARbound2$pos.coord.Mb), lwd=2, lty=2)
+abline(h=autoPi, lwd=1, lty=2, col=2)
+# Empirical estimates
+points((pi/winsize)[empPi_bound$midPosMB >= min(PARbound2$pos.coord.Mb)] ~ empPi_bound$midPosMB[empPi_bound$midPosMB >= min(PARbound2$pos.coord.Mb)], pch=21, col="black", bg=COLS$Tt_ci, data=empPi_bound)
+
+ss5  <-  smooth.spline(y=(empPi_bound$pi/empPi_bound$winsize)[empPi_bound$midPosMB >= min(PARbound2$pos.coord.Mb)], x=empPi_bound$midPosMB[empPi_bound$midPosMB >= min(PARbound2$pos.coord.Mb)], df=3)
+#lines(ss5, lwd=1, col=4)
+# axes
+axis(1, las=1)
+axis(2, las=1)
+# Labels/annotations
+#proportionalLabel(1.125, 1.25, expression(paste("PAR boundary")), cex=2, adj=c(0.5, 0.5), xpd=NA, srt=0)
+proportionalLabel(0.03, 1.05, 'C', cex=1.2, adj=c(0.5, 0.5), xpd=NA)
+proportionalLabel(-0.18, 0.5, expression(paste("Genetic diversity (", bar(italic(pi)), ")")), cex=1.2, adj=c(0.5, 0.5), xpd=NA, srt=90)
+proportionalLabel(0.5, -0.17, expression(paste("Physical Position (Mb)")), cex=1.2, adj=c(0.5, 0.5), xpd=NA, srt=0)
+
+#*******************************************************************************
+#*******************************************************************************
+## Panel D: Fst M-F - PAR BOUNDARY
+#*******************************************************************************
+#*******************************************************************************
+FstFM_ci_lo_zero  <-  PARbound2$FstFM_ci_lo
+FstFM_ci_lo_zero[FstFM_ci_lo_zero < 0]  <-  0
+
+plotFST  <-  empFst_bound$MEAN_FST[empFst_bound$midPosMB >= min(PARbound2$pos.coord.Mb)]
+plotFST[plotFST < 0]  <-  0
+# Make the plot
+par(mar = c(5, 5, 1, 1))
+plot(NA, axes=FALSE, type='n', main='', xlim = c((min(PARbound2$pos.coord.Mb)), max(PARbound2$pos.coord.Mb)), ylim = c(0, 0.5), ylab='', xlab='', cex.lab=1.2)
+usr  <-  par('usr')
+rect(usr[1], usr[3], usr[2], usr[4], col='white', border=NA)
+#        plotGrid(lineCol='grey80')
+box()
+# Benchmarks
+abline(v=max(PARbound2$pos.coord.Mb), lwd=2, lty=2)
+abline(h=0, lwd=1, lty=1)
+# Simulation Results
+polygon(x = c(PARbound2$pos.coord.Mb, rev(PARbound2$pos.coord.Mb)), y=c(PARbound2$FstFM_ci_hi, rev(FstFM_ci_lo_zero)), col=COLS$FstFM_ci, border=COLS$FstFM_ci)
+lines(FstBarFM ~ PARbound2$pos.coord.Mb, lwd=2, col=COLS$FstFM, data=PARbound2)
+# Empirical estimates
+points(plotFST ~ empFst_bound$midPosMB[empFst_bound$midPosMB >= min(PARbound2$pos.coord.Mb)], pch=21, col="black", bg=COLS$FstFM_ci, data=empFst_bound)
+ss5  <-  smooth.spline(y=plotFST, x=rev(empFst_bound$midPosMB[empFst_bound$midPosMB >= min(PARbound2$pos.coord.Mb)]), df=5)
+#lines(ss5, lwd=1, col=4)
+# axes
+axis(1, las=1)
+axis(2, las=1)
+# Labels/annotations
+proportionalLabel(0.03, 1.05, 'D', cex=1.2, adj=c(0.5, 0.5), xpd=NA)
+proportionalLabel(-0.15, 0.5, expression(paste("Divergence (", bar(italic(F))[FM], ")")), cex=1.2, adj=c(0.5, 0.5), xpd=NA, srt=90)
+proportionalLabel(0.5, -0.17, expression(paste("Physical Position (Mb)")), cex=1.2, adj=c(0.5, 0.5), xpd=NA, srt=0)
+
+#*******************************************************************************
+dev.off()
+#*******************************************************************************
+
+
+
+
+
+
 
 #### Smoothed r values
 #par(omi=rep(0.5, 4), mar = c(5,5,2,3), bty='o', xaxt='s', yaxt='s')
@@ -258,147 +428,3 @@ autoPi   <-  0.00165
 
 
 #plot(NA, axes=FALSE, type='n', main='', xlim = c(min(rho.pos$rev.pos), max(rho.pos$rev.pos)), ylim = c(0,max(rho.pos$rho_rates_kb)), ylab='', xlab='', cex.lab=1.2)
-
-
-## Panel B: Allelic Diversity - FULL PAR
-# Make the plot
-plot(NA, axes=FALSE, type='n', main='', xlim = c((min(fullPAR2$midPosMB)), max(fullPAR2$midPosMB)), ylim = c(0,0.004), ylab='', xlab='', cex.lab=1.2)
-usr  <-  par('usr')
-rect(usr[1], usr[3], usr[2], usr[4], col='white', border=NA)
-#        plotGrid(lineCol='grey80')
-box()
-# Simulation Results
-polygon(x = c(fullPAR2$midPosMB, rev(fullPAR2$midPosMB)), y=c((fullPAR2$Tt_ci_hi*autoPi), rev((fullPAR2$Tt_ci_lo*autoPi))), col=COLS$Tt_ci, border=COLS$Tt_ci)
-lines(Tbar_t*autoPi ~ fullPAR2$midPosMB, lwd=2, col=COLS$Tt, data=fullPAR2)
-abline(v=max(fullPAR2$midPosMB), lwd=2, lty=2)
-abline(h=autoPi, lwd=1, lty=2, col=2)
-# Empirical estimates
-points((pi/rev(winsize))[empPi_full$midPosMB >= min(fullPAR2$midPosMB)] ~ empPi_full$midPosMB[empPi_full$midPosMB >= min(fullPAR2$midPosMB)], pch=21, col="black", bg=COLS$Tt_ci, data=empPi_full)
-ss5  <-  smooth.spline(y=(empPi_full$pi/empPi_full$winsize)[empPi_full$midPosMB >= min(fullPAR2$midPosMB)], x=empPi_full$midPosMB[empPi_full$midPosMB >= min(fullPAR2$midPosMB)], df=5)
-lines(ss5, lwd=1, col=4)
-# axes
-axis(1, las=1)
-axis(2, las=1)
-# Labels/annotations
-proportionalLabel(0.03, 1.05, 'A', cex=1.2, adj=c(0.5, 0.5), xpd=NA)
-proportionalLabel(-0.15, 0.5, expression(paste("Genetic diversity (", bar(italic(pi)), ")")), cex=1.2, adj=c(0.5, 0.5), xpd=NA, srt=90)
-# legend
-legend( x       =  22,
-        y       =  usr[4],
-        legend  =  c(
-          expression(paste("Autosomal  ", bar(italic(pi)))),
-          expression(paste("Expected ", bar(italic(pi))[PAR]))),
-        cex     =  1.25,
-        lty     =  c(2,1),
-        lwd     =  c(1,2),
-        col     =  c(2, COLS$Tt),
-        xjust   =  1,
-        yjust   =  1,
-        bty     =  'n',
-        border  =  NA)
-
-FstFM_ci_lo_zero  <-  fullPAR2$FstFM_ci_lo
-FstFM_ci_lo_zero[FstFM_ci_lo_zero < 0]  <-  0
-
-plotFST  <-  empFst_full$WEIGHTED_FST[empFst_full$midPosMB >= min(fullPAR2$midPosMB)]
-plotFST[plotFST < 0]  <-  0
-## Panel C: Fst MF - FULL PAR
-# Make the plot
-plot(NA, axes=FALSE, type='n', main='', xlim = c((min(fullPAR2$midPosMB)), max(fullPAR2$midPosMB)), ylim = c(0,max(fullPAR2$FstFM_ci_hi, 0.3)), ylab='', xlab='', cex.lab=1.2)
-usr  <-  par('usr')
-rect(usr[1], usr[3], usr[2], usr[4], col='white', border=NA)
-#        plotGrid(lineCol='grey80')
-box()
-# Benchmarks
-abline(v=max(fullPAR2$midPosMB), lwd=2, lty=2)
-abline(h=0, lwd=1, lty=1)
-# Simulation Results
-polygon(x = c(fullPAR2$midPosMB, rev(fullPAR2$midPosMB)), y=c(fullPAR2$FstFM_ci_hi, rev(FstFM_ci_lo_zero)), col=COLS$FstFM_ci, border=COLS$FstFM_ci)
-lines(FstBarFM ~ fullPAR2$midPosMB, lwd=2, col=COLS$FstFM, data=fullPAR2)
-# Empirical estimates
-points(plotFST ~ empFst_full$midPosMB[empFst_full$midPosMB >= min(fullPAR2$midPosMB)], pch=21, col="black", bg=COLS$FstFM_ci, data=empFst_full)
-ss5  <-  smooth.spline(y=plotFST, x = empFst_full$midPosMB[empFst_full$midPosMB >= min(fullPAR2$midPosMB)], df=5)
-lines(ss5, lwd=1, col=4)
-# axes
-axis(1, las=1)
-axis(2, las=1)
-# Labels/annotations
-proportionalLabel(0.03, 1.05, 'B', cex=1.2, adj=c(0.5, 0.5), xpd=NA)
-proportionalLabel(-0.15, 0.5, expression(paste("Divergence (", bar(italic(F))[FM], ")")), cex=1.2, adj=c(0.5, 0.5), xpd=NA, srt=90)
-# legend
-legend( x       =  22,
-        y       =  usr[4],
-        legend  =  c(
-          expression(paste("Expected ", bar(italic(F))[FM]))),
-        cex     =  1.25,
-        lty     =  c(1),
-        lwd     =  c(2),
-        col     =  c(COLS$FstFM),
-        xjust   =  1,
-        yjust   =  1,
-        bty     =  'n',
-        border  =  NA)
-
-
-
-## Panel D: Allelic Diversity - PAR BOUNDARY
-# Make the plot
-empPi_bound <- empPi_bound %>% filter(if_all(everything(), ~ !is.na(.x)))
-
-plot(NA, axes=FALSE, type='n', main='', xlim = c((min(PARbound2$pos.coord.Mb)), max(PARbound2$pos.coord.Mb)), ylim = c(0,0.006), ylab='', xlab='', cex.lab=1.2)
-usr  <-  par('usr')
-rect(usr[1], usr[3], usr[2], usr[4], col='white', border=NA)
-#        plotGrid(lineCol='grey80')
-box()
-# Simulation Results
-polygon(x = c(PARbound2$pos.coord.Mb, rev(PARbound2$pos.coord.Mb)), y=c((PARbound2$Tt_ci_hi*autoPi), rev((PARbound2$Tt_ci_lo*autoPi))), col=COLS$Tt_ci, border=COLS$Tt_ci)
-lines(Tbar_t*autoPi ~ PARbound2$pos.coord.Mb, lwd=2, col=COLS$Tt, data=PARbound2)
-abline(v=max(PARbound2$pos.coord.Mb), lwd=2, lty=2)
-abline(h=autoPi, lwd=1, lty=2, col=2)
-# Empirical estimates
-points((pi/winsize)[empPi_bound$midPosMB >= min(PARbound2$pos.coord.Mb)] ~ empPi_bound$midPosMB[empPi_bound$midPosMB >= min(PARbound2$pos.coord.Mb)], pch=21, col="black", bg=COLS$Tt_ci, data=empPi_bound)
-
-ss5  <-  smooth.spline(y=(empPi_bound$pi/empPi_bound$winsize)[empPi_bound$midPosMB >= min(PARbound2$pos.coord.Mb)], x=empPi_bound$midPosMB[empPi_bound$midPosMB >= min(PARbound2$pos.coord.Mb)], df=3)
-#lines(ss5, lwd=1, col=4)
-# axes
-axis(1, las=1)
-axis(2, las=1)
-# Labels/annotations
-#proportionalLabel(1.125, 1.25, expression(paste("PAR boundary")), cex=2, adj=c(0.5, 0.5), xpd=NA, srt=0)
-proportionalLabel(0.03, 1.05, 'C', cex=1.2, adj=c(0.5, 0.5), xpd=NA)
-proportionalLabel(-0.15, 0.5, expression(paste("Genetic diversity (", bar(italic(pi)), ")")), cex=1.2, adj=c(0.5, 0.5), xpd=NA, srt=90)
-proportionalLabel(0.5, - 0.3, expression(paste("Physical Position (Mb)")), cex=1.2, adj=c(0.5, 0.5), xpd=NA, srt=0)
-
-
-## Panel E: Fst M-F - PAR BOUNDARY
-
-FstFM_ci_lo_zero  <-  PARbound2$FstFM_ci_lo
-FstFM_ci_lo_zero[FstFM_ci_lo_zero < 0]  <-  0
-
-plotFST  <-  empFst_bound$MEAN_FST[empFst_bound$midPosMB >= min(PARbound2$pos.coord.Mb)]
-plotFST[plotFST < 0]  <-  0
-# Make the plot
-plot(NA, axes=FALSE, type='n', main='', xlim = c((min(PARbound2$pos.coord.Mb)), max(PARbound2$pos.coord.Mb)), ylim = c(0, 0.5), ylab='', xlab='', cex.lab=1.2)
-usr  <-  par('usr')
-rect(usr[1], usr[3], usr[2], usr[4], col='white', border=NA)
-#        plotGrid(lineCol='grey80')
-box()
-# Benchmarks
-abline(v=max(PARbound2$pos.coord.Mb), lwd=2, lty=2)
-abline(h=0, lwd=1, lty=1)
-# Simulation Results
-polygon(x = c(PARbound2$pos.coord.Mb, rev(PARbound2$pos.coord.Mb)), y=c(PARbound2$FstFM_ci_hi, rev(FstFM_ci_lo_zero)), col=COLS$FstFM_ci, border=COLS$FstFM_ci)
-lines(FstBarFM ~ PARbound2$pos.coord.Mb, lwd=2, col=COLS$FstFM, data=PARbound2)
-# Empirical estimates
-points(plotFST ~ empFst_bound$midPosMB[empFst_bound$midPosMB >= min(PARbound2$pos.coord.Mb)], pch=21, col="black", bg=COLS$FstFM_ci, data=empFst_bound)
-ss5  <-  smooth.spline(y=plotFST, x=rev(empFst_bound$midPosMB[empFst_bound$midPosMB >= min(PARbound2$pos.coord.Mb)]), df=5)
-#lines(ss5, lwd=1, col=4)
-# axes
-axis(1, las=1)
-axis(2, las=1)
-# Labels/annotations
-proportionalLabel(0.03, 1.05, 'D', cex=1.2, adj=c(0.5, 0.5), xpd=NA)
-proportionalLabel(-0.15, 0.5, expression(paste("Divergence (", bar(italic(F))[FM], ")")), cex=1.2, adj=c(0.5, 0.5), xpd=NA, srt=90)
-proportionalLabel(0.5, - 0.3, expression(paste("Physical Position (Mb)")), cex=1.2, adj=c(0.5, 0.5), xpd=NA, srt=0)
-
-
