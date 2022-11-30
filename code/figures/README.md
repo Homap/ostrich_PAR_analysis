@@ -10,3 +10,5 @@ Using inkscape, you can assemble the two plots as figure 1.
 
 The directory also contains **Z_mRNA_chro_coordinates.txt** used for gene coordinates
 plotted in Figure 1.
+
+For all figures, some edits to figure aesthetic might have been done in Inkscape with file saved as `.svg`.
