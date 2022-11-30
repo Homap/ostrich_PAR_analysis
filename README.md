@@ -1,5 +1,9 @@
 # The evolutionary dynamics of ancient recombining sex chromosomes in ostrich  
 
+
+![Image](Ostrich-Male-And-Female.jpg)
+
+
 ### Overview
 
 This document contains the analyses steps to reproduce the analyses 
