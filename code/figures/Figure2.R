@@ -158,7 +158,7 @@ scale_colour_manual(breaks = c("Autosome","PAR","SDR","PAR-1-5Mb","midPAR", "PAR
 #------------
 
 figure1 <- (rho_plot / ld_plot / map_plot) /(rho_cm_plot | rho_ld_plot | ld_decay_plot)
-ggsave("../../figures/Figure1.pdf", figure1, width = 10.55, height = 10.75, units = "in")
+ggsave("../../figures/Figure2.pdf", figure1, width = 10.55, height = 10.75, units = "in")
 
 
 

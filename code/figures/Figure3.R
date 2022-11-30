@@ -159,4 +159,4 @@ cds_pi_plot <- ggplot(cds_gc_rho_pi_dataset, aes(x = cds*100, y = pi)) + ylab(ex
   scale_colour_manual(values=c("black")) + ggtitle('H')
 
 figure2 <- (pi_plot / gc_plot / cds_plot / td_plot / fst_plot) /(rho_pi_plot | gc_pi_plot | cds_pi_plot)
-ggsave("../../figures/Figure2.pdf", figure2, width = 7.33, height = 10.46, units = "in")
+ggsave("../../figures/Figure3.pdf", figure2, width = 7.33, height = 10.46, units = "in")
