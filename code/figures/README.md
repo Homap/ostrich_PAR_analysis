@@ -5,5 +5,5 @@ the script:
 
 `bash figures.sh` <br>
 
-For figure 1, run the script in Rstudio and produce the two plots separately. 
+For figure 1, run the script `intro_figure.R` in Rstudio and produce the two plots separately. 
 Using inkscape, you can assemble the two plots as figure 1.
