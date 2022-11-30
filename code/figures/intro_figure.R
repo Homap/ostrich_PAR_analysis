@@ -2,7 +2,7 @@
 # Introductory figure
 #****************************************************************************************************************************************
 # Read gene coordinates
-mRNA_coords <- read.table("../../../../sex_chr/ostrich_z/Z_mRNA_chro_coordinates.txt")
+mRNA_coords <- read.table("../figures/Z_mRNA_chro_coordinates.txt")
 gameto_mRNA_coords <- read.table("/Users/homapapoli/Documents/projects/sex_chr/ostrich_z/gametolog_chro_coordinates.txt")
 
 head(mRNA_coords)
