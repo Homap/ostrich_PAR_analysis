@@ -12,7 +12,7 @@ Sex chromosomes have evolved repeatedly across the tree of life and are often ch
 
 ### Repository structure and contents
 - Directory `code` <br>
-This directory contains codes for `processing` and `analysis` of SNP data in each respective directory. Directory `fig$
+This directory contains codes for `processing` and `analysis` of SNP data in each respective directory. Directory `figures`
 contains code for generating figures in the paper, `statistical_analysis` contains code for statistical analyses and `s$
 
 - Directory `data` <br>
