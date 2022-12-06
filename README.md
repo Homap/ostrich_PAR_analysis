@@ -24,7 +24,7 @@ Contains all the figures presented in the manuscript and supplementary material.
 - `simulation_output` <br>
 Contains output of coalescent simulation after running the code in `code/simulation`
 
-- `software_module/R`
+- `software_module/R` <br>
 Contains frequently used modules in R scripts.
 
 ### Contact and bug reporting
