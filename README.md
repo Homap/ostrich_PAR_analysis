@@ -1,8 +1,8 @@
 # The evolutionary maintenance of ancient recombining sex chromosomes in ostrich  
 
-Homa Papoli Yazdi*, Colin Olito*, Takeshi Kawakami, Per Unneberg, Mads F. Schou, Schalk W. P. Cloete, Bengt Hansson and Charlie K. Cornwallis
+Homa Papoli Yazdi1, Colin Olito1, Takeshi Kawakami, Per Unneberg, Mads F. Schou, Schalk W. P. Cloete, Bengt Hansson and Charlie K. Cornwallis
 
-* These authors contributed equally to this work.
+1 These authors contributed equally to this work.
 
 ![Image](Ostrich-Male-And-Female.jpg)
 
