@@ -1,25 +1,19 @@
-# The evolutionary dynamics of ancient recombining sex chromosomes in ostrich  
+# The evolutionary maintenance of ancient recombining sex chromosomes in ostrich  
 
+Homa Papoli Yazdi*, Colin Olito*, Takeshi Kawakami, Per Unneberg, Mads F. Schou, Schalk W. P. Cloete, Bengt Hansson and Charlie K. Cornwallis
+
+* These authors contributed equally to this work.
 
 ![Image](Ostrich-Male-And-Female.jpg)
 
+### Abstract
 
-### Overview
-
-This document contains the analyses steps to reproduce the analyses 
-including criteria to filter the VCF files, calculate genetic diversity (pi and theta) and 
-folded site frequency spectrum in genomic categories: intergenic, intronic and CDS (0fold and 4fold) and DFE-alpha, 
-calculates linkage disequilibrium (LD), population scaled recombination rate (rho) and PSMC.
-
-### Abstract 
-
-The evolutionary dynamics of pseudoautosomal regions is determined by genome-wide processes affecting effective population size and mutation rate. Moreover, patterns of molecular evolution in the PAR may also be influenced by their linkage to the sex determining region (SDR). Due to the sex-linked inheritance of PAR loci in the proximity of the SDR, expected time to coalescence is likely elevated between the sex chromosomes in this region. In this study, we used whole genome re-sequencing of south African ostrich to investigate levels and patterns of genetic diversity along the long PAR of ostrich, particularly in relation to the distance to the SDR. The mean pairwise nucleotide diversity in the PAR was 0.00165 and was similar to autosome. We observed a heterogeneous pattern of genetic diversity along the Z chromosome which could be largely explained by variation in GC content and recombination rate. Consistent with the difference in sex averaged recombination rate, linkage between SNPs was weaker in the PAR (r2 = 0.13) than the non-PAR segment of the Z chromosome (r2 = 0.17). We did not find a significant level of linkage disequilibrium across the PAR boundary, indicating recombination allows the boundary-proximal region of PAR to behave independently of SDR. Coalescent simulation confirmed this result and revealed that levels of genetic diversity and male-female differentiation are largely consistent with neutral expectations. 
+Sex chromosomes have evolved repeatedly across the tree of life and are often characterized by extreme size dimorphism caused by the genetic degeneration of the sex-limited chromosome (e.g. the W chromosome of birds and Y chromosomes of mammals). In some cases, however, ancient sex-limited chromosomes have escaped degeneration. In this paper, we address how the sex chromosomes of ostriches (Struthio camelus) have avoided genetic degradation (the W remains 65% the size of the Z chromosome), despite being more than 100 million years old. Using genome-wide resequencing data, we show that the population scaled recombination rate of the pseduoautosomal region (PAR) is higher than similar sized autosomal regions and is correlated with female recombination rate on the PAR, highlighting the impact of recombination rate in the heterogametic sex on the evolutionary dynamics of PAR sequences. As a result, we detected no genetic linkage between the sex-linked region (SLR) and the PAR across the PAR boundary, possible due to a higher female recombination rate at the PAR boundary. Levels of genetic variation across the PAR (π = 0.0016) were similar to the autosomal average and were explained by local recombination rates, GC content and, to a lesser extent, gene density. In contrast, the genetic diversity of the sex-linked region (π = 0.001) was significantly lower than the PAR, consistent with recombination cessation. Finally, we found that allele frequencies between males and females were divergent in some regions of the PAR, but coalescent simulations showed this was broadly consistent with neutral genetic processes. Our results indicate that the large and ancient ostrich PAR has similar population genomic characteristics to autosomal sequences and that W degeneration appears to have been slowed by recombination in the female PAR reducing the accumulation of sexually antagonistic alleles.
 
 ### Instructions
 
 
 ### Repository structure and contents
-
 
 ### Contact and bug reporting
 
