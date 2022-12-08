@@ -12,3 +12,13 @@ The directory also contains **Z_mRNA_chro_coordinates.txt** used for gene coordi
 plotted in Figure 1.
 
 For all figures, some edits to figure aesthetic might have been done in Inkscape with file saved as `.svg`.
+
+For submission to **PLOS Genetics**, only "eps" or "tiff" formats are acceptable. To convert the figures from svg to tiff, I used the following code
+in my macOS Catalina Version 10.15.7 after installing **imagemagick** using `brew install imagemagick`. 
+
+```
+/Applications/Inkscape.app/Contents/MacOS/inkscape --without-gui --export-png="Figure1.png" --export-dpi 300 Figure1.svg
+convert -compress LZW -alpha remove Figure1.png Fig1.tiff
+mogrify -alpha off Fig1.tiff
+rm Figure1.png
+```
