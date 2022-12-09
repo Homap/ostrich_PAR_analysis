@@ -12,10 +12,10 @@ pdf("../../figures/FigureS2.pdf", w = 9, h = 6.5)
 par(mfrow=c(2,3))
 hist(par_frq$V6, xlab = "PAR alternatve allele freq.", main = NULL)
 hist(a_frq$V6, xlab = "Autosome alternatve allele freq.", main = NULL)
-hist(nonpar_frq$V6, xlab = "nonPAR alternatve allele freq.", main = NULL)
+hist(nonpar_frq$V6, xlab = "SLR alternatve allele freq.", main = NULL)
 
 hist(par_ldepth$V3, xlab = "PAR depth per site", main = NULL)
 hist(a_ldepth$V3, xlab = "Autosome depth per site", main = NULL)
-hist(nonpar_ldepth$V3, xlab = "nonPAR depth per site", main = NULL)
+hist(nonpar_ldepth$V3, xlab = "SLR depth per site", main = NULL)
 
 dev.off()
