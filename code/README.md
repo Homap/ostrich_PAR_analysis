@@ -16,6 +16,12 @@ Codes for obtaining various population genetics measure including LD, rho, genet
 
 - **statistical_analyses** <br>
 Code for statistical analyses including GLM using the outputs from **analysis**.
+To create `Rproj` file which can then be opened by RStudio, open R and run the following code:
+
+```
+library(usethis)
+create_project(path = "statistical_analysis", open = TRUE, rstudio = TRUE)
+```
 
 - **simulation** <br>
 Code for coalescent simulation presented in the study.
