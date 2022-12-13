@@ -15,7 +15,7 @@ For all figures, some edits to figure aesthetic might have been done in Inkscape
 
 For submission to **PLOS Genetics**, only "eps" or "tiff" formats are acceptable. To convert the figures from svg to tiff, I used the following code
 in my macOS Catalina Version 10.15.7 after installing **imagemagick** using `brew install imagemagick`. 
-
+Additionally, the "tiff" images need to be reduced in size to fit the 10Mb size limit for PLOS Genetics.
 
 ```
 #!/bin/sh
@@ -28,6 +28,7 @@ for i in $@; do
   /Applications/Inkscape.app/Contents/MacOS/inkscape --without-gui --export-png="$BN.png" --export-dpi 300 $i
   convert -compress LZW -alpha remove $BN.png $BN.tiff
   mogrify -alpha off $BN.tiff
+  mogrify -compress LZW $BN.tiff
   rm $BN.png
 done
 ```
