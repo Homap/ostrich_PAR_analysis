@@ -19,7 +19,8 @@ contains code for generating figures in the paper, `statistical_analysis` contai
 Contains processed data used for figure generation and statistical analyses.
 
 - `figures` <br>
-Contains all the figures presented in the manuscript and supplementary material.
+Contains all the figures presented in the manuscript and supplementary material. 
+This directory will be available on Github once the study is published.
 
 - `simulation_output` <br>
 Contains output of coalescent simulation after running the code in `code/simulation`
