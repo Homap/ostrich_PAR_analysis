@@ -216,6 +216,9 @@ COLS  <-  list(
 # Save as PDF
 #*******************************************************************************
 pdf("../../figures/Figure4.pdf", height = 8.1, width = 9.8)
+#setEPS()
+#postscript("../../figures/Figure4.eps", height = 8.1, width = 9.8)
+
 
 #*******************************************************************************
 # Set plot layout

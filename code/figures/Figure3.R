@@ -106,7 +106,7 @@ fst_a_mean <- mean(fst_a$WEIGHTED_FST)
 fst_plot <- ggplot(fst, aes(y=WEIGHTED_FST, x=(Chr_start+Chr_end)/(2*mb))) +
   geom_point(size = 1.3, col="grey", alpha = 0.7) + geom_ma(ma_fun = SMA, n = 5, col = "black", size = 0.8, linetype = 6) + theme_classic()+
   theme(axis.text.y=element_text(size=12), axis.title.y = element_text(angle = 0, vjust = 0.5, hjust = 1, size = 12)) +
-  xlab("Position (Mb)") + ylab(expression('M-F F'['st'])) +  scale_x_continuous(breaks=seq(0,82,10)) +
+  xlab("Position (Mb)") + ylab(expression('F'['FM'])) +  scale_x_continuous(breaks=seq(0,82,10)) +
   geom_vline(xintercept = (52185292)/mb, linetype="dashed", color = "black") +
   geom_hline(yintercept = fst_a_mean, linetype="dashed", color = "black") + ggtitle('E')
 
@@ -136,7 +136,7 @@ cds_gc_rho_pi_dataset <- data.frame( cds = c(par_cds$Feat_Base_count/par_cds$Win
                               chr = c(rep("PAR", 258)))#, rep("nonPAR", 139)))
 
 rho_pi_plot <- ggplot(cds_gc_rho_pi_dataset, aes(x = rho/kb, y = pi)) + ylab(expression(pi)) +
-  geom_point(aes(color = chr), size = 0.8, alpha = 0.6) + theme_classic() + xlab(expression(4~N[e]~r/Kb))+
+  geom_point(aes(color = chr), size = 0.8, alpha = 0.6) + theme_classic() + xlab(expression(over(rho,Kb)))+
   theme(axis.text.y=element_text(size=12), legend.position = "none", axis.title.y = element_text(angle = 0, vjust = 0.5, hjust = 1, size = 12)) +
   scale_colour_manual(values=c("black"))  + ggtitle('F')
 
