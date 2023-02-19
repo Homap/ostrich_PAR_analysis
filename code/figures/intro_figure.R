@@ -39,5 +39,41 @@ title(ylab = "Recombination Frequency (r)", x = "Position (Mb)", line=2, cex.lab
 legend(32, 0.48, legend=c("Female", "Male"), col=c("red", "blue"), lty=1, lwd = 2, cex=0.8, bty = "n")
 dev.off()
 
+# Recombination frequnecy r as a function of a physical position used for the manuscript
+# Recombination frequency
+
+rm(list = ls())
+
+mb = 10^6
+
+female_PAR_length <- read.table("../../data/geneticmap/LGZ3.female.cleaned.chr.bed")
+male_PAR_length <- read.table("../../data/geneticmap/LGZ3.male.cleaned.chr.bed")
+
+female_PAR_length <- female_PAR_length[female_PAR_length$V2<52000000,]
+female_PAR_length_rev <- rev(abs(female_PAR_length$V7 - 80.628))
+
+male_PAR_length <- male_PAR_length[male_PAR_length$V2<52000000,]
+male_PAR_length_rev <- rev(abs(male_PAR_length$V7 - 42.641))
+
+female_PAR_r = round((0.5 * ((exp(4*(female_PAR_length_rev/100))-1)/(exp(4*(female_PAR_length_rev/100))+1))), 3)
+male_PAR_r = round((0.5 * ((exp(4*(male_PAR_length_rev/100))-1)/(exp(4*(male_PAR_length_rev/100))+1))), 3)
+
+female_coord <-abs(female_PAR_length$V2 - 51723942)/mb
+male_coord <- abs(male_PAR_length$V2 - 51723942)/mb
+
+female_loess <- loess(female_PAR_r ~ female_coord, span = 0.5)
+male_loess <- loess(male_PAR_r ~ male_coord, span = 0.5)
+
+plot(abs(female_PAR_length$V2 - 51723942)/mb, female_PAR_r, col = "red", type = "p", pch = 20, ylab = "", xlab = "")
+lines(abs(male_PAR_length$V2 - 51723942)/mb, male_PAR_r, type = "p", pch = 20, col = "blue")
+
+lines(female_coord,female_loess$fitted, col="red",lty = 4)
+
+lines(male_coord,male_loess$fitted, col="blue",lty = 4)
+
+title(ylab = "Recombination Frequency (r)", x = "Position (Mb)", line=2, cex.lab=1)
+legend(32, 0.48, legend=c("Female", "Male"), col=c("red", "blue"), pch = 20, lwd = 2, cex=0.8, bty = "n")
+
+
 # I have used the total genetic map length of the PAR to obtain the recombination frequency for the PAR.
 # To plot, I have divided the PAR length into equal distances and then plotted the according r for the given distance.
