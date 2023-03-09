@@ -145,7 +145,7 @@ fitgls_gc_pi = gls( pi_data ~  +  gc_data, na.action="na.exclude", method = "ML"
 cds_gc_rho_pi_dataset$predgls_gc_pi = predict(fitgls_gc_pi)
 
 fitgls_cds_pi = gls( pi_data ~  +  cds_data, na.action="na.exclude", method = "ML", correlation = corAR1(form =~ obs), data = cds_gc_rho_pi_dataset )
-cds_gc_cds_pi_dataset$predgls_cds_pi = predict(fitgls_cds_pi)
+cds_gc_rho_pi_dataset$predgls_cds_pi = predict(fitgls_cds_pi)
 
 rho_pi_plot <- ggplot(cds_gc_rho_pi_dataset, aes(x = rho_data/kb, y = pi_data)) + ylab(expression(pi)) +
   geom_point(aes(color = chr), size = 0.8, alpha = 0.6) + theme_classic() + xlab(expression(over(rho,Kb)))+
