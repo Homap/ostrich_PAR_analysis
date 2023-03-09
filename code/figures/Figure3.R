@@ -6,6 +6,7 @@ rm(list = ls())
 library(ggplot2)
 library(tidyquant)
 library(patchwork)
+library(nlme)
 
 mb = 10^6
 kb = 10^3
@@ -129,34 +130,45 @@ nonpar_gc <- GC[GC$Chr_start > 52000000,]
 par_cds <- CDS[CDS$Chr_start < 52000000,]
 nonpar_cds <- CDS[CDS$Chr_start > 52000000,]
 
-cds_gc_rho_pi_dataset <- data.frame( cds = c(par_cds$Feat_Base_count/par_cds$Window_Base_count),#, nonpar_cds$Feat_Base_count/nonpar_cds$Window_Base_count),
-                              gc = c(par_gc$Window_GC_count/par_gc$Window_Base_count), #nonpar_gc$Window_GC_count/nonpar_gc$Window_Base_count),
-                              rho = c(par_rho$rho_per_window), # nonpar_rho$rho_per_window),
-                              pi = c(par_pi$pi/par_pi$win_length), # nonpar_pi$pi/nonpar_pi$win_length),
-                              chr = c(rep("PAR", 258)))#, rep("nonPAR", 139)))
+cds_gc_rho_pi_dataset <- data.frame( cds_data = c(par_cds$Feat_Base_count/par_cds$Window_Base_count),
+                              gc_data = c(par_gc$Window_GC_count/par_gc$Window_Base_count),
+                              rho_data = c(par_rho$rho_per_window),
+                              pi_data = c(par_pi$pi/par_pi$win_length), 
+                              chr = c(rep("PAR", 258)))
 
-rho_pi_plot <- ggplot(cds_gc_rho_pi_dataset, aes(x = rho/kb, y = pi)) + ylab(expression(pi)) +
+cds_gc_rho_pi_dataset$obs = as.numeric(rownames(cds_gc_rho_pi_dataset))
+
+fitgls_rho_pi = gls( pi_data ~  +  rho_data, na.action="na.exclude", method = "ML", correlation = corAR1(form =~ obs), data = cds_gc_rho_pi_dataset )
+cds_gc_rho_pi_dataset$predgls_rho_pi = predict(fitgls_rho_pi)
+
+fitgls_gc_pi = gls( pi_data ~  +  gc_data, na.action="na.exclude", method = "ML", correlation = corAR1(form =~ obs), data = cds_gc_rho_pi_dataset )
+cds_gc_rho_pi_dataset$predgls_gc_pi = predict(fitgls_gc_pi)
+
+fitgls_cds_pi = gls( pi_data ~  +  cds_data, na.action="na.exclude", method = "ML", correlation = corAR1(form =~ obs), data = cds_gc_rho_pi_dataset )
+cds_gc_cds_pi_dataset$predgls_cds_pi = predict(fitgls_cds_pi)
+
+rho_pi_plot <- ggplot(cds_gc_rho_pi_dataset, aes(x = rho_data/kb, y = pi_data)) + ylab(expression(pi)) +
   geom_point(aes(color = chr), size = 0.8, alpha = 0.6) + theme_classic() + xlab(expression(over(rho,Kb)))+
   theme(axis.text.y=element_text(size=12), legend.position = "none", axis.title.y = element_text(angle = 0, vjust = 0.5, hjust = 1, size = 12)) +
-  scale_colour_manual(values=c("black"))  + ggtitle('F')
+  scale_colour_manual(values=c("black"))  + ggtitle('F') + geom_line(aes (y = predgls_rho_pi), linewidth =1, col = "grey" )
 
 
 
 #-----------------------
 # pi vs. gc
 #-----------------------
-gc_pi_plot <- ggplot(cds_gc_rho_pi_dataset, aes(x = gc*100, y = pi)) + ylab(expression(pi)) +
+gc_pi_plot <- ggplot(cds_gc_rho_pi_dataset, aes(x = gc_data*100, y = pi_data)) + ylab(expression(pi)) +
   geom_point(aes(color = chr), size = 0.8, alpha = 0.6) + theme_classic() + xlab(expression("GC %"))+
   theme(axis.text.y=element_text(size=12), legend.position = "none", axis.title.y = element_text(angle = 0, vjust = 0.5, hjust = 1, size = 12)) +
-  scale_colour_manual(values=c("black")) + ggtitle('G')
+  scale_colour_manual(values=c("black")) + ggtitle('G') + geom_line(aes (y = predgls_gc_pi), linewidth =1, col = "grey" )
 
 #-----------------------
 # pi vs. gene density
 #-----------------------
-cds_pi_plot <- ggplot(cds_gc_rho_pi_dataset, aes(x = cds*100, y = pi)) + ylab(expression(pi)) +
+cds_pi_plot <- ggplot(cds_gc_rho_pi_dataset, aes(x = cds_data*100, y = pi_data)) + ylab(expression(pi)) +
   geom_point(aes(color = chr), size = 0.8, alpha = 0.6) + theme_classic() + xlab(expression("CDS %"))+
   theme(axis.text.y=element_text(size=12), legend.position = "none", axis.title.y = element_text(angle = 0, vjust = 0.5, hjust = 1, size = 12)) +
-  scale_colour_manual(values=c("black")) + ggtitle('H')
+  scale_colour_manual(values=c("black")) + ggtitle('H')+ geom_line(aes (y = predgls_cds_pi), linewidth =1, col = "grey" )
 
 figure2 <- (pi_plot / gc_plot / cds_plot / td_plot / fst_plot) /(rho_pi_plot | gc_pi_plot | cds_pi_plot)
 ggsave("../../figures/Figure3.pdf", figure2, width = 7.33, height = 10.46, units = "in")
