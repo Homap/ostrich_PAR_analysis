@@ -22,7 +22,7 @@ fit_segmented = segmented(fit_lm, seg.Z = ~x, npsi = 3)  # Two change points alo
 
 summary(fit_segmented)
 
-pdf("../../figures/FigureS3.pdf")
+pdf("../../figures/FigureS3.pdf", height = 5, width = 8)
 plot(fit_segmented, xlab = "Position (Mb)", ylab = "rho/Kb")
 points(df_Z, pch = 20, col = "grey")
 lines.segmented(fit_segmented)
