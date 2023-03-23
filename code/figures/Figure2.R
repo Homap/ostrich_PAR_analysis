@@ -31,7 +31,7 @@ rho_plot <- ggplot(rho_dataset , aes(x = (rho_data$Window_start+rho_data$Window_
   ylab(expression(over(rho,Kb))) + geom_vline(xintercept = (52185292)/mb, linetype="dashed", color = "black") +
   geom_hline(yintercept=mean_rho_a, linetype="dashed", color = "#E69F00") +
   theme(legend.position = "none") +scale_x_continuous(breaks=seq(0,82,10))+
-  theme(axis.text.y=element_text(size=12), axis.title.x = element_blank(), axis.text.x = element_blank(), axis.ticks.x = element_blank(), axis.title.y = element_text(angle = 0, vjust = 0.5, hjust = 1, size = 12)) + ggtitle('B')
+  theme(axis.text.y=element_text(size=12), axis.title.x = element_blank(), axis.text.x = element_blank(), axis.ticks.x = element_blank(), axis.title.y = element_text(angle = 0, vjust = 0.5, hjust = 1, size = 12)) + ggtitle('A')
 
 #------------
 # LD
