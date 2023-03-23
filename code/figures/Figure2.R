@@ -151,7 +151,7 @@ ld_decay_dataset$chr <-factor(ld_decay_dataset$chr, levels=c("Autosome","PAR","S
 
 ld_decay_plot <- ggplot(data = ld_decay_dataset, aes(x = dist, y = r2, color = chr)) + xlim(0, 50) + ylab(expression(r^2)) +
 geom_line(size = 0.4, alpha = 0.5) + theme_classic() + theme(axis.text.y=element_text(size=12), axis.text.x=element_text(size=12), legend.text = element_text(size=12), legend.position = "right", legend.justification = "top", axis.title.y = element_text(angle = 0, vjust = 0.5, hjust = 1, size = 12), legend.margin=margin(0,0,0,0), legend.box.margin=margin(-5,0,-5,-8)) + geom_ma(aes(color = chr), ma_fun = SMA, n = 5, na.rm = T, size = 0.8, linetype = 6) +
-scale_colour_manual(breaks = c("Autosome","PAR","SLR","PAR-1-5Mb","midPAR", "PAR-boundary"), values=c("#E69F00", "#000000", "#999999", "#0072B2", "#D55E00", "#CC79A7"), name = NULL) + scale_y_continuous(breaks=seq(0.1,0.5,0.1)) + xlab("Distance (Kb)") + ggtitle('F')
+scale_colour_manual(breaks = c("SLR", "midPAR", "Autosome","PAR-boundary", "PAR", "PAR-1-5Mb"), values=c("#999999", "#D55E00", "#E69F00", "#CC79A7", "#000000", "#0072B2"), name = NULL) + scale_y_continuous(breaks=seq(0.1,0.5,0.1)) + xlab("Distance (Kb)") + ggtitle('F')
 
 #------------
 # Putting six figures together
