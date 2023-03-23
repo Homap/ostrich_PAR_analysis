@@ -1,6 +1,9 @@
 #****************************************************************************************************************************************
 # Introductory figure
 #****************************************************************************************************************************************
+# This figure contains two parts, genes along the Z chromosome and cumulative recombination frequency as a function of physical position
+# along the PAR. These two figrues are saved interactively in Rstudio and put together in inkscape or Illustrator.
+#****************************************************************************************************************************************
 # Read gene coordinates
 mRNA_coords <- read.table("Z_mRNA_chro_coordinates.txt")
 gameto_mRNA_coords <- read.table("gametolog_chro_coordinates.txt")
